@@ -13,7 +13,7 @@ public class PrintToExcel {
 
     public static void main(String[] args) {
         try {
-            // create a new file
+            // create a new fileUtil
             FileOutputStream out = new FileOutputStream("workbook.xls");
             // create a new workbook
             Workbook wb = new HSSFWorkbook();
@@ -100,7 +100,7 @@ public class PrintToExcel {
 
 
             // write the workbook to the output stream
-            // close our file (don't blow out our file handles
+            // close our fileUtil (don't blow out our fileUtil handles
             wb.write(out);
             out.close();
         } catch (IOException e) {
