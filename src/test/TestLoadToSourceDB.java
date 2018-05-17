@@ -1,6 +1,6 @@
 package test;
 
-import database.DAO.DAO;
+import database.DAO.IGCdao;
 import file.FileDecoder;
 import model.DataLogger;
 
@@ -10,7 +10,7 @@ public class TestLoadToSourceDB {
         FileDecoder file = new FileDecoder(FileDecoder.FILENAME_DIRECTORY);
         DataLogger logger = file.readFile();
 
-        DAO dao = new DAO();
+        IGCdao dao = new IGCdao();
         dao.insertDataLogger(logger);
     }
 }

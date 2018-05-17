@@ -5,10 +5,11 @@ import model.DataPoint;
 
 import java.util.ArrayList;
 
-public class DAO implements ICGDataDAO {
-    private DatabaseHelper<ICGDataDAO> icgHelper;
+public class IGCdao implements IGCDataDAO {
+    private DatabaseHelper<IGCDataDAO> icgHelper;
 
-    public DAO(){
+    public IGCdao()
+    {
         icgHelper = new DatabaseHelper<>();
     }
 
