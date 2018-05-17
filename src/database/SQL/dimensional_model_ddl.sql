@@ -1,7 +1,7 @@
 
 
 BEGIN
-   EXECUTE IMMEDIATE 'drop table D_GLIDER CASCADE CONSTRAINTS purge';
+  EXECUTE IMMEDIATE 'drop table D_GLIDER CASCADE CONSTRAINTS purge';
   EXECUTE IMMEDIATE 'drop table D_FLIGHT CASCADE CONSTRAINTS purge';
   EXECUTE IMMEDIATE 'drop table F_IGC_LOG CASCADE CONSTRAINTS purge';
   EXCEPTION
@@ -42,4 +42,4 @@ CREATE table F_IGC_LOG(
   PRIMARY KEY (surr_key_log,surr_key_flight,surr_key_glider)
 );
 
-
+COMMIT;
