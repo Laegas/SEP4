@@ -1,4 +1,4 @@
-package fileUtil;
+package file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +15,7 @@ import model.Longitude;
 public class FileDecoder {
 	private Scanner sc;
 	private File file;
-	public static final String FILENAME_DIRECTORY = "C:\\\\Users\\\\Bruger\\\\Downloads\\\\SampleIgcFile.fileUtil";
+	public static final String FILENAME_DIRECTORY = "D:\\VIA\\VIA lectures+presentations\\4th Semester\\SEP4\\SampleIGCFile.igc";
 	
 	public FileDecoder(String filename)
 	{
