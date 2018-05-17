@@ -1,4 +1,4 @@
-package model;
+package model.geography;
 
 /**
  * Created by kenneth on 17/05/2018.

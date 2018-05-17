@@ -1,6 +1,6 @@
 package model.weather;
 
-import model.Degree;
+import model.geography.Degree;
 
 /**
  * Created by kenneth on 17/05/2018.
