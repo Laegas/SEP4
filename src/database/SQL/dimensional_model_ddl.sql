@@ -1,4 +1,20 @@
 
+
+BEGIN
+   EXECUTE IMMEDIATE 'drop table D_GLIDER CASCADE CONSTRAINTS purge';
+  EXECUTE IMMEDIATE 'drop table D_FLIGHT CASCADE CONSTRAINTS purge';
+  EXECUTE IMMEDIATE 'drop table F_IGC_LOG CASCADE CONSTRAINTS purge';
+  EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -942 THEN
+    RAISE;
+  END IF;
+END;
+/
+
+
+
+
 create table D_GLIDER (
   surr_key_glider int PRIMARY KEY,
   glider_id varchar2(10)
