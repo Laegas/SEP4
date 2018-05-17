@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-import model.DataLogger;
-import model.DataPoint;
+import model.igc.DataLogger;
+import model.igc.DataPoint;
 import model.Latitude;
 import model.Longitude;
 

@@ -1,4 +1,4 @@
-package model;
+package model.igc;
 
 import java.util.Date;
 import java.util.ArrayList;
