@@ -3,7 +3,7 @@ package launchable;
 import database.DAO.DaoManager;
 import database.DAO.IGCDataDAO;
 import fileUtil.FileDecoder;
-import model.DataLogger;
+import model.igc.DataLogger;
 
 import java.io.File;
 
