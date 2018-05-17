@@ -54,11 +54,11 @@ public class PrintToFIle {
 
         for(int i = 1; i <= HEIGHT; i++) {
 
-            convertToLatitude(i);
-            for(int k = digits; k < 3; k++)
+            String latitude = convertToLatitude(i);
+            for(int k = latitude.length(); k < 10; k++)
                 line.append(" ");
             line.append(i);
-            line.append(". ");
+            line.append(" ");
 
             for(int j = 1; j <= WIDTH; j++) {
                 line.append(j);
