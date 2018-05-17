@@ -1,5 +1,8 @@
 package visualization;
 
+import model.Latitude;
+import model.Longitude;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -13,15 +16,15 @@ import static visualization.VisualizationConfig.*;
 /**
  * Created by kryst on 5/16/2018.
  */
-public class PrintToFile {
+public class PrintToTxt {
 
-    private static PrintToFile instance;
+    private static PrintToTxt instance;
 
-    private PrintToFile() {}
+    private PrintToTxt() {}
 
-    public static PrintToFile getInstance() {
+    public static PrintToTxt getInstance() {
         if(instance == null) {
-            instance = new PrintToFile();
+            instance = new PrintToTxt();
         }
         return instance;
     }
@@ -41,8 +44,8 @@ public class PrintToFile {
 
         for(int i = 0; i < HEIGHT; i++) {
             for(int j = 0; j < WIDTH; j++) {
-                String latitude = convertToLatitude(i);
-                String longitude = convertToLongitude(j);
+                String latitude = Latitude.convertToLatitude(i);
+                String longitude = Longitude.convertToLongitude(j);
                 line.append(latitude);
                 line.append("N, ");
                 line.append(longitude);
@@ -63,23 +66,5 @@ public class PrintToFile {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-    }
-
-    public static String convertToLongitude(int x) {
-        if(x > VisualizationConfig.WIDTH || x < 0)
-            throw new IllegalArgumentException("Argument has to be from 0 to " + WIDTH);
-        int degreeValue = (int)(LONGITUDE_START + x / (WIDTH / (LONGITUDE_END - LONGITUDE_START)));
-        int minuteValue = (x / (int)(1 / WEST_TO_EAST_ARC) % 60);
-        int secondValue = (x % (int)(1 / WEST_TO_EAST_ARC)) * (60 / (int)(1 / WEST_TO_EAST_ARC));
-        return degreeValue + "°" + minuteValue + "'" + secondValue + "''";
-    }
-
-    public static String convertToLatitude(int y) {
-        if(y > HEIGHT || y < 0)
-            throw new IllegalArgumentException("Argument has to be from 0 to " + HEIGHT);
-        int degreeValue = (int)(LATITUDE_START + y / (HEIGHT / (LATITUDE_END - LATITUDE_START)));
-        int minuteValue = (int)((LATITUDE_START % 1) * 60 + (y / (int)(1 / SOUTH_TO_NORTH_ARC))) % 60;
-        int secondValue = (y % (int)(1 / SOUTH_TO_NORTH_ARC)) * (60 / (int)(1 / SOUTH_TO_NORTH_ARC));
-        return degreeValue + "°" + minuteValue + "'" + secondValue + "''";
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import static visualization.VisualizationConfig.*;
+
 public class Longitude {
 	private int degree;
 	private int minute;
@@ -34,5 +36,14 @@ public class Longitude {
 
 	public void setDecimal(int decimal) {
 		this.decimal = decimal;
+	}
+
+	public static String convertToLongitude(int x) {
+		if(x > WIDTH || x < 0)
+			throw new IllegalArgumentException("Argument has to be from 0 to " + WIDTH);
+		int degreeValue = (int)(LONGITUDE_START + x / (WIDTH / (LONGITUDE_END - LONGITUDE_START)));
+		int minuteValue = (x / (int)(1 / WEST_TO_EAST_ARC) % 60);
+		int secondValue = (x % (int)(1 / WEST_TO_EAST_ARC)) * (60 / (int)(1 / WEST_TO_EAST_ARC));
+		return degreeValue + "°" + minuteValue + "'" + secondValue + "''";
 	}
 }

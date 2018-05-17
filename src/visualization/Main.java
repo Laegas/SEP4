@@ -13,9 +13,19 @@ public class Main {
             }
         }
 
-        PrintToFile p = PrintToFile.getInstance();
+        // print to txt
+        PrintToTxt p = PrintToTxt.getInstance();
         try {
             p.printGridToTxt(grid);
+        } catch (InvalidGridDimensionException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        // print to excel
+        PrintToExcelSXSSF excel = PrintToExcelSXSSF.getInstance();
+        try {
+            excel.printGridToXLSX(grid);
         } catch (InvalidGridDimensionException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
