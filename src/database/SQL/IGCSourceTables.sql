@@ -1,3 +1,8 @@
+drop sequence data_Logger_ID;
+drop sequence IGC_Source_Data_ID;
+drop table Data_Logger;
+drop table IGC_Source_Data;
+
 create sequence data_Logger_ID
   start with 1
   increment by 1
