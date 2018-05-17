@@ -1,7 +1,24 @@
-drop sequence data_Logger_ID;
-drop sequence IGC_Source_Data_ID;
-drop table Data_Logger;
-drop table IGC_Source_Data;
+BEGIN
+  EXECUTE IMMEDIATE 'drop table Data_Logger CASCADE CONSTRAINTS purge';
+  EXECUTE IMMEDIATE 'drop table IGC_Source_Data CASCADE CONSTRAINTS purge';
+  EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -942 THEN
+    RAISE;
+  END IF;
+END;
+/
+
+BEGIN
+  EXECUTE IMMEDIATE 'drop sequence data_Logger_ID';
+  EXECUTE IMMEDIATE 'drop sequence IGC_Source_Data_ID';
+EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -2289 THEN
+    RAISE;
+  END IF;
+END;
+/
 
 create sequence data_Logger_ID
   start with 1
