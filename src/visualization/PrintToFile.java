@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by kryst on 5/16/2018.
  */
-public class PrintToFIle {
+public class PrintToFile {
 
     public static final double LONGITUDE_START = 8;         // 8°
     public static final double LATITUDE_START = 54.5;       // 54°30'
@@ -24,51 +24,35 @@ public class PrintToFIle {
     public static final int WIDTH = (int)((LONGITUDE_END - LONGITUDE_START) * 60 / WEST_TO_EAST_ARC);   // 720
     public static final int HEIGHT = (int)((LATITUDE_END - LATITUDE_START) * 60 / SOUTH_TO_NORTH_ARC);  // 360
 
-    public static final int GRID_SIZE = 10;
-
     public static void main(String[] args) {
-
-        for(int i = 0; i <= WIDTH; i++) {
-            System.out.println(convertToLongitude(i) + "    " + convertToLatitude(i / 2));
-        }
 
         List<String> lines = new ArrayList<>();
         StringBuilder line = new StringBuilder();
 
-        // first line
-        line.append("     ");
-        for(int i = 1; i <= GRID_SIZE; i++) {
-            line.append(i);
-            line.append(". ");
-        }
-
-        lines.add(line.toString());
-        line.setLength(0);
-
         int[][] grid = new int[HEIGHT][WIDTH];
-        for(int i = 1; i <= HEIGHT; i++) {
-            for(int j = 1; i <= WIDTH; j++) {
+
+        for(int i = 0; i < HEIGHT; i++) {
+            for(int j = 0; j < WIDTH; j++) {
                 grid[i][j] = (int)Math.floor(Math.random() * 10);
             }
         }
 
-        for(int i = 1; i <= HEIGHT; i++) {
-
-            String latitude = convertToLatitude(i);
-            for(int k = latitude.length(); k < 10; k++)
-                line.append(" ");
-            line.append(i);
-            line.append(" ");
-
-            for(int j = 1; j <= WIDTH; j++) {
-                line.append(j);
-                line.append("  ");
+        for(int i = 0; i < HEIGHT; i++) {
+            for(int j = 0; j < WIDTH; j++) {
+                String latitude = convertToLatitude(i);
+                String longitude = convertToLongitude(j);
+                line.append(latitude);
+                line.append("N, ");
+                line.append(longitude);
+                line.append("E");
+                for(int k = latitude.length() + longitude.length() + 4; k < 23; k++)
+                    line.append(" ");
+                line.append("- ");
+                line.append(grid[i][j]);
+                lines.add(line.toString());
+                line.setLength(0);
             }
-
-            lines.add(line.toString());
-            line.setLength(0);
         }
-
 
         try {
             Path file = Paths.get("output.txt");
