@@ -1,5 +1,7 @@
 package launchable;
 
+import database.DAO.DaoManager;
+import database.DAO.IGCDataDAO;
 import fileUtil.FileDecoder;
 import model.DataLogger;
 
@@ -20,12 +22,12 @@ public class IGCFileLoader {
 
         FileDecoder fileDecoder;
         DataLogger dataLogger;
+        IGCDataDAO igc_dao = DaoManager.IGC_DAO;
         for (File file : IGC_files) {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             dataLogger = fileDecoder.readFile();
 
-
-            // TODO send datalogger to the dao
+            igc_dao.insertDataLogger(dataLogger); // is there commit in the dao
 
         }
 
