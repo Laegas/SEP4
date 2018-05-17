@@ -1,17 +1,17 @@
 package model.igc;
 
-import java.util.Date;
+import model.time.Date;
 import java.util.ArrayList;
 
 public class DataLogger {
-	private ArrayList<DataPoint> datalog;
+	private ArrayList<DataPoint> datapoints;
 	private Date date;
 	private String gliderID;
-	
+
 	public DataLogger(Date date, ArrayList<DataPoint> datalog,String gliderID)
 	{
 		this.date=date;
-		this.datalog= datalog;
+		this.datapoints= datalog;
 	}
 	public DataLogger(Date date)
 	{
@@ -20,10 +20,10 @@ public class DataLogger {
 
 	@Override
 	public String toString() {
-		return "DataLogger [datalog=" + datalog + ", date=" + date + ", gliderID=" + gliderID + "]";
+		return "DataLogger [datalog=" + datapoints + ", date=" + date + ", gliderID=" + gliderID + "]";
 	}
 	public ArrayList<DataPoint> getDatalog() {
-		return datalog;
+		return datapoints;
 	}
 
 	public Date getDate() {
@@ -32,7 +32,7 @@ public class DataLogger {
 	
 	public void setDatalog(ArrayList<DataPoint> datalog)
 	{
-		this.datalog = datalog;
+		this.datapoints = datalog;
 	}
 	
 	public void setGliderID(String ID)
@@ -44,6 +44,6 @@ public class DataLogger {
 	{
 		return gliderID;
 	}
-	
+
 	
 }

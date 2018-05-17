@@ -1,9 +1,9 @@
 package model.igc;
 
-import model.Latitude;
-import model.Longitude;
+import model.geography.Latitude;
+import model.geography.Longitude;
 
-import java.sql.Time;
+import model.time.Time;
 
 public class DataPoint {
 	private Time time;

@@ -1,7 +1,7 @@
 package visualization;
 
-import model.Latitude;
-import model.Longitude;
+import model.geography.Latitude;
+import model.geography.Longitude;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

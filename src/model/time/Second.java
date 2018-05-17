@@ -8,6 +8,7 @@ public class Second {
         setSecond(second);
     }
 
+
     public void setSecond(int second)
     {
         if(second<0||second>59)

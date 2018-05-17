@@ -42,4 +42,9 @@ public class Date {
     public void setYear(Year year) {
         this.year = year;
     }
+
+    public String toString()
+    {
+        return year.getYear()+"/"+month.getMonthNumber()+"/"+day.getDayOfMonth();
+    }
 }
