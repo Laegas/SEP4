@@ -1,7 +1,7 @@
 package database.DAO;
 
 public interface ICGDataDAO {
-   /* DataLogger insertDataLogger(DataLogger logger);
+    /*DataLogger insertDataLogger(DataLogger logger);
     DataLogger readDataLogger(int id);
     List<DataLogger> readAllDataLoggers();
     void updateDataLogger(DataLogger logger);
@@ -11,6 +11,5 @@ public interface ICGDataDAO {
     DataPoint readDataPoint(int id);
     List<DataPoint> readAllDataPoints();
     void updateDataPoint(DataPoint point) ;
-    void deleteDataPoint(DataPoint point);
-    */
+    void deleteDataPoint(DataPoint point);*/
 }
