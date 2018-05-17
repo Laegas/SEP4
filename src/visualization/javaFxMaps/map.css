@@ -11,11 +11,5 @@
     -fx-shadow-highlight-color: transparent;
     -fx-spacing: 5;
     -fx-padding: 4 4 4 4;
-    -fx-background-color: white; /*linear (0%,0%) to (0%,100%) stops
-(0%,#919398)
-(4%,#919398)
-(4.1%,#666970)
-(66%,#494d53)
-(94%,#3c3f46)
-(94.1%,#515151); */
+    -fx-background-color: linear-gradient(#919398 0%, #919398 4%, #666970 4.1%, #494d53 66%, #3c3f46 94%, #515151 94.1%);
 }
