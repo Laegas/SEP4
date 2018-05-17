@@ -1,7 +1,6 @@
 package database.DAO;
 
 import java.sql.*;
-import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class DatabaseHelper<T> {
     {
         return DriverManager.getConnection(
                 "jdbc:oracle:thin:@localhost:1521:ORCL",
-                "NIC", "pass");
+                "NIC", "teentitans1sasu");
     }
 
     private PreparedStatement prepare(Connection connection, String sql,
@@ -39,7 +38,6 @@ public class DatabaseHelper<T> {
     }
 
     public int executeUpdate(String sql, Object... parameters)
-            throws RemoteException
     {
         try (Connection connection = getConnection())
         {
@@ -48,12 +46,12 @@ public class DatabaseHelper<T> {
         }
         catch (SQLException e)
         {
-            throw new RemoteException(e.getMessage(), e);
+            e.printStackTrace();
         }
+        return 0;
     }
 
     public T mapSingle(DataMapper<T> mapper, String sql, Object... parameters)
-            throws RemoteException
     {
         try (Connection connection = getConnection())
         {
@@ -70,28 +68,29 @@ public class DatabaseHelper<T> {
         }
         catch (SQLException e)
         {
-            throw new RemoteException(e.getMessage(), e);
+            e.printStackTrace();
         }
+        return null;
     }
 
     public List<T> map(DataMapper<T> mapper, String sql, Object... parameters)
-            throws RemoteException
     {
+        LinkedList<T> allRows = new LinkedList<>();
         try (Connection connection = getConnection())
         {
             PreparedStatement stat = prepare(connection, sql, parameters);
             ResultSet rs = stat.executeQuery();
-            LinkedList<T> allRows = new LinkedList<>();
             while (rs.next())
             {
                 allRows.add(mapper.create(rs));
             }
-            return allRows;
+
         }
         catch (SQLException e)
         {
-            throw new RemoteException(e.getMessage(), e);
+            e.printStackTrace();
         }
+        return allRows;
     }
 }
 

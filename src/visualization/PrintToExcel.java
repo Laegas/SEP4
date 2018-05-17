@@ -52,7 +52,7 @@ public class PrintToExcel {
             dataCs.setFont(f);
 
             // set the sheet name in plain ascii
-            wb.setSheetName(0, "HSSF Test");
+            wb.setSheetName(0, "HSSF test");
 
             // create a sheet with 30 rows (0-29)
             int rownum;
@@ -83,8 +83,8 @@ public class PrintToExcel {
                     if ((rownum % 2) == 0) {
                         // set this cell to the first cell style we defined
                         c.setCellStyle(dataCs);
-                        // set the cell's string value to "Test"
-                        c.setCellValue("Test");
+                        // set the cell's string value to "test"
+                        c.setCellValue("test");
                     } else {
                         c.setCellStyle(headingCs);
                         c.setCellValue("Test2");
