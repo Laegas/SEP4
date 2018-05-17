@@ -1,11 +1,15 @@
 create sequence data_Logger_ID
   start with 1
   increment by 1
+  cache 100
+  nomaxvalue
   /
 
-create seqeuence IGC_Source_Data_ID
+create sequence IGC_Source_Data_ID
   start with 1
   increment by 1
+  cache 100
+  nomaxvalue
   /
 
 create table Data_Logger
@@ -26,3 +30,5 @@ create table IGC_Source_Data
    GPSAltitude int,
    fligthID references Data_Logger(id)
 )/
+
+COMMIT ;
