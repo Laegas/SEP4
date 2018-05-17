@@ -33,7 +33,6 @@ create sequence IGC_Source_Data_ID
   cache 100
   nomaxvalue
 
-
 create table Data_Logger
 (
     id int primary key,
