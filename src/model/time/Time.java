@@ -42,8 +42,7 @@ public class Time {
     public void setSecond(Second second) {
         this.second = second;
     }
-
-
+    
     public String toString()
     {
         return hour.getHour()+":"+minute.getMinute()+":"+second.getSecond();
