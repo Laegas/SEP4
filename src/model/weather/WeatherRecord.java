@@ -18,6 +18,10 @@ public class WeatherRecord {
     Year year;
     //todo add an hour and minute object
 
+
+    public WeatherRecord() {
+    }
+
     public WeatherRecord(ICAOAirportCode airportCode, Wind wind, VaryingWindDirection varyingWindDirection, DegreeCelcius temperature, DegreeCelcius dewPoint, Day day, Month month, Year year) {
         this.airportCode = airportCode;
         this.wind = wind;

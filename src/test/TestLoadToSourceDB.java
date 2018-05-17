@@ -1,7 +1,7 @@
 package test;
 
 import database.DAO.IGCdao;
-import file.FileDecoder;
+import fileUtil.FileDecoder;
 import model.DataLogger;
 
 public class TestLoadToSourceDB {
