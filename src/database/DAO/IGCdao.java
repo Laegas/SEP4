@@ -20,7 +20,7 @@ public class IGCdao implements IGCDataDAO {
     {
         String d = logger.getDate().toString();
         int datalogID = new DatabaseHelper<Integer>().mapSingle(rs -> rs.getInt(1), "Select data_Logger_ID.nextval from dual");
-        icgHelper.executeUpdate("INSERT INTO Data_Logger (id, gliderRegNo, flightDate) " +
+        icgHelper.executeUpdate("INSERT INTO Data_Logger (id, glider_RegNo, flight_Date) " +
                 "VALUES (?, ?, to_Date(?, \'yy/mm/dd\'))",
                 datalogID, logger.getGliderID(), d);
 
@@ -33,7 +33,7 @@ public class IGCdao implements IGCDataDAO {
              satCover = "" + point.getSataliteCoverage();
              tsmp =  d + " " + point.getTime().toString();
             icgHelper.executeUpdate("INSERT INTO IGC_Source_Data " +
-                            "(id, TIMEOFLOG, LATITUDE, LONGITUDE, SATELITECOVERAGE, PRESSUREALTITUDE, GPSALTITUDE, FLIGTHID) " +
+                            "(id, time_Of_Log, LATITUDE, LONGITUDE, satelite_Coverage, pressure_Altitude, GPS_Altitude, fligth_ID) " +
                             "VALUES (IGC_Source_Data_ID.NEXTVAL, to_Timestamp(?, \'YY/MM/DD HH24:MI:SS\'), ?, ?, ?, ?, ?, ?)",
                      tsmp, point.getLatitude().toDatabase(),
                     point.getLongitude().toDatabase(), satCover,
