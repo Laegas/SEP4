@@ -12,7 +12,7 @@ public class Month {
 
     public void setMonthNumber(int monthNumber) {
         if (monthNumber < 1 || monthNumber > 12) {
-            throw new RuntimeException("now a valid month number");
+            throw new RuntimeException("Not a valid month number");
         }
         this.monthNumber = monthNumber;
     }

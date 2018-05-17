@@ -1,7 +1,7 @@
 package visualization;
 
-import model.Latitude;
-import model.Longitude;
+import model.geography.Latitude;
+import model.geography.Longitude;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

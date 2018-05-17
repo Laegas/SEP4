@@ -1,29 +1,28 @@
-package model;
+package model.igc;
 
-import java.sql.Time;
+import model.geography.Latitude;
+import model.geography.Longitude;
+
+import model.time.Time;
 
 public class DataPoint {
-	private char recordType;
 	private Time time;
 	private Longitude longitude;
 	private Latitude latitude;
-	private char sataliteCoverage;
+	private char satelliteCoverage;
 	private int pressureAltitude;
 	private int GPSAltitude;
 	
-	public DataPoint(char recordType, Time time, Longitude longitude, Latitude latitude, char sataliteCoverage, int pressureAltitude, int GPSAltitude) {
-		this.recordType=recordType;
+	public DataPoint( Time time, Longitude longitude, Latitude latitude, char sataliteCoverage, int pressureAltitude, int GPSAltitude) {
 		this.time=time;
 		this.longitude=longitude;
 		this.latitude= latitude;
-		this.sataliteCoverage=sataliteCoverage;
+		this.satelliteCoverage=sataliteCoverage;
 		this.pressureAltitude=pressureAltitude;
 		this.GPSAltitude=GPSAltitude;
 	}
 
-	public char getRecordType() {
-		return recordType;
-	}
+
 
 	public Time getTime() {
 		return time;
@@ -39,13 +38,13 @@ public class DataPoint {
 
 	@Override
 	public String toString() {
-		return "DataPoint [recordType=" + recordType + ", time=" + time + ", longitude=" + longitude + ", latitude="
-				+ latitude + ", sataliteCoverage=" + sataliteCoverage + ", pressureAltitude=" + pressureAltitude
+		return "DataPoint [ time=" + time + ", longitude=" + longitude + ", latitude="
+				+ latitude + ", satelliteCoverage=" + satelliteCoverage + ", pressureAltitude=" + pressureAltitude
 				+ ", GPSAltitude=" + GPSAltitude + "]";
 	}
 
 	public char getSataliteCoverage() {
-		return sataliteCoverage;
+		return satelliteCoverage;
 	}
 
 	public int getPressureAltitude() {
