@@ -47,6 +47,12 @@ public class Longitude {
 		this.second = new Second(decimal);
 	}
 
+	public String toDatabase()
+	{
+		String t = "";
+		t+= degree.getDegree()+""+minute.getMinute()+second.getSecondAsDecimal();
+		return t;
+	}
 	public String toString()
 	{
 		String t = "";
