@@ -42,4 +42,4 @@ CREATE table F_IGC_LOG(
   PRIMARY KEY (surr_key_log,surr_key_flight,surr_key_glider)
 );
 
-
+COMMIT;
