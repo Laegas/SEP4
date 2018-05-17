@@ -1,8 +1,12 @@
-package visualization;
+package launchable;
+
+import visualization.InvalidGridDimensionException;
+import visualization.PrintToExcelSXSSF;
+import visualization.PrintToTxt;
 
 import static visualization.VisualizationConfig.*;
 
-public class Main {
+public class VisualizationMain {
     public static void main(String[] args) {
 
         int[][] grid = new int[HEIGHT][WIDTH];
