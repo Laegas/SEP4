@@ -6,7 +6,7 @@ import model.geography.Longitude;
 import model.geography.Latitude;
 
 import java.util.ArrayList;
-
+//Adding this to retry push
 public class IGCdao implements IGCDataDAO {
     private DatabaseHelper<IGCDataDAO> icgHelper;
 
