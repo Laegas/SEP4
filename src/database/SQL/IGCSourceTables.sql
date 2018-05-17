@@ -45,8 +45,8 @@ create table IGC_Source_Data
 (
    id int primary key,
    timeOfLog timestamp,
-   latitude int,
-   longitude int,
+   latitude varchar(7),
+   longitude varchar(8),
    sateliteCoverage char(1),
    pressureAltitude int,
    GPSAltitude int,

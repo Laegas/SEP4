@@ -28,8 +28,8 @@ public class IGCdao implements IGCDataDAO {
                             "(id, timeOfLog, latitude, longitude, " +
                             "satelliteCoverage, pressureAltitude, GPSAltitude, flightID) " +
                             "VALUES (IGC_Source_Data_ID.nextVal, ?, ?, ?, ?, ?, ?, data_Logger_ID.CURRVAL)",
-                     point.getTime(), point.getLatitude(),
-                    point.getLongitude(), point.getSataliteCoverage(),
+                     point.getTime(), point.getLatitude().toString(),
+                    point.getLongitude().toString(), point.getSataliteCoverage(),
                     point.getPressureAltitude(), point.getGPSAltitude());
         }
     };
