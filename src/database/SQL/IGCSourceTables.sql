@@ -1,15 +1,22 @@
-create sequence dataLoggerID
+create sequence data_Logger_ID
   start with 1
   increment by 1
+  /
 
-create table DataLogger
+create seqeuence IGC_Source_Data_ID
+  start with 1
+  increment by 1
+  /
+
+create table Data_Logger
 (
     id int primary key,
     flightDate date
-)
+)/
 
-create table IGCSourceData
+create table IGC_Source_Data
 (
+   id int primary key,
    recordType char(1),
    timeOfLog timestamp,
    latitude int,
@@ -17,5 +24,5 @@ create table IGCSourceData
    sateliteCoverage char(1),
    pressureAltitude int,
    GPSAltitude int,
-   fligthID primary key references DataLogger(id)
-)
+   fligthID references Data_Logger(id)
+)/
