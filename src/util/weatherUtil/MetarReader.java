@@ -22,8 +22,14 @@ public class MetarReader {
 
             int counter = 0;
             for (String item : split) {
+                System.out.println(counter);
+                item = item.trim();         // trimming each section
+                System.out.println("item: "  + item);
                 switch (counter) {
                     case 0: // setting record id/code
+                        if (item.length() != 4) {
+                            continue;
+                        }
                         weatherRecord.setAirportCode(new ICAOAirportCode(split[0]));
                         counter++;
                         break;
@@ -43,7 +49,7 @@ public class MetarReader {
                         }
                         break;
                     case 2: // wind
-                        if (item.substring(item.length() - 3, item.length() - 1).equalsIgnoreCase("kt")) {
+                        if (item.substring(item.length() - 2, item.length()).equalsIgnoreCase("kt")) {
 
                             int intWindDirection = Integer.parseInt(item.substring(0, 3));
                             int intWindSpeed = Integer.parseInt(item.substring(3, 5));
@@ -95,9 +101,9 @@ public class MetarReader {
     }
 
     public static void main(String[] args) {
-        WeatherRecord weatherRecord = decodeMetar("METAR		eksn 170950z 01012kt cavok 15/10 q1016");
+        WeatherRecord weatherRecord = decodeMetar("METAR	eksn 170950z 01012kt cavok 15/10 q1016");
 
-        System.out.println("airport code:" + weatherRecord.getAirportCode());
+        System.out.println("airport code:" + weatherRecord.getAirportCode().getICAOCode());
         System.out.println("temperature:" + weatherRecord.getTemperature().getTemperature());
         System.out.println("Wind speed:" + weatherRecord.getWind().getWindSpeed());
         System.out.println("Wind Direction:" + weatherRecord.getWind().getWindDirection());

@@ -3,25 +3,34 @@
 -- select column_name || ', ' from user_tab_columns where table_name like '%DATA_LOGGER%';
 
 
-insert into FULLY_EXTRACTED_IGC
-  (select
-  igc.ID,
-  igc.RECORDTYPE,
-  igc.TIMEOFLOG,
-  igc.LATITUDE,
-  igc.LONGITUDE,
-  igc.SATELITECOVERAGE,
-  igc.PRESSUREALTITUDE,
-  igc.GPSALTITUDE,
-  igc.FLIGTHID,
-  log.FLIGHTDATE
-  from IGC_SOURCE_DATA igc
-    join data_logger log ON
-      igc.FLIGTHID = log.ID
-  where log.ID not in (Select id from D_FLIGHT) -- this makes sure that we only extract the new ones
-  )
-
-;
-
-
+-- select * from DATA_LOGGER;
+TRUNCATE table FULLY_EXTRACTED_IGC;
+insert into FULLY_EXTRACTED_IGC (
+  igc_ID,
+  TIME_OF_LOG,
+  LATITUDE,
+  LONGITUDE,
+  SATELITE_COVERAGE,
+  PRESSURE_ALTITUDE,
+  GPS_ALTITUDE,
+  FLIGHt_ID,
+  FLIGHT_DATE,
+  GLIDER_REGNO
+) (SELECT
+                 igc.ID,
+                 igc.TIME_OF_LOG,
+                 igc.LATITUDE,
+                 igc.LONGITUDE,
+                 igc.SATELITE_COVERAGE,
+                 igc.PRESSURE_ALTITUDE,
+                 igc.GPS_ALTITUDE,
+                 igc.FLIGHt_ID,
+                 log.FLIGHT_DATE,
+                 log.GLIDER_REGNO
+   FROM IGC_SOURCE_DATA igc
+     left JOIN data_logger log ON
+                            igc.FLIGHt_ID = log.ID
+               WHERE log.ID NOT IN (SELECT SURR_KEY_FLIGHT
+                                    FROM D_FLIGHT) -- this makes sure that we only extract the new ones
+);
 

@@ -22,8 +22,7 @@ create table D_GLIDER (
 
 create table D_FLIGHT(
   surr_key_flight int PRIMARY KEY,
-  start_time char(6),
-  start_date char(8)
+  start_date date
 );
 
 
@@ -32,7 +31,7 @@ CREATE table F_IGC_LOG(
   surr_key_flight INT REFERENCES D_FLIGHT(surr_key_flight),
   surr_key_glider INT REFERENCES D_GLIDER(surr_key_glider),
 
-  time char(6),
+  time TIMESTAMP,
   lat_north char(7),
   long_east char(8),
   press_altitude INT,
