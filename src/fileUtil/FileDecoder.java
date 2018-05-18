@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import model.igc.DataLogger;
+import model.igc.Flight;
 import model.igc.DataPoint;
 import model.geography.Latitude;
 import model.geography.Longitude;
@@ -26,10 +26,10 @@ public class FileDecoder {
 		}
 	}
 	
-	public DataLogger readFile()
+	public Flight readFile()
 	{
 		ArrayList<DataPoint> points = new ArrayList<>();
-		DataLogger logger = null;
+		Flight logger = null;
 		
 		
 		try {
@@ -70,7 +70,7 @@ public class FileDecoder {
 			}
 			else if (container.startsWith("HFDTE"))//  Date information
 			{
-				logger = new DataLogger(new Date(Integer.parseInt(container.substring(5, 7)),Integer.parseInt(container.substring(7, 9)),Integer.parseInt(container.substring(9, 11))));
+				logger = new Flight(new Date(Integer.parseInt(container.substring(5, 7)),Integer.parseInt(container.substring(7, 9)),Integer.parseInt(container.substring(9, 11))));
 			}
 			
 		}

@@ -32,8 +32,8 @@ CREATE table F_IGC_LOG(
   surr_key_glider INT REFERENCES D_GLIDER(surr_key_glider),
 
   time TIMESTAMP,
-  lat_north char(7),
-  long_east char(8),
+  lat_north char(9),
+  long_east char(10),
   press_altitude INT,
   gps_altitude INT,
   gps_ok char(1),
