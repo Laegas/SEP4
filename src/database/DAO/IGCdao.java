@@ -19,7 +19,10 @@ public class IGCdao implements IGCDataDAO {
     public void insertDataLogger(DataLogger logger)
     {
         String d = logger.getDate().toString();
-        int datalogID = new DatabaseHelper<Integer>().mapSingle(rs -> rs.getInt(1), "Select data_Logger_ID.nextval from dual");
+
+        int datalogID = new DatabaseHelper<Integer>().mapSingle(rs -> rs.getInt(1),
+                "Select data_Logger_ID.nextval from dual");
+
         icgHelper.executeUpdate("INSERT INTO Data_Logger (id, glider_RegNo, flight_Date) " +
                 "VALUES (?, ?, to_Date(?, \'yy/mm/dd\'))",
                 datalogID, logger.getGliderID(), d);
