@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 //Adding this to retry push
 public class IGCSourceDao implements IGCDataDAO {
 
@@ -24,11 +26,11 @@ public class IGCSourceDao implements IGCDataDAO {
             String date = logger.getDate().toString();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Data_Logger (id, glider_RegNo, flight_Date) "
                     + "VALUES (data_Logger_ID.nextval, ?, to_Date(?, \'yy/mm/dd\'))");
-            stmt.setString(1, logger.getGliderID());
+            stmt.setString(1, logger.getGlider().getGlider_no());
             stmt.setString(2, date);
             stmt.execute();
             conn.commit();
-            ArrayList<DataPoint> points = logger.getDatalog();
+            List<DataPoint> points = logger.getDatalog();
             String tsmp = "";
             for (DataPoint point : points) {
                 tsmp = date + " " + point.getTime().toString();
