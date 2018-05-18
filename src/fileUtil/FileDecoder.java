@@ -15,8 +15,7 @@ import model.time.Date;
 public class FileDecoder {
 	private Scanner sc;
 	private File file;
-	public static final String FILENAME_DIRECTORY = "D:\\VIA\\VIA lectures+presentations\\4th Semester\\SEP4\\SampleIGCFile.igc";
-	
+
 	public FileDecoder(String filename)
 	{
 		this.file= new File(filename);
@@ -38,9 +37,8 @@ public class FileDecoder {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		String container = "";
 		while (sc.hasNextLine()) {
-			container = sc.nextLine();
+			String container = sc.nextLine();
 			if (container.startsWith("B"))// DataPoint instance
 			{
 				String hour = container.substring(1,3);
