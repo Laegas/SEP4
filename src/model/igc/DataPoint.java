@@ -23,7 +23,6 @@ public class DataPoint {
 	}
 
 
-
 	public Time getTime() {
 		return time;
 	}
