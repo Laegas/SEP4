@@ -18,8 +18,6 @@ public class IGCFileLoader {
 
     public static void main(String[] args) {
 
-        //getting all files in the directory
-
         File[] IGC_files = dirWithIGCLogFiles.listFiles();
 
         FileDecoder fileDecoder;

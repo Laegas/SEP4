@@ -1,6 +1,6 @@
 package config;
 
 public class FileConfig {
-    public static final String PROJECT_PATH = "C:\\Bruger\\IdeaProject";
-    public static final String IGC_FILE = "SEP4 Folder\\src\\resources\\SampleIgcFile.igc";
+    public static final String PROJECT_PATH = "D:\\VIA\\VIA lectures+presentations\\4th Semester\\";
+    public static final String IGC_FILE = "SEP4\\SampleIgcFile.igc";
 }
