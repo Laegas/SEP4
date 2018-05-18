@@ -3,7 +3,7 @@ output.txt
 output.xlsx
 
 # config ignore
-/src/config/*.java
+
 
 # Eclipse
 .classpath
