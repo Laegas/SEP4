@@ -1,9 +1,9 @@
 package database.DAO;
 
-import model.igc.DataLogger;
+import model.igc.Flight;
 import model.weather.WeatherRecord;
 
 public interface IGCDataDAO {
-    void insertDataLogger(DataLogger logger);
+    void insertDataLogger(Flight logger);
     void insertWeatherRecord(WeatherRecord record);
 }

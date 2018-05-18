@@ -1,6 +1,6 @@
 package database.DAO;
 
-import model.igc.DataLogger;
+import model.igc.Flight;
 import model.igc.DataPoint;
 import model.time.Date;
 import model.weather.WeatherRecord;
@@ -10,17 +10,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 //Adding this to retry push
-public class IGCdao implements IGCDataDAO {
+public class IGCSourceDao implements IGCDataDAO {
 
     private Connection conn;
 
-    public IGCdao()
+    public IGCSourceDao()
     {
         conn = DatabaseHelper.getInstance().getConnection();
     }
 
     //data points are inserted within this method, immediately after inserting the data logger
-    public void insertDataLogger(DataLogger logger)
+    public void insertDataLogger(Flight logger)
     {
         try {
             String date = logger.getDate().toString();

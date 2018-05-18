@@ -5,5 +5,5 @@ package database.DAO;
  */
 public class DaoManager {
 
-    public static IGCDataDAO IGC_DAO = new IGCdao();
+    public static IGCDataDAO IGC_DAO = new IGCSourceDao();
 }
