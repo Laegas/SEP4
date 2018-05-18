@@ -31,7 +31,7 @@ insert into D_FLIGHT (
     where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT))
 );
 
-select * from FULLY_EXTRACTED_IGC;
+-- select * from FULLY_EXTRACTED_IGC;
 -- now inserting all new f_igc_log
 insert into F_IGC_LOG (
     SURR_KEY_LOG,
@@ -44,8 +44,8 @@ insert into F_IGC_LOG (
     GPS_ALTITUDE,
     GPS_OK
 ) (select
-    ID,
-    FLIGTH_ID,
+    igc_ID,
+    FLIGht_ID,
     (select SURR_KEY_GLIDER from d_glider g where g.GLIDER_ID = GLIDER_REGNO) as surr_key_glider,
     TIME_OF_LOG,
     LATITUDE,
@@ -54,7 +54,7 @@ insert into F_IGC_LOG (
     GPS_ALTITUDE,
     SATELITE_COVERAGE
   from FULLY_EXTRACTED_IGC
-    where id not IN (select SURR_KEY_LOG from F_IGC_LOG)
+    where igc_id not IN (select SURR_KEY_LOG from F_IGC_LOG)
 );
 
 BEGIN
