@@ -1,8 +1,19 @@
 package database.DAO;
 
+import com.sun.xml.internal.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
+import model.geography.Latitude;
+import model.geography.Longitude;
+import model.igc.DataPoint;
 import model.igc.Flight;
+import model.igc.Glider;
+import model.time.Date;
+import model.time.Time;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +30,96 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
     @Override
     public List<Flight> getAllFlights() {
-        List<Flight> flights = new ArrayList<>();
+        List<Flight> noDataFlights = new ArrayList<>();
+        List<Glider> gliders = new ArrayList<>();
+        List<Flight> result = new ArrayList<>();
 
-        return null;
+        //getting all gliders
+        try {
+            String sql = "select GLIDER_ID, surr_key_glider from d_glider";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultSet = stmt.executeQuery();
+
+            Glider tmpGlider;
+            while (resultSet.next()) {
+                tmpGlider = new Glider(resultSet.getInt("surr_key_glider"), resultSet.getString("glider_id"));
+                gliders.add(tmpGlider);
+            }
+
+            //getting all flights
+            sql = "SELECT surr_key_flight,START_DATE FROM D_FLIGHT";
+            stmt = connection.prepareStatement(sql);
+            resultSet = stmt.executeQuery();
+            Flight tmpFlight;
+            while (resultSet.next()) {
+                tmpFlight = new Flight(new Date(resultSet.getDate("start_date")), resultSet.getInt("surr_key_flight"));
+                noDataFlights.add(tmpFlight);
+            }
+
+
+            //getting all data for each flight one flight at a time
+            for (Flight flight : noDataFlights) {
+                List<DataPoint> dataPoints = getDataPoints(flight.getFlight_id());
+                tmpFlight = new Flight(flight.getDate(),dataPoints, getGliderByID(gliders,dataPoints.get(0).getGlider_id()),flight.getFlight_id());
+
+                result.add(tmpFlight);
+            }
+            noDataFlights = null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    private List<DataPoint> getDataPoints(int flightNumber) {
+
+        List<DataPoint> result = new ArrayList<>();
+
+        String sql = "SELECT surr_key_log, surr_key_flight, surr_key_glider, time, lat_north, long_east, press_altitude, gps_altitude, gps_ok FROM F_IGC_LOG";
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet resultSet = stmt.executeQuery();
+            DataPoint tmpDataPoint;
+            Time tmpTime;
+            Longitude tmpLongitude;
+            Latitude tmpLatitude;
+            int pressureAltitude;
+            int gpsAltitude;
+            int flight_id;
+            int glider_id;
+            char satelliteCoverage;
+            while (resultSet.next()) {
+
+                tmpTime = new Time(resultSet.getTime("time"));
+                String longitude = resultSet.getString("long_east");
+                tmpLongitude = new Longitude(Integer.parseInt(longitude.substring(0, 3)), Integer.parseInt(longitude.substring(3, 5)), Integer.parseInt(longitude.substring(5, 8)));
+                String latitude = resultSet.getString("lat_north");
+                tmpLatitude = new Latitude(Integer.parseInt(latitude.substring(0, 2)), Integer.parseInt(latitude.substring(2, 4)), Integer.parseInt(latitude.substring(4, 7)));
+                pressureAltitude = resultSet.getInt("press_altitude");
+                gpsAltitude = resultSet.getInt("gps_altitude");
+                flight_id = resultSet.getInt("surr_key_flight");
+                glider_id = resultSet.getInt("surr_key_glider");
+                satelliteCoverage = resultSet.getString("gps_ok").charAt(0);
+                tmpDataPoint = new DataPoint(tmpTime, tmpLongitude, tmpLatitude, satelliteCoverage, pressureAltitude, gpsAltitude, glider_id, flight_id);
+                result.add(tmpDataPoint);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private Glider getGliderByID(List<Glider> gliders, int glider_id) {
+        for (Glider glider : gliders) {
+            if (glider.getGlider_id() == glider_id) {
+                return glider;
+            }
+        }
+        throw new RuntimeException("something messed up");
     }
 }

@@ -11,6 +11,9 @@ public class Date {
         this.month = new Month(month);
         this.year = new Year(year);
     }
+    public Date(java.sql.Date date) {
+        this(date.getDay(), date.getMonth(), date.getYear());
+    }
 
     public Date(Day day, Month month, Year year)
     {

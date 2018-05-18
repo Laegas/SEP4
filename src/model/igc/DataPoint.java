@@ -12,14 +12,37 @@ public class DataPoint {
 	private char satelliteCoverage;
 	private int pressureAltitude;
 	private int GPSAltitude;
-	
-	public DataPoint( Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude) {
+
+	private int glider_id;
+	private int flight_id;
+
+	public DataPoint(Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude, int glider_id, int flight_id) {
+		this.time = time;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.satelliteCoverage = satelliteCoverage;
+		this.pressureAltitude = pressureAltitude;
+		this.GPSAltitude = GPSAltitude;
+		this.glider_id = glider_id;
+		this.flight_id = flight_id;
+	}
+
+	public int getGlider_id() {
+		return glider_id;
+	}
+
+	public int getFlight_id() {
+		return flight_id;
+	}
+
+	public DataPoint(Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude) {
 		this.time=time;
 		this.longitude=longitude;
 		this.latitude= latitude;
 		this.satelliteCoverage=satelliteCoverage;
 		this.pressureAltitude=pressureAltitude;
 		this.GPSAltitude=GPSAltitude;
+
 	}
 
 

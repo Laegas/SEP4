@@ -1,9 +1,9 @@
 package launchable;
 
-import database.DAO.DAOManager;
+import database.DAO.DaoManager;
 import database.DAO.IGCDataDAO;
 import fileUtil.FileDecoder;
-import model.igc.DataLogger;
+import model.igc.Flight;
 
 import java.io.File;
 
@@ -19,8 +19,8 @@ public class IGCFileLoader {
         File[] IGC_files = dirWithIGCLogFiles.listFiles();
 
         FileDecoder fileDecoder;
-        DataLogger dataLogger;
-        IGCDataDAO igc_dao = DAOManager.IGC_DAO;
+        Flight dataLogger;
+        IGCDataDAO igc_dao = DaoManager.IGC_SOURCE_DAO;
 
         for (File file : IGC_files) {
             fileDecoder = new FileDecoder(file.getAbsolutePath());

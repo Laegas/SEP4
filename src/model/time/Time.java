@@ -12,6 +12,10 @@ public class Time {
         this.second=second;
     }
 
+    public Time(java.sql.Time time) {
+        this(time.getHours(), time.getMinutes(), time.getSeconds());
+    }
+
     public Time(int hour, int minute, int second)
     {
         this.hour= new Hour(hour);
