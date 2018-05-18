@@ -6,7 +6,7 @@ import model.geography.Longitude;
 import model.geography.Latitude;
 
 import java.util.ArrayList;
-
+//Adding this to retry push
 public class IGCdao implements IGCDataDAO {
     private DatabaseHelper<IGCDataDAO> icgHelper;
 
@@ -19,23 +19,25 @@ public class IGCdao implements IGCDataDAO {
     public void insertDataLogger(DataLogger logger)
     {
         String d = logger.getDate().toString();
-        icgHelper.executeUpdate("INSERT INTO Data_Logger (id, gliderRegNo, flightDate) " +
-                "VALUES (data_Logger_ID.NEXTVAL, ?, to_Date(?, \'yyyy/mm/dd\'))",
-                logger.getGliderID(), d);
+        int datalogID = new DatabaseHelper<Integer>().mapSingle(rs -> rs.getInt(1), "Select data_Logger_ID.nextval from dual");
+        icgHelper.executeUpdate("INSERT INTO Data_Logger (id, glider_RegNo, flight_Date) " +
+                "VALUES (?, ?, to_Date(?, \'yy/mm/dd\'))",
+                datalogID, logger.getGliderID(), d);
 
         ArrayList<DataPoint> points = logger.getDatalog();
-
+        String satCover = "";
+        String tsmp = "";
         for(int i=0; i<points.size(); i++)
         {
              DataPoint point = points.get(i);
-             String tsmp = d + " " + point.getTime().toString();
+             satCover = "" + point.getSataliteCoverage();
+             tsmp =  d + " " + point.getTime().toString();
             icgHelper.executeUpdate("INSERT INTO IGC_Source_Data " +
-                            "(id, timeOfLog, latitude, longitude, " +
-                            "SATELITECOVERAGE, pressureAltitude, GPSAltitude, FLIGTHID) " +
-                            "VALUES (IGC_Source_Data_ID.nextVal, to_Timestamp(?, \'YYYY/MM/DD HH:MI:SS\'), ?, ?, ?, ?, ?, data_Logger_ID.CURRVAL)",
+                            "(id, time_Of_Log, LATITUDE, LONGITUDE, satelite_Coverage, pressure_Altitude, GPS_Altitude, fligth_ID) " +
+                            "VALUES (IGC_Source_Data_ID.NEXTVAL, to_Timestamp(?, \'YY/MM/DD HH24:MI:SS\'), ?, ?, ?, ?, ?, ?)",
                      tsmp, point.getLatitude().toDatabase(),
-                    point.getLongitude().toDatabase(), point.getSataliteCoverage(),
-                    point.getPressureAltitude(), point.getGPSAltitude());
+                    point.getLongitude().toDatabase(), satCover,
+                    point.getPressureAltitude(), point.getGPSAltitude(), datalogID);
         }
     };
 }

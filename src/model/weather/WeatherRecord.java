@@ -1,8 +1,6 @@
 package model.weather;
 
-import model.time.Day;
-import model.time.Month;
-import model.time.Year;
+import model.time.*;
 
 /**
  * Created by kenneth on 17/05/2018.
@@ -16,9 +14,31 @@ public class WeatherRecord {
     Day day;
     Month month;
     Year year;
-    //todo add an hour and minute object
+    Hour hour;
+    Minute minute;
 
-    public WeatherRecord(ICAOAirportCode airportCode, Wind wind, VaryingWindDirection varyingWindDirection, DegreeCelcius temperature, DegreeCelcius dewPoint, Day day, Month month, Year year) {
+
+    public WeatherRecord() {
+    }
+
+    public Hour getHour() {
+        return hour;
+    }
+
+    public void setHour(Hour hour) {
+        this.hour = hour;
+    }
+
+    public Minute getMinute() {
+        return minute;
+    }
+
+    public void setMinute(Minute minute) {
+        this.minute = minute;
+    }
+
+    public WeatherRecord(ICAOAirportCode airportCode, Wind wind, VaryingWindDirection varyingWindDirection, DegreeCelcius temperature, DegreeCelcius dewPoint, Day day, Month month, Year year, Hour hour, Minute minute) {
+
         this.airportCode = airportCode;
         this.wind = wind;
         this.varyingWindDirection = varyingWindDirection;
@@ -27,6 +47,8 @@ public class WeatherRecord {
         this.day = day;
         this.month = month;
         this.year = year;
+        this.hour = hour;
+        this.minute = minute;
     }
 
     public ICAOAirportCode getAirportCode() {
@@ -69,7 +91,7 @@ public class WeatherRecord {
         this.dewPoint = dewPoint;
     }
 
-    public Day getDay() {
+    public Day getDayOfMonth() {
         return day;
     }
 

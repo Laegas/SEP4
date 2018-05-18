@@ -7,7 +7,6 @@ BEGIN
     RAISE;
   END IF;
 END;
-/
 
 BEGIN
   EXECUTE IMMEDIATE 'drop sequence data_Logger_ID';
@@ -18,38 +17,38 @@ EXCEPTION
     RAISE;
   END IF;
 END;
-/
+
 
 create sequence data_Logger_ID
   start with 1
   increment by 1
   cache 100
-  nomaxvalue
+  nomaxvalue;
 
 
 create sequence IGC_Source_Data_ID
   start with 1
   increment by 1
   cache 100
-  nomaxvalue
+  nomaxvalue;
 
 create table Data_Logger
 (
     id int primary key,
-    gliderRegNo varchar(10),
-    flightDate date
-)
+    glider_RegNo varchar(10),
+    flight_Date date
+);
 
 create table IGC_Source_Data
 (
    id int primary key,
-   timeOfLog timestamp,
-   latitude varchar(7),
-   longitude varchar(8),
-   sateliteCoverage char(1),
-   pressureAltitude int,
-   GPSAltitude int,
-   fligthID references Data_Logger(id)
-)
+   time_Of_Log timestamp,
+   latitude varchar(8),
+   longitude varchar(7),
+   satelite_Coverage char(1),
+   pressure_Altitude int,
+   GPS_Altitude int,
+   fligth_ID references Data_Logger(id)
+);
 
-COMMIT ;
+COMMIT;

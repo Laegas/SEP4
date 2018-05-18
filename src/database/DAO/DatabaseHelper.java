@@ -1,5 +1,7 @@
 package database.DAO;
 
+import config.DatabaseConfig;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,8 +24,8 @@ public class DatabaseHelper<T> {
     public static Connection getConnection() throws SQLException
     {
         return DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:ORCL",
-                "NIC", "teentitans1sasu");
+                DatabaseConfig.CONNECTION_STRING,
+                DatabaseConfig.USERNAME, DatabaseConfig.PASSWORD);
     }
 
     private PreparedStatement prepare(Connection connection, String sql,
@@ -39,7 +41,7 @@ public class DatabaseHelper<T> {
 
     public int executeUpdate(String sql, Object... parameters)
     {
-        try (Connection connection = getConnection())
+        try
         {
             PreparedStatement stat = prepare(connection, sql, parameters);
             return stat.executeUpdate();
@@ -53,7 +55,7 @@ public class DatabaseHelper<T> {
 
     public T mapSingle(DataMapper<T> mapper, String sql, Object... parameters)
     {
-        try (Connection connection = getConnection())
+        try
         {
             PreparedStatement stat = prepare(connection, sql, parameters);
             ResultSet rs = stat.executeQuery();
