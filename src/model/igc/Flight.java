@@ -17,7 +17,11 @@ public class Flight {
 		this.flight_id = flight_id;
 	}
 
-	public int getFlight_id() {
+    public Flight(Date date) {
+        this.date = date;
+    }
+
+    public int getFlight_id() {
 		return flight_id;
 	}
 

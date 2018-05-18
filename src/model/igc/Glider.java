@@ -12,6 +12,10 @@ public class Glider {
         this.glider_no = glider_no;
     }
 
+    public Glider(String glider_no) {
+        this.glider_no = glider_no;
+    }
+
     public int getGlider_id() {
         return glider_id;
     }

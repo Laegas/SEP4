@@ -9,6 +9,7 @@ import model.igc.Flight;
 import model.igc.DataPoint;
 import model.geography.Latitude;
 import model.geography.Longitude;
+import model.igc.Glider;
 import model.time.Time;
 import model.time.Date;
 
@@ -66,7 +67,7 @@ public class FileDecoder {
 			}
 			else if(container.startsWith("HFGIDGLIDERID")) // Glider ID
 			{
-				logger.setGliderID(container.substring(14));
+				logger.setGlider(new Glider(container.substring(14)));
 			}
 			else if (container.startsWith("HFDTE"))//  Date information
 			{
