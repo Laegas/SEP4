@@ -4,16 +4,10 @@ public class Second {
     private double second;
 
 
-    public Second(double decimal)//constructor takes a decimal of a minute
+    public Second(double second)//constructor takes a decimal of a minute
     {
-      setSecondWithDecimal(decimal);
+      this.second = second;
     }
-
-    public Second(int second)//constructor takes a second as argument
-    {
-        this.second = (double) second;
-    }
-
 
     public void setSecond(double second)//normal setter
     {

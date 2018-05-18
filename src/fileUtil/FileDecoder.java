@@ -48,17 +48,15 @@ public class FileDecoder {
 				
 				int latitudeDegree = Integer.parseInt(container.substring(7,9));
 				int latitudeMinute = Integer.parseInt(container.substring(9,11));
-				int latitudeSeconds = Integer.parseInt(container.substring(11,14));
-				double latitudeDecimals = latitudeSeconds*60/1000;
-				Latitude latitude = new Latitude(latitudeDegree,latitudeMinute,latitudeDecimals);
-				
+				int latitudeDecimals = Integer.parseInt(container.substring(11,14));
+				double latitudeSeconds =  (double)latitudeDecimals*60/1000;
+				Latitude latitude = new Latitude(latitudeDegree,latitudeMinute,latitudeSeconds);
+
 				int longitudeDegree = Integer.parseInt(container.substring(15,18));
 				int longitudeMinute = Integer.parseInt(container.substring(18,20));
-				int longitudeSeconds = Integer.parseInt(container.substring(20,23));
-                int longitudeDecimals = longitudeSeconds*60/1000;
-                Longitude longitude = new Longitude(longitudeDegree,longitudeMinute,longitudeDecimals);
-				
-				
+				int longitudeDecimals = Integer.parseInt(container.substring(20,23));
+				double longitudeSeconds = (double) longitudeDecimals*60/1000;
+                Longitude longitude = new Longitude(longitudeDegree,longitudeMinute,longitudeSeconds);
 				
 				char satelliteCoverage = container.toCharArray()[24];
 				int pressureAltitude = Integer.parseInt(container.substring(25,30));

@@ -1,9 +1,7 @@
 package launchable;
 
 import database.DAO.DAOManager;
-import database.DAO.DaoManager;
 import database.DAO.IGCDataDAO;
-import database.DAO.IGCdao;
 import fileUtil.FileDecoder;
 import model.igc.DataLogger;
 
@@ -27,8 +25,7 @@ public class IGCFileLoader {
         for (File file : IGC_files) {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             dataLogger = fileDecoder.readFile();
-
-           igc_dao.insertDataLogger(dataLogger);
+            igc_dao.insertDataLogger(dataLogger);
         }
 
     }
