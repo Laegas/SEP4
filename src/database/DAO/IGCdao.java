@@ -30,7 +30,6 @@ public class IGCdao implements IGCDataDAO {
             stmt.setString(2, date);
             stmt.execute();
             conn.commit();
-asdasdasd
             ArrayList<DataPoint> points = logger.getDatalog();
             String tsmp = "";
             for (DataPoint point : points) {
