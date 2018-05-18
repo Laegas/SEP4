@@ -27,6 +27,7 @@ public class IGCdao implements IGCDataDAO {
             stmt.setString(1, logger.getGliderID());
             stmt.setString(2, date);
             stmt.execute();
+            conn.commit();
 
             ArrayList<DataPoint> points = logger.getDatalog();
             String tsmp = "";
@@ -43,8 +44,9 @@ public class IGCdao implements IGCDataDAO {
                 stmt.setInt(5, point.getPressureAltitude());
                 stmt.setInt(6, point.getGPSAltitude());
                 stmt.execute();
+                conn.commit();
+
             }
-            conn.commit();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
