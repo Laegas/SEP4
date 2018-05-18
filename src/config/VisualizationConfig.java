@@ -1,4 +1,4 @@
-package visualization;
+package config;
 
 public class VisualizationConfig {
     public static final double LONGITUDE_START = 8;         // 8°

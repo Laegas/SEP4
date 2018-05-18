@@ -1,9 +1,9 @@
 package launchable;
 
+import database.DAO.DAOManager;
 import database.DAO.IGCDataDAO;
-import database.DAO.IGCSourceDao;
 import fileUtil.FileDecoder;
-import model.igc.Flight;
+import model.igc.DataLogger;
 
 import java.io.File;
 
@@ -16,20 +16,17 @@ public class IGCFileLoader {
 
     public static void main(String[] args) {
 
-        //getting all files in the directory
-
         File[] IGC_files = dirWithIGCLogFiles.listFiles();
 
         FileDecoder fileDecoder;
-        Flight flight;
-//        IGCDataDAO igc_dao = DaoManager.IGC_DAO; right approach TODO
-        IGCDataDAO igc_dao = new IGCSourceDao() ; // bad approach
-
+        DataLogger dataLogger;
+        IGCDataDAO igc_dao = DAOManager.IGC_DAO;
+        if(IGC_files.length > 0)
         for (File file : IGC_files) {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
-            flight = fileDecoder.readFile();
+            dataLogger = fileDecoder.readFile();
 
-            igc_dao.insertDataLogger(flight);
+            igc_dao.insertDataLogger(dataLogger);
 
         }
 
