@@ -1,0 +1,17 @@
+
+BEGIN
+  EXECUTE IMMEDIATE 'glider_surr_key';
+EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -2289 THEN
+    RAISE;
+  END IF;
+END;
+
+create SEQUENCE glider_surr_key
+  START WITH 1
+  INCREMENT BY 1
+  CACHE 100
+  NOMAXVALUE
+;
+

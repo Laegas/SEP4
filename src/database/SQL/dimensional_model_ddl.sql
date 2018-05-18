@@ -22,7 +22,6 @@ create table D_GLIDER (
 
 create table D_FLIGHT(
   surr_key_flight int PRIMARY KEY,
-  start_time char(6),
   start_date char(8)
 );
 
