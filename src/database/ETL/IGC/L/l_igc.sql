@@ -57,45 +57,6 @@ insert into F_IGC_LOG (
     where igc_id not IN (select SURR_KEY_LOG from F_IGC_LOG)
 );
 
-BEGIN
 
-
-
-
-END;
-
-
-
-
-
-
-
-
-
-
-insert into F_IGC_LOG (
-    SURR_KEY_LOG,
-    SURR_KEY_FLIGHT,
-    SURR_KEY_GLIDER,
-    TIME,
-    LAT_NORTH,
-    LONG_EAST,
-    PRESS_ALTITUDE,
-    GPS_ALTITUDE,
-    GPS_OK
-);
-
-insert into D_FLIGHT(
-    SURR_KEY_FLIGHT,
-    START_TIME,
-    START_DATE
-);
-
-
-
-
-
--- select column_name || ', ' from user_tab_cols where table_name like '%FULLY_EXTRACTED_IGC%';
--- select column_name || ', ' from user_tab_cols where table_name like '%DATA_LOGGER%';
 
 
