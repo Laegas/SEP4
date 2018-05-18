@@ -48,7 +48,7 @@ create table IGC_Source_Data
    satelite_Coverage char(1),
    pressure_Altitude int,
    GPS_Altitude int,
-   fligth_ID references Data_Logger(id)
+   flight_ID references Data_Logger(id)
 );
 
 COMMIT;
