@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import model.igc.DataLogger;
+import model.igc.Flight;
 import model.igc.DataPoint;
 import model.geography.Latitude;
 import model.geography.Longitude;
@@ -26,10 +26,10 @@ public class FileDecoder {
 		}
 	}
 	
-	public DataLogger readFile()
+	public Flight readFile()
 	{
 		ArrayList<DataPoint> points = new ArrayList<>();
-		DataLogger logger = null;
+		Flight logger = null;
 		
 		
 		try {
@@ -48,17 +48,15 @@ public class FileDecoder {
 				
 				int latitudeDegree = Integer.parseInt(container.substring(7,9));
 				int latitudeMinute = Integer.parseInt(container.substring(9,11));
-				int latitudeSeconds = Integer.parseInt(container.substring(11,14));
-				double latitudeDecimals = latitudeSeconds*60/1000;
-				Latitude latitude = new Latitude(latitudeDegree,latitudeMinute,latitudeDecimals);
-				
+				int latitudeDecimals = Integer.parseInt(container.substring(11,14));
+				double latitudeSeconds =  (double)latitudeDecimals*60/1000;
+				Latitude latitude = new Latitude(latitudeDegree,latitudeMinute,latitudeSeconds);
+
 				int longitudeDegree = Integer.parseInt(container.substring(15,18));
 				int longitudeMinute = Integer.parseInt(container.substring(18,20));
-				int longitudeSeconds = Integer.parseInt(container.substring(20,23));
-                int longitudeDecimals = longitudeSeconds*60/1000;
-                Longitude longitude = new Longitude(longitudeDegree,longitudeMinute,longitudeDecimals);
-				
-				
+				int longitudeDecimals = Integer.parseInt(container.substring(20,23));
+				double longitudeSeconds = (double) longitudeDecimals*60/1000;
+                Longitude longitude = new Longitude(longitudeDegree,longitudeMinute,longitudeSeconds);
 				
 				char satelliteCoverage = container.toCharArray()[24];
 				int pressureAltitude = Integer.parseInt(container.substring(25,30));
@@ -72,7 +70,7 @@ public class FileDecoder {
 			}
 			else if (container.startsWith("HFDTE"))//  Date information
 			{
-				logger = new DataLogger(new Date(Integer.parseInt(container.substring(5, 7)),Integer.parseInt(container.substring(7, 9)),Integer.parseInt(container.substring(9, 11))));
+				logger = new Flight(new Date(Integer.parseInt(container.substring(5, 7)),Integer.parseInt(container.substring(7, 9)),Integer.parseInt(container.substring(9, 11))));
 			}
 			
 		}
@@ -83,5 +81,12 @@ public class FileDecoder {
 	public void setFile(String filename)
 	{
 		file = new File(filename);
+		try {
+			sc = new Scanner(file);
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

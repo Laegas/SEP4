@@ -2,20 +2,14 @@ package model.geography;
 
 import model.time.Minute;
 
+import java.text.DecimalFormat;
+
 import static config.VisualizationConfig.*;
 
 public class Latitude {
 	private Degree degree;
 	private Minute minute;
 	private Second second;
-	
-	public Latitude(int degree, int minute, int second)
-	{
-
-		this.second= new Second(second);
-		this.minute= new Minute(minute);
-		this.degree= new Degree(degree);
-	}
 
 	public Latitude(int degree, int minute, double decimal)
 	{
@@ -51,14 +45,20 @@ public class Latitude {
 	public String toDatabase()
 	{
 		String t = "";
-		t += degree.getDegree() + "" + minute.getMinute() + second.getSecondAsDecimal();
+		int decimal = (int) (second.getSecondAsDecimal()*1000);
+
+		String degree = String.format("%02d", getDegree());
+		String minute = String.format("%02d", getMinute());
+		String decimalString = String.format("%03d", decimal);
+		t+=degree+minute+decimalString;
 		return t;
 	}
 
 	public String toString()
 	{
 		String t = "";
-		t+= degree.getDegree()+""+minute.getMinute()+second.getSecondAsDecimal();
+		DecimalFormat formatter = new DecimalFormat("#0.000");
+		t += (degree.getDegree() + "" + minute.getMinute() +""+ formatter.format(second.getSecondAsDecimal()));
 		return t;
 	}
 	public static String convertToLatitude(int y) {
