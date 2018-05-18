@@ -44,6 +44,7 @@ public class IGCdao implements IGCDataDAO {
                 stmt.setInt(5, point.getPressureAltitude());
                 stmt.setInt(6, point.getGPSAltitude());
                 stmt.execute();
+                stmt.close();
                 conn.commit();
 
             }
