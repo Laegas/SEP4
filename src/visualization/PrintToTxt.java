@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static visualization.VisualizationConfig.*;
+import static config.VisualizationConfig.*;
 
 /**
  * Created by kryst on 5/16/2018.

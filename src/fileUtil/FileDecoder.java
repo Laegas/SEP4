@@ -74,13 +74,9 @@ public class FileDecoder {
 			{
 				logger = new DataLogger(new Date(Integer.parseInt(container.substring(5, 7)),Integer.parseInt(container.substring(7, 9)),Integer.parseInt(container.substring(9, 11))));
 			}
-			else if(container.startsWith("LMCU::ENDINFO")) // When DataLogger instance is done
-			{
-				logger.setDatalog(points);
-				return logger;
-			}
 			
 		}
+		logger.setDatalog(points);
 		return logger;
 	}
 	

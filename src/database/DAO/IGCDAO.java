@@ -10,11 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 //Adding this to retry push
-public class IGCdao implements IGCDataDAO {
+public class IGCDAO implements IGCDataDAO {
 
     private Connection conn;
 
-    public IGCdao()
+    IGCDAO()
     {
         conn = DatabaseHelper.getInstance().getConnection();
     }
@@ -32,14 +32,12 @@ public class IGCdao implements IGCDataDAO {
             conn.commit();
 
             ArrayList<DataPoint> points = logger.getDatalog();
-            String tsmp = "";
             for (DataPoint point : points) {
-                tsmp = date + " " + point.getTime().toString();
                 stmt = conn.prepareStatement("INSERT INTO IGC_Source_Data (id, time_Of_Log, LATITUDE, LONGITUDE," +
-                        " satelite_Coverage, pressure_Altitude, GPS_Altitude, fligth_ID) " +
+                        " satelite_Coverage, pressure_Altitude, GPS_Altitude, flight_ID) " +
                         "VALUES (IGC_Source_Data_ID.NEXTVAL, to_Timestamp(?, \'YY/MM/DD HH24:MI:SS\'), ?, ?, ?, ?, ?," +
                         " data_Logger_ID.currval)");
-                stmt.setString(1, tsmp);
+                stmt.setString(1, date + " " + point.getTime().toString());
                 stmt.setString(2, point.getLatitude().toDatabase());
                 stmt.setString(3, point.getLongitude().toDatabase());
                 stmt.setString(4, point.getSataliteCoverage() + "");
