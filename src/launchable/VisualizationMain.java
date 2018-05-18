@@ -4,7 +4,7 @@ import visualization.InvalidGridDimensionException;
 import visualization.PrintToExcelSXSSF;
 import visualization.PrintToTxt;
 
-import static visualization.VisualizationConfig.*;
+import static config.VisualizationConfig.*;
 
 public class VisualizationMain {
     public static void main(String[] args) {

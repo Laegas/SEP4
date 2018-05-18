@@ -2,7 +2,7 @@ package model.geography;
 
 import model.time.Minute;
 
-import static visualization.VisualizationConfig.*;
+import static config.VisualizationConfig.*;
 
 public class Latitude {
 	private Degree degree;
