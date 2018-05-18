@@ -12,6 +12,6 @@ public class TestIGCDimensionDao {
     public static void main(String[] args) {
         List<Flight> flights = DaoManager.IGC_DIMENSIONAL_DAO.getAllFlights();
         System.out.println(flights.size());
-
+        System.out.println(flights.get(0).getDatalog().size());
     }
 }

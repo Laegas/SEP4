@@ -17,7 +17,7 @@ create table fully_extracted_igc as
   igc.TIME_OF_LOG,
   igc.LATITUDE,
   igc.LONGITUDE,
-  igc.SATELITE_COVERAGE,
+  igc.SATELLITE_COVERAGE,
   igc.PRESSURE_ALTITUDE,
   igc.GPS_ALTITUDE,
   igc.FLIGHt_ID,

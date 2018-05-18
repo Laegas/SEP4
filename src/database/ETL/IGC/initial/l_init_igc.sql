@@ -1,6 +1,6 @@
 
 BEGIN
-  EXECUTE IMMEDIATE 'glider_surr_key';
+  EXECUTE IMMEDIATE 'drop sequence glider_surr_key';
 EXCEPTION
   WHEN OTHERS THEN
   IF SQLCODE != -2289 THEN
