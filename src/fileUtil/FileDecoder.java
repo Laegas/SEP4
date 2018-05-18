@@ -15,8 +15,7 @@ import model.time.Date;
 public class FileDecoder {
 	private Scanner sc;
 	private File file;
-	public static final String FILENAME_DIRECTORY = "D:\\VIA\\VIA lectures+presentations\\4th Semester\\SEP4\\SampleIGCFile.igc";
-	
+
 	public FileDecoder(String filename)
 	{
 		this.file= new File(filename);
@@ -38,9 +37,8 @@ public class FileDecoder {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		String container = "";
 		while (sc.hasNextLine()) {
-			container = sc.nextLine();
+			String container = sc.nextLine();
 			if (container.startsWith("B"))// DataPoint instance
 			{
 				String hour = container.substring(1,3);
@@ -76,13 +74,9 @@ public class FileDecoder {
 			{
 				logger = new DataLogger(new Date(Integer.parseInt(container.substring(5, 7)),Integer.parseInt(container.substring(7, 9)),Integer.parseInt(container.substring(9, 11))));
 			}
-			else if(container.startsWith("LMCU::ENDINFO")) // When DataLogger instance is done
-			{
-				logger.setDatalog(points);
-				return logger;
-			}
 			
 		}
+		logger.setDatalog(points);
 		return logger;
 	}
 	

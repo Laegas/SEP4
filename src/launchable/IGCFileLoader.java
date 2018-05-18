@@ -30,7 +30,7 @@ public class IGCFileLoader {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             dataLogger = fileDecoder.readFile();
 
-            igc_dao.insertDataLogger(dataLogger); // is there commit in the dao
+            igc_dao.insertDataLogger(dataLogger);
 
         }
 

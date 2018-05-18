@@ -2,6 +2,8 @@ package database.DAO;
 
 import model.igc.DataLogger;
 import model.igc.DataPoint;
+import model.time.Date;
+import model.weather.WeatherRecord;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,6 +50,42 @@ public class IGCdao implements IGCDataDAO {
                 conn.commit();
 
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void insertWeatherRecord(WeatherRecord record) {
+        try {
+
+            String ICAO_airport_code = record.getAirportCode().getICAOCode();
+            int windSpeed = record.getWind().getWindSpeed().getKonts();
+            int winddirection = record.getWind().getWindDirection().getDegree().getDegree();
+            int windDirectionFrom = record.getVaryingWindDirection().getFrom().getDegree();
+            int windDirectionTo = record.getVaryingWindDirection().getTo().getDegree();
+            double temperature = record.getTemperature().getTemperature();
+            double dewPoint = record.getDewPoint().getTemperature();
+            Date date = new Date(record.getDayOfMonth().getDayOfMonth(),record.getMonth().getMonthNumber(),record.getYear().getYear());
+            int minute = record.getMinute().getMinute();
+
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO weather_record (id, ICAO_airport_code, wind_direction, wind_speed, wind_direction_from, wind_direction_to" +
+                    ", temperature, dew_point, the_date, minute) VALUES (weather_record_id.nextval, ?, ?, ?, ?, ?, ?, ?, to_Date(?, \' yy/mm/dd\'), ? )");
+
+            stmt.setString(1, ICAO_airport_code);
+            stmt.setInt(2,windSpeed);
+            stmt.setInt(3,winddirection);
+            stmt.setInt(4,windDirectionFrom);
+            stmt.setInt(5,windDirectionTo);
+            stmt.setDouble(6,temperature);
+            stmt.setDouble(7,dewPoint);
+            stmt.setString(8,date.toString());
+            stmt.setInt(9,minute);
+            stmt.execute();
+            stmt.close();
+            conn.commit();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
