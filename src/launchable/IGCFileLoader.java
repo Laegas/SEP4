@@ -23,8 +23,7 @@ public class IGCFileLoader {
 
         FileDecoder fileDecoder;
         DataLogger dataLogger;
-//        IGCDataDAO igc_dao = DaoManager.IGC_DAO; right approach TODO
-        IGCDataDAO igc_dao = new IGCdao() ; // bad approach
+        IGCDataDAO igc_dao = DaoManager.IGC_DAO; // right approach TODO
 
         for (File file : IGC_files) {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
