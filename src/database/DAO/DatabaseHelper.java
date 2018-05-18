@@ -1,30 +1,40 @@
 package database.DAO;
 
+import config.DatabaseConfig;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DatabaseHelper<T> {
+public class DatabaseHelper {
+
+    private static DatabaseHelper instance;
     private static Connection connection;
 
-    static{
+    private DatabaseHelper()
+    {
         try {
-            connection = getConnection();
+            connection = DriverManager.getConnection(
+                    DatabaseConfig.CONNECTION_STRING,
+                    DatabaseConfig.USERNAME, DatabaseConfig.PASSWORD);
+            connection.setAutoCommit(false);
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public DatabaseHelper()
-    {
+    public static DatabaseHelper getInstance() {
+        if(instance == null)
+            instance = new DatabaseHelper();
+        return instance;
     }
 
-    public static Connection getConnection() throws SQLException
-    {
-        return DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:ORCL",
-                "NIC", "teentitans1sasu");
+    public Connection getConnection() {
+        return connection;
     }
+
+    /*
 
     private PreparedStatement prepare(Connection connection, String sql,
                                       Object[] parameters) throws SQLException
@@ -39,7 +49,7 @@ public class DatabaseHelper<T> {
 
     public int executeUpdate(String sql, Object... parameters)
     {
-        try (Connection connection = getConnection())
+        try
         {
             PreparedStatement stat = prepare(connection, sql, parameters);
             return stat.executeUpdate();
@@ -53,7 +63,7 @@ public class DatabaseHelper<T> {
 
     public T mapSingle(DataMapper<T> mapper, String sql, Object... parameters)
     {
-        try (Connection connection = getConnection())
+        try
         {
             PreparedStatement stat = prepare(connection, sql, parameters);
             ResultSet rs = stat.executeQuery();
@@ -76,8 +86,7 @@ public class DatabaseHelper<T> {
     public List<T> map(DataMapper<T> mapper, String sql, Object... parameters)
     {
         LinkedList<T> allRows = new LinkedList<>();
-        try (Connection connection = getConnection())
-        {
+        try {
             PreparedStatement stat = prepare(connection, sql, parameters);
             ResultSet rs = stat.executeQuery();
             while (rs.next())
@@ -92,5 +101,7 @@ public class DatabaseHelper<T> {
         }
         return allRows;
     }
+
+    */
 }
 
