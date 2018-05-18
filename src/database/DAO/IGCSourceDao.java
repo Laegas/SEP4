@@ -20,6 +20,7 @@ public class IGCSourceDao implements IGCDataDAO {
     }
 
     //data points are inserted within this method, immediately after inserting the data logger
+
     public void insertDataLogger(Flight logger)
     {
         try {

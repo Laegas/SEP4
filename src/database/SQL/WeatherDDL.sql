@@ -8,7 +8,7 @@ BEGIN
 END;
 
 BEGIN
-  EXECUTE IMMEDIATE 'drop weather_record_id';
+  EXECUTE IMMEDIATE 'drop sequence weather_record_id';
 EXCEPTION
   WHEN OTHERS THEN
   IF SQLCODE != -2289 THEN
