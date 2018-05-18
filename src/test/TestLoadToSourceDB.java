@@ -11,6 +11,6 @@ public class TestLoadToSourceDB {
         FileDecoder file = new FileDecoder(FileConfig.PROJECT_PATH + FileConfig.IGC_FILE);
         Flight logger = file.readFile();
 
-        DaoManager.IGC_DAO.insertDataLogger(logger);
+        DaoManager.IGC_SOURCE_DAO.insertDataLogger(logger);
     }
 }
