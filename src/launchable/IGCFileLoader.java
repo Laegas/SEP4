@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class IGCFileLoader {
 
-    private static final File dirWithIGCLogFiles = new File("C:\\IGC_files");
+    private static final File dirWithIGCLogFiles = new File("D:\\igc");
 
     public static void main(String[] args) {
 
@@ -27,8 +27,7 @@ public class IGCFileLoader {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             dataLogger = fileDecoder.readFile();
 
-            igc_dao.insertDataLogger(dataLogger);
-
+           igc_dao.insertDataLogger(dataLogger);
         }
 
     }

@@ -43,12 +43,12 @@ create table IGC_Source_Data
 (
    id int primary key,
    time_Of_Log timestamp,
-   latitude varchar(8),
-   longitude varchar(7),
-   satelite_Coverage char(1),
+   latitude varchar(9),
+   longitude varchar(10),
+   sattelite_Coverage char(1),
    pressure_Altitude int,
    GPS_Altitude int,
-   fligth_ID references Data_Logger(id)
+   flight_ID references Data_Logger(id)
 );
 
 COMMIT;

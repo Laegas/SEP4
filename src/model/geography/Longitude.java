@@ -50,13 +50,13 @@ public class Longitude {
 	public String toDatabase()
 	{
 		String t = "";
-		t+= degree.getDegree()+""+minute.getMinute()+String.format("%.2f",second.getSecondAsDecimal());
+		t+= degree.getDegree()+""+minute.getMinute()+""+second.getSecondAsDecimal();
 		return t;
 	}
 	public String toString()
 	{
 		String t = "";
-		t+= degree.getDegree()+""+minute.getMinute()+second.getSecondAsDecimal();
+		t+= degree.getDegree()+""+minute.getMinute()+""+second.getSecondAsDecimal();
 		return t;
 	}
 

@@ -15,11 +15,13 @@ EXCEPTION
     RAISE;
   END IF;
 END;
+
+
 create sequence weather_record_id
   start with 1
   increment by 1
   cache 100
-  nomaxvalue;
+  nomaxvalue
 
 create table weather_record
 (
@@ -32,5 +34,6 @@ wind_direction_to int,
 temperature number(3,2),
 dew_point number(3,2),
 the_date date,
+hour int,
 minute int
 )

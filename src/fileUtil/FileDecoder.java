@@ -83,5 +83,12 @@ public class FileDecoder {
 	public void setFile(String filename)
 	{
 		file = new File(filename);
+		try {
+			sc = new Scanner(file);
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

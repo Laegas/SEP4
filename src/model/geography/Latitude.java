@@ -51,14 +51,14 @@ public class Latitude {
 	public String toDatabase()
 	{
 		String t = "";
-		t += degree.getDegree() + "" + minute.getMinute() + second.getSecondAsDecimal();
+		t += degree.getDegree() + "" + minute.getMinute() +""+ second.getSecondAsDecimal();
 		return t;
 	}
 
 	public String toString()
 	{
 		String t = "";
-		t+= degree.getDegree()+""+minute.getMinute()+second.getSecondAsDecimal();
+		t+= degree.getDegree()+""+minute.getMinute()+""+second.getSecondAsDecimal();
 		return t;
 	}
 	public static String convertToLatitude(int y) {
