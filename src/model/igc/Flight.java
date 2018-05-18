@@ -7,32 +7,47 @@ import java.util.List;
 public class Flight {
 	private List<DataPoint> datapoints;
 	private Date date;
-	private int flight_id;
+	private FlightID flightID;
 	private Glider glider;
 
 	public Flight(Date date, List<DataPoint> datalog, Glider glider, int flight_id) {
 		this.date = date;
 		this.datapoints = datalog;
 		this.glider = glider;
-		this.flight_id = flight_id;
+		this.flightID = new FlightID(flight_id);
+	}
+	public Flight(Date date)
+	{
+		this.date = date;
+		this.datapoints = new ArrayList<>();
+		this.glider=null;
+		this.flightID=null;
+	}
+	public Flight(Date date, List<DataPoint> datalog, Glider glider)
+	{
+		this.date = date;
+		this.datapoints = datalog;
+		this.glider = glider;
+		this.flightID=null;
 	}
 
 	public int getFlight_id() {
-		return flight_id;
+		return flightID.getFlightID();
 	}
 
 	public void setFlight_id(int flight_id) {
-		this.flight_id = flight_id;
+		this.flightID.setFlightID(flight_id);
 	}
 
 	public Flight(Date date, int flight_id)
 	{
 		this.date=date;
-		this.flight_id = flight_id;
+		this.flightID = new FlightID(flight_id);
 		this.glider = null;
 		this.datapoints = null;
 
 	}
+
 
 	@Override
 	public String toString() {
