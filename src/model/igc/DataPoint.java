@@ -13,11 +13,11 @@ public class DataPoint {
 	private int pressureAltitude;
 	private int GPSAltitude;
 	
-	public DataPoint( Time time, Longitude longitude, Latitude latitude, char sataliteCoverage, int pressureAltitude, int GPSAltitude) {
+	public DataPoint( Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude) {
 		this.time=time;
 		this.longitude=longitude;
 		this.latitude= latitude;
-		this.satelliteCoverage=sataliteCoverage;
+		this.satelliteCoverage=satelliteCoverage;
 		this.pressureAltitude=pressureAltitude;
 		this.GPSAltitude=GPSAltitude;
 	}
