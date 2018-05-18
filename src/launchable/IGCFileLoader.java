@@ -1,8 +1,7 @@
 package launchable;
 
-import database.DAO.DaoManager;
+import database.DAO.DAOManager;
 import database.DAO.IGCDataDAO;
-import database.DAO.IGCdao;
 import fileUtil.FileDecoder;
 import model.igc.DataLogger;
 
@@ -23,9 +22,8 @@ public class IGCFileLoader {
 
         FileDecoder fileDecoder;
         DataLogger dataLogger;
-//        IGCDataDAO igc_dao = DaoManager.IGC_DAO; right approach TODO
-        IGCDataDAO igc_dao = new IGCdao() ; // bad approach
-
+        IGCDataDAO igc_dao = DAOManager.IGC_DAO;
+        if(IGC_files.length > 0)
         for (File file : IGC_files) {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             dataLogger = fileDecoder.readFile();
