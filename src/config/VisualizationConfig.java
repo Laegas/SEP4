@@ -9,4 +9,5 @@ public class VisualizationConfig {
     public static final double WEST_TO_EAST_ARC = 0.25;     // 0°0'15''
     public static final int WIDTH = (int)((LONGITUDE_END - LONGITUDE_START) * 60 / WEST_TO_EAST_ARC);   // 720
     public static final int HEIGHT = (int)((LATITUDE_END - LATITUDE_START) * 60 / SOUTH_TO_NORTH_ARC);  // 360
+    public static final int CHUNKS = 1;
 }

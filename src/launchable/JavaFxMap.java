@@ -16,7 +16,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
 public class JavaFxMap extends Application {
     private Timeline locationUpdateTimeline;
 

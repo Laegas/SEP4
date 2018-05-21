@@ -61,6 +61,7 @@ public class Latitude {
 		t += (degree.getDegree() + "" + minute.getMinute() +""+ formatter.format(second.getSecondAsDecimal()));
 		return t;
 	}
+
 	public static String convertToLatitude(int y) {
 		if(y > HEIGHT || y < 0)
 			throw new IllegalArgumentException("Argument has to be from 0 to " + HEIGHT);
@@ -68,5 +69,11 @@ public class Latitude {
 		int minuteValue = (int)((LATITUDE_START % 1) * 60 + (y / (int)(1 / SOUTH_TO_NORTH_ARC))) % 60;
 		int secondValue = (y % (int)(1 / SOUTH_TO_NORTH_ARC)) * (60 / (int)(1 / SOUTH_TO_NORTH_ARC));
 		return degreeValue + "°" + minuteValue + "'" + secondValue + "''";
+	}
+
+	public static double convertToLatitudeDouble(int y) {
+		if(y > HEIGHT || y < 0)
+			throw new IllegalArgumentException("Argument has to be from 0 to " + HEIGHT);
+		return LATITUDE_END - ((double)y / HEIGHT) * (LATITUDE_END - LATITUDE_START);
 	}
 }
