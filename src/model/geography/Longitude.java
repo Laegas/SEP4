@@ -35,6 +35,8 @@ public class Longitude {
 		this.minute = new Minute(minute);
 	}
 
+	public double getSecond() { return second.getSecond(); }
+
 	public double getDecimal() {
 		return second.getSecondAsDecimal();
 	}
@@ -77,8 +79,16 @@ public class Longitude {
 		return ((double)x / WIDTH) * (LONGITUDE_END - LONGITUDE_START) + LONGITUDE_START;
 	}
 
-	public int getGridIndex() {
-		throw new NotImplementedException();
+	public int getGridIndex() throws InvalidCoordinatesException {
+		int index = 0;
+		index += (int)(getDegree() - (int)(LONGITUDE_START)) * (int)(WIDTH / (LONGITUDE_END - LONGITUDE_START));
+		index += (int)(getMinute() - (LONGITUDE_START % 1 * 60.0)) * (int)(WIDTH / (LONGITUDE_END - LONGITUDE_START)
+				/ 60.0);
+		index += (int)(getSecond()) / (int)(60 * WEST_TO_EAST_ARC);
+		if(index < 0 || index > WIDTH)
+			throw new InvalidCoordinatesException("Latitude is " + getDegree() + "°" + getMinute() + "'" + getSecond
+					() + "'' and expected between " + LONGITUDE_START + " and " + LONGITUDE_END);
+		return index;
 	}
 
 }
