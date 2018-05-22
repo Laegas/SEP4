@@ -10,7 +10,7 @@ END;
 
 create table FULLY_EXTRACTED_WEATHER as
   (select
-  ID as weather_id,
+  W_ID as weather_id,
   ICAO_airport_code,
   wind_direction,
   wind_speed,
@@ -18,7 +18,7 @@ create table FULLY_EXTRACTED_WEATHER as
   wind_direction_to,
   temperature,
   dew_point,
-  the_date
+  the_date,
   HOUR,
   MINUTE
 from WEATHER_RECORD)

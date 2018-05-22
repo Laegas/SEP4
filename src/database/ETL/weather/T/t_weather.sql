@@ -1,8 +1,4 @@
--- select column_name || ', ' from user_tab_columns where table_name = 'WEATHER_RECORD';
-
-TRUNCATE table FULLY_EXTRACTED_WEATHER;
-
-insert into FULLY_EXTRACTED_WEATHER (
+insert into TRANSFORM_WEATHER_HOUR_MINUTE_TO_TIME (
         WEATHER_ID,
         ICAO_AIRPORT_CODE,
         WIND_DIRECTION,
@@ -12,12 +8,11 @@ insert into FULLY_EXTRACTED_WEATHER (
         TEMPERATURE,
         DEW_POINT,
         THE_DATE,
-        HOUR,
-        MINUTE
+        TIME
   )
   (
-  SELECT
-        W_ID,
+    SELECT
+        WEATHER_ID,
         ICAO_AIRPORT_CODE,
         WIND_DIRECTION,
         WIND_SPEED,
@@ -26,9 +21,6 @@ insert into FULLY_EXTRACTED_WEATHER (
         TEMPERATURE,
         DEW_POINT,
         THE_DATE,
-        HOUR,
-        MINUTE
-   FROM WEATHER_RECORD
-      WHERE W_ID NOT IN (SELECT SURR_KEY_WEATHER
-                            FROM F_WEATHER_RECORD) --extract only new ones
+        to_Timestamp( (HOUR || ':' || MINUTE), 'HH24:MI')
+    FROM FULLY_EXTRACTED_WEATHER
   );

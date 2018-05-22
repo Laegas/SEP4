@@ -25,15 +25,15 @@ create sequence weather_record_id
 
 create table weather_record
 (
-id int,
-ICAO_airport_code varchar(4),
-wind_direction int,
-wind_speed int,
-wind_direction_from int,
-wind_direction_to int,
-temperature number(3,2),
-dew_point number(3,2),
-the_date date,
-hour int,
-minute int
+  w_id int,
+  ICAO_airport_code varchar(4),
+  wind_direction int,
+  wind_speed int,
+  wind_direction_from int,
+  wind_direction_to int,
+  temperature number(3,2),
+  dew_point number(3,2),
+  the_date date,
+  hour int,
+  minute int
 )
