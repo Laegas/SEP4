@@ -13,8 +13,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static config.VisualizationConfig.*;
 
@@ -35,7 +37,7 @@ public class GenerateJson {
             throw new InvalidGridDimensionException("Required dimensions: [" + HEIGHT + "][" + WIDTH + "]. Was [" +
                     grid.length + "][" + grid[0].length + "]");
 
-        DecimalFormat df = new DecimalFormat("#.######");
+        DecimalFormat df = new DecimalFormat("#.######", new DecimalFormatSymbols(Locale.US));
         List<String> lines = new ArrayList<>();
         lines.add("var json = [");
         int[][] chunkGrid = new int[HEIGHT / CHUNKS][WIDTH / CHUNKS];
