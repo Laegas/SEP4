@@ -69,4 +69,10 @@ public class Longitude {
 		int secondValue = (x % (int)(1 / WEST_TO_EAST_ARC)) * (60 / (int)(1 / WEST_TO_EAST_ARC));
 		return degreeValue + "°" + minuteValue + "'" + secondValue + "''";
 	}
+
+	public static double convertToLongitudeDouble(int x) {
+		if(x > WIDTH || x < 0)
+			throw new IllegalArgumentException("Argument has to be from 0 to " + WIDTH);
+		return ((double)x / WIDTH) * (LONGITUDE_END - LONGITUDE_START) + LONGITUDE_START;
+	}
 }

@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class IGCFileLoader {
 
-    private static final File dirWithIGCLogFiles = new File("D:\\igc");
+    private static final File dirWithIGCLogFiles = new File("C:\\igc");
 
     public static void main(String[] args) {
 
@@ -22,10 +22,14 @@ public class IGCFileLoader {
         Flight dataLogger;
         IGCDataDAO igc_dao = DaoManager.IGC_SOURCE_DAO;
 
+        System.out.println("loading #" + IGC_files.length + " files");
+        int counter = 1;
+
         for (File file : IGC_files) {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             dataLogger = fileDecoder.readFile();
             igc_dao.insertDataLogger(dataLogger);
+            System.out.println("finished loading file #" + counter++);
         }
 
     }

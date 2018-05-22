@@ -52,11 +52,11 @@ insert into F_IGC_LOG (
     LONGITUDE,
     PRESSURE_ALTITUDE,
     GPS_ALTITUDE,
-    SATELITE_COVERAGE
+    SATELLITE_COVERAGE
   from FULLY_EXTRACTED_IGC
     where igc_id not IN (select SURR_KEY_LOG from F_IGC_LOG)
 );
 
 
-
+COMMIT ;
 

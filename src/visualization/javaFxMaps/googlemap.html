@@ -1,12 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="map.js"></script>
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Copse" rel="stylesheet"> <!-- 400 -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
+    <script type="text/javascript"
+            src="http://maps.google.com/maps/api/js?key=AIzaSyANSqFCe5PzdJui9XgoSspFxAj2T5AbxIM&language=en"></script>
+    <script type="text/javascript" src="json.js"></script>
+    <script type="text/javascript" src="settings.js"></script>
+
+    <script>
+        function initialize() {
+            var latlng = new google.maps.LatLng(latitude, longitude );
+            var myOptions = {
+                zoom: zoom,
+                center: latlng,
+                navigationControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
+                clickableIcons: false,
+                backgroundColor: "#666970"
+            };
+
+            document.geocoder = new google.maps.Geocoder();
+
+            document.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+
+            for(var i = 0; i < json.length; i++) {
+                document.map.data.addGeoJson(json[i]);
+            }
+
+            document.map.data.setStyle(function(feature) {
+                var value = feature.getProperty('value');
+                var color = "rgba(255, 0, 0, " + (value / 10) + ")";
+                return {
+                    fillColor: color,
+                    strokeWeight: 0
+                }
+            });
+
+            document.map.data.addListener('mouseover', function(event) {
+                document.getElementById('info').className = "";
+                document.getElementById('info').textContent = event.feature.getProperty('value');
+            });
+
+            document.map.data.addListener('mouseout', function(event) {
+                document.getElementById('info').className = "transparent";
+            });
+
+            document.zoomIn = function zoomIn() {
+                var zoomLevel = document.map.getZoom();
+                if (zoomLevel <= 20) document.map.setZoom(zoomLevel + 1);
+            };
+
+            document.zoomOut = function zoomOut() {
+                var zoomLevel = document.map.getZoom();
+                if (zoomLevel > 0) document.map.setZoom(zoomLevel - 1);
+            };
+
+            document.setMapTypeRoad = function setMapTypeRoad() {
+                document.map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+            };
+            document.setMapTypeSatellite = function setMapTypeSatellite() {
+                document.map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+            };
+            document.setMapTypeHybrid = function setMapTypeHybrid() {
+                document.map.setMapTypeId(google.maps.MapTypeId.HYBRID);
+            };
+            document.setMapTypeTerrain = function setMapTypeTerrain() {
+                document.map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+            };
+
+            document.goToLocation = function goToLocation(searchString) {
+                document.geocoder.geocode( {'address': searchString}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        document.map.setCenter(results[0].geometry.location);
+                    } else {
+                        alert("Geocode was not successful for the following reason: " + status);
+                    }
+                });
+            };
+        }
+    </script>
 </head>
 <body onload="initialize()">
-<div id="map_canvas" style="width:100%; height:100%"></div>
+<div id="map_canvas"></div>
+<div id="info_wrapper">
+    <p id="info" class="transparent"></p>
+</div>
 </body>
 </html>
