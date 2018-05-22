@@ -23,7 +23,7 @@ public class TestThermalVerifier {
                     'c',10-i,10-i));
         }
 
-        IGCDataGroup group = new IGCDataGroup(points);
+        IGCDataGroup group = new IGCDataGroup(points, 1,1);
         System.out.println(victor.isThermalUsingGPSAltitude(group));
     }
 }
