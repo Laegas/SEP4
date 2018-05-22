@@ -16,10 +16,10 @@ public class OutputData {
 
     }
 
-    private void incrementNumberOfRegisteredThermal() {
+    public void incrementNumberOfRegisteredThermal() {
         numberOfRegisteredThermal++;
     }
-    private void incrementNumberOfRegisteredFlights() {
+    public void incrementNumberOfRegisteredFlights() {
         numberOfRegisteredFlights++;
     }
 
