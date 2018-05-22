@@ -79,7 +79,7 @@ public class Longitude {
 		return ((double)x / WIDTH) * (LONGITUDE_END - LONGITUDE_START) + LONGITUDE_START;
 	}
 
-	public int getGridIndex() throws InvalidCoordinatesException {
+	public int getGridIndex() {
 		int index = 0;
 		index += (int)(getDegree() - (int)(LONGITUDE_START)) * (int)(WIDTH / (LONGITUDE_END - LONGITUDE_START));
 		index += (int)(getMinute() - (LONGITUDE_START % 1 * 60.0)) * (int)(WIDTH / (LONGITUDE_END - LONGITUDE_START)

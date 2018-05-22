@@ -82,7 +82,7 @@ public class Latitude {
 		return LATITUDE_END - ((double)y / HEIGHT) * (LATITUDE_END - LATITUDE_START);
 	}
 
-	public int getGridIndex() throws InvalidCoordinatesException {
+	public int getGridIndex() {
 		int index = 0;
 		index += (getDegree() - (int)(LATITUDE_START)) * (int)(HEIGHT / (LATITUDE_END - LATITUDE_START));
 		index += (getMinute() - (int)(LATITUDE_START % 1 * 60)) * (int)(HEIGHT / (LATITUDE_END - LATITUDE_START) / 60);
