@@ -1,6 +1,7 @@
 package model.geography;
 
 import model.time.Minute;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.text.DecimalFormat;
 
@@ -75,5 +76,10 @@ public class Latitude {
 		if(y > HEIGHT || y < 0)
 			throw new IllegalArgumentException("Argument has to be from 0 to " + HEIGHT);
 		return LATITUDE_END - ((double)y / HEIGHT) * (LATITUDE_END - LATITUDE_START);
+	}
+
+
+	public int getGridIndex() {
+		throw new NotImplementedException();
 	}
 }

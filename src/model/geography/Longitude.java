@@ -1,6 +1,7 @@
 package model.geography;
 
 import model.time.Minute;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.text.DecimalFormat;
 
@@ -75,4 +76,9 @@ public class Longitude {
 			throw new IllegalArgumentException("Argument has to be from 0 to " + WIDTH);
 		return ((double)x / WIDTH) * (LONGITUDE_END - LONGITUDE_START) + LONGITUDE_START;
 	}
+
+	public int getGridIndex() {
+		throw new NotImplementedException();
+	}
+
 }
