@@ -35,28 +35,25 @@ public class ThermalVerifierImp implements ThermalVerifier  {
 
     private boolean checkGPS(DataPoint[] scope, int index)
     {
+        if(scope[(index+1)%10] ==null)
+            return false;
         int first = scope[(index+1)%10].getGPSAltitude();
         double sum = 0;
-        for(int i = (index+1)%10;i<scope.length;i = (i+1)%10)
+        for(int i = 0;i<scope.length;i++)
         {
-            if(scope[i]!=null)
-            {
-                sum+= scope[i].getGPSAltitude();
-
-            }
+                sum+= scope[(i+1+index)%10].getGPSAltitude();
         }
         return 0<(sum/10 - first);
     }
     private boolean checkPressure(DataPoint[] scope,int index)
     {
+        if(scope[(index+1)%10] ==null)
+            return false;
         int first = scope[(index+1)%10].getPressureAltitude();
         int sum = 0;
-        for(int i = (index+1)%10;i<scope.length;i = (i+1)%10)
+        for(int i = 0;i<scope.length;i++)
         {
-            if(scope[i]!=null)
-            {
-                sum+= scope[i].getPressureAltitude();
-            }
+            sum+= scope[(i+1+index)%10].getGPSAltitude();
         }
         return 0<(sum/10 - first);
     }
