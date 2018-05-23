@@ -34,7 +34,7 @@
             }
 
             document.map.data.setStyle(function(feature) {
-                var value = feature.getProperty('thermals');
+                var value = feature.getProperty('flights');
                 var color = "rgba(255, 0, 0, " + (value / 10) + ")";
                 return {
                     fillColor: color,

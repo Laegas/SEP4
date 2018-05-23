@@ -37,7 +37,8 @@ public class FeatureProperties {
      * @return true if feature properties are meaningful to show in visualization.
      */
     public boolean isMeaningful() {
-        return Math.random() > 0.9;
+        return numberOfRegisteredFlights > 0;
+//        return Math.random() > 0.9;
 //        return (numberOfRegisteredThermal > 0);
     }
 

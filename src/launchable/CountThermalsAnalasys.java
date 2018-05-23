@@ -57,9 +57,7 @@ public class CountThermalsAnalasys {
             }
 
             for (LocationPoint locationPoint : allFromFlight) {
-                System.out.println(locationPoint.getLatitude() + " " + locationPoint.getLongitude());
                 try {
-
                     outputData.registerFlightAtIndex(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex());
                 } catch (InvalidCoordinatesException e) {
 

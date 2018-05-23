@@ -11,6 +11,18 @@ public class OutputData implements Iterable<FeatureProperties>{
 
     FeatureProperties[][] featureProperties;
 
+    public int getMaxRegisteredFlightCount() {
+        int currentMax = -1;
+        for (int h = 0; h < featureProperties.length; h++) {
+            for (int w = 0; w < featureProperties[0].length; w++) {
+                if (featureProperties[h][w].getNumberOfRegisteredFlights() > currentMax) {
+                    currentMax = featureProperties[h][w].getNumberOfRegisteredFlights();
+                }
+            }
+        }
+        return currentMax;
+    }
+
     public OutputData() {
         this.featureProperties = new FeatureProperties[VisualizationConfig.HEIGHT][VisualizationConfig.WIDTH];
         // initialising all feature properties
