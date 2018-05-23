@@ -35,3 +35,4 @@ insert into FULLY_EXTRACTED_IGC (
                                     FROM D_FLIGHT) -- this makes sure that we only extract the new ones
 );
 
+COMMIT ;

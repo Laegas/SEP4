@@ -3,6 +3,7 @@ package launchable;
 import com.sun.xml.internal.bind.v2.TODO;
 import database.DAO.DaoManager;
 import database.DAO.IGCDimensionalDao;
+import model.geography.InvalidCoordinatesException;
 import model.geography.LocationPoint;
 import model.igc.DataPoint;
 import model.igc.Flight;
@@ -56,7 +57,13 @@ public class CountThermalsAnalasys {
             }
 
             for (LocationPoint locationPoint : allFromFlight) {
-                outputData.registerFlightAtIndex(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex());
+                System.out.println(locationPoint.getLatitude() + " " + locationPoint.getLongitude());
+                try {
+
+                    outputData.registerFlightAtIndex(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex());
+                } catch (InvalidCoordinatesException e) {
+
+                }
                 // registered all the visited grids for this flight
             }
 

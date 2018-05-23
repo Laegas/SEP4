@@ -5,4 +5,5 @@ public class FileConfig {
     public static final String IGC_FILE = "SEP4\\SampleIgcFile.igc";
     public static final String IGC_DIRECTORY_PATH = "src/resources/igc";
     public static final String METAR_DIRECTORY_PATH = "src/resources/weather";
+    public static final double LOAD_PERCENTAGE = 0.5;
 }
