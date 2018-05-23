@@ -32,6 +32,7 @@ public class ThermalFinderImp implements ThermalFinder  {
         return false;
     }
 
+
     private boolean checkGPS(DataPoint[] scope, int index)
     {
         if(scope[(index+1)%10] ==null)
