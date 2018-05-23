@@ -1,6 +1,6 @@
 package model.time;
 
-public class Hour {
+public class Hour implements Comparable<Hour>{
     private int hour;
     public Hour(int hour)
     {
@@ -18,4 +18,14 @@ public class Hour {
         return hour;
     }
 
+    @Override
+    public int compareTo(Hour o) {
+        if (this.hour > o.getHour()) {
+            return 1;
+        } else if (this.hour == o.getHour()) {
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 }

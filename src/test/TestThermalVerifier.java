@@ -5,14 +5,12 @@ import model.geography.Longitude;
 import model.igc.DataPoint;
 import model.outputData.IGCDataGroup;
 import model.time.Time;
-import util.thermal.ThermalVerifier;
-import util.thermal.ThermalVerifierImp;
 
 import java.util.ArrayList;
 
 public class TestThermalVerifier {
     public static void main(String[] args){
-        ThermalVerifier victor = new ThermalVerifierImp();
+//        ThermalVerifier victor = new ThermalVerifierImp();
 
 
         ArrayList<DataPoint> points = new ArrayList<>();
@@ -24,6 +22,6 @@ public class TestThermalVerifier {
         }
 
         IGCDataGroup group = new IGCDataGroup(points, 1,1);
-        System.out.println(victor.isThermalUsingGPSAltitude(group));
+//        System.out.println(victor.isThermalUsingGPSAltitude(group));
     }
 }
