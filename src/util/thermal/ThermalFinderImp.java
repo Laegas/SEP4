@@ -3,9 +3,9 @@ package util.thermal;
 import model.igc.DataPoint;
 import model.outputData.IGCDataGroup;
 
-public class ThermalVerifierImp implements ThermalVerifier  {
+public class ThermalFinderImp implements ThermalFinder  {
 
-    @Override
+
     public boolean isThermalUsingPressureAltitude(IGCDataGroup points) {
         if(points.getDataPoints().size()<10)
             return false;
@@ -19,7 +19,6 @@ public class ThermalVerifierImp implements ThermalVerifier  {
         return false;
     }
 
-    @Override
     public boolean isThermalUsingGPSAltitude(IGCDataGroup points) {
         if(points.getDataPoints().size()<10)
              return false;
