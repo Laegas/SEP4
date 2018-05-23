@@ -48,7 +48,7 @@ public class FileDecoder {
 					ICAOAirportCode airportCode = new ICAOAirportCode(l.substring(19, 23));
 
 
-					System.out.println(l.substring(19, 23));
+					System.out.println(l.substring(33, 37));
 				}
 			}
 		}
