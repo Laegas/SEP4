@@ -35,6 +35,10 @@ public class OutputData implements Iterable<FeatureProperties>{
         return new OutputDataIterator(this.featureProperties);
     }
 
+    public FeatureProperties[][] getFeatureProperties() {
+        return featureProperties;
+    }
+
     private class OutputDataIterator implements Iterator<FeatureProperties> {
         private FeatureProperties[][] featureProperties;
         private int height;

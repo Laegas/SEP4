@@ -1,0 +1,16 @@
+##########################################################
+# Query made at 05/23/2018 08:49:30 UTC
+# Time interval: from 05/11/2018 00:00  to 05/12/2018 23:59  UTC
+##########################################################
+
+##########################################################
+# EKST, Sydfyns Flyveplads (Denmark)
+# WMO index: 06124
+# Latitude 55-01N. Longitude 010-34E. Altitude 6 m.
+##########################################################
+
+# No METAR/SPECI reports frome EKST in database.
+
+# No short TAF reports from EKST in databse.
+
+# No large TAF reports from EKST in databse.

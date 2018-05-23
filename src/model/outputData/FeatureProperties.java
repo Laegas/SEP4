@@ -32,6 +32,15 @@ public class FeatureProperties {
     }
 
     /**
+     * Used for evaluating if a feature should be added to visualization.
+     *
+     * @return true if feature properties are meaningful to show in visualization.
+     */
+    public boolean isMeaningful() {
+        return (numberOfRegisteredThermal > 0);
+    }
+
+    /**
      * returns a number between 0 and 100
      * @return
      */
