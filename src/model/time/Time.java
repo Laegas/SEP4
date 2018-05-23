@@ -1,6 +1,6 @@
 package model.time;
 
-public class Time {
+public class Time implements Comparable<Time>{
     private Hour hour;
     private Minute minute;
     private Second second;
@@ -50,6 +50,31 @@ public class Time {
     public String toString()
     {
         return hour.getHour()+":"+minute.getMinute()+":"+second.getSecond();
+    }
+
+    @Override
+    public int compareTo(Time o) {
+        if (this.hour.compareTo(o.getHour()) > 0) {
+            return 1;
+        } else if (this.hour.compareTo(o.getHour()) < 0){
+            return -1;
+
+        } else if (this.hour.compareTo(o.getHour()) == 0) {
+            if (this.minute.compareTo(o.getMinute()) > 0) {
+                return 1;
+            } else if (this.minute.compareTo(o.getMinute()) < 0) {
+                return -1;
+            } else if (this.minute.compareTo(o.getMinute()) == 0) {
+                if (this.second.compareTo(o.getSecond()) > 0) {
+                    return 1;
+                } else if (this.second.compareTo(o.getSecond()) < 0) {
+                    return -1;
+                } else if (this.second.compareTo(o.getSecond()) == 0) {
+                    return 0;
+                }
+            }
+        }
+        return 0;
     }
 }
 

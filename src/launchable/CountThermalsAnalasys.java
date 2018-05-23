@@ -30,9 +30,12 @@ public class CountThermalsAnalasys {
 
         OutputData[][] outputData = null; // TODO fix this later
 
+        System.out.println("number of flights: " + flights.size());
         for (Flight flight : flights) {
             List<IGCDataGroup> dataGroups = splitter.splitFlight(flight);
+            System.out.println("number of groups: " + dataGroups.size());
             for (IGCDataGroup dataGroup : dataGroups) {
+                System.out.println("size of group: " + dataGroup.getDataPoints().size());
                 if (thermalTester.isThermalUsingGPSAltitude(dataGroup)) {
                     System.out.println("thermal at, long: " + dataGroup.getLongGridIndex() + ", lat: " + dataGroup.getLatGridIndex());
 //                    outputData[dataGroup.getLongGridIndex()][dataGroup.getLatGridIndex()].incrementNumberOfRegisteredThermal();

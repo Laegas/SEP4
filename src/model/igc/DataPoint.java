@@ -5,7 +5,9 @@ import model.geography.Longitude;
 
 import model.time.Time;
 
-public class DataPoint {
+import javax.xml.crypto.Data;
+
+public class DataPoint implements Comparable<DataPoint>{
 	private Time time;
 	private Longitude longitude;
 	private Latitude latitude;
@@ -76,8 +78,10 @@ public class DataPoint {
 	public int getGPSAltitude() {
 		return GPSAltitude;
 	}
-	
-	
-	
-	
+
+
+	@Override
+	public int compareTo(DataPoint o) {
+		return this.time.compareTo(o.getTime());
+	}
 }

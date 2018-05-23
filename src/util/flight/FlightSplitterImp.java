@@ -5,10 +5,15 @@ import model.igc.Flight;
 import model.outputData.IGCDataGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by kenneth on 22/05/2018.
+ */
+
+/**
+ * TODO
  */
 public class FlightSplitterImp implements FlightSplitter {
     @Override
@@ -18,7 +23,14 @@ public class FlightSplitterImp implements FlightSplitter {
         List<DataPoint> tmpgrp = null;
         int latGridIndex = -1;
         int longGridIndex = -1;
-        for (DataPoint dataPoint : flight.getDatalog()) {
+        List<DataPoint> dataPoints = flight.getDatalog();
+        DataPoint[] dataPointArray = dataPoints.toArray(new DataPoint[dataPoints.size()]);
+        Arrays.sort(dataPointArray);
+
+        for (int i = 0; i < dataPointArray.length; i++) {
+            DataPoint dataPoint = dataPointArray[i];
+//            System.out.println("long: " + dataPoint.getLongitude().getGridIndex() + ", lat: " + dataPoint.getLatitude().getGridIndex());
+
             if (latGridIndex == -1 && longGridIndex == -1) {
                 tmpgrp = new ArrayList<>();
                 latGridIndex = dataPoint.getLatitude().getGridIndex();
