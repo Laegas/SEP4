@@ -1,5 +1,6 @@
 package launchable;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import database.DAO.DaoManager;
 import database.DAO.IGCDimensionalDao;
 import model.geography.LocationPoint;
@@ -7,10 +8,12 @@ import model.igc.DataPoint;
 import model.igc.Flight;
 import model.igc.ThermalDataPointGroup;
 import model.outputData.FeatureProperties;
+import model.outputData.OutputData;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
 import visualization.javaFxMaps.GenerateJson;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +30,7 @@ public class CountThermalsAnalasys {
         ThermalFinder thermalFinder = new ThermalFinderImp();
 
         // some output data structure
+        OutputData outputData = new OutputData();
 
         for (Flight flight : flights) {
 
@@ -39,16 +43,24 @@ public class CountThermalsAnalasys {
             }
             // add thermalIndexSet to output structure
 
+            for (LocationPoint locationPoint : thermalIndexSet) {
+                outputData.registerThermalAtIndex(locationPoint.getLatitude().getGridIndex(),locationPoint.getLongitude().getGridIndex());
+                // all thermals have been put into output data object
+            }
 
+            // get all unique location points from a flight and register them in outputdata object
+            Set<LocationPoint> allFromFlight = new HashSet<>();
+            for (DataPoint dataPoint : flight.getDatalog()) {
+                allFromFlight.add(new LocationPoint(dataPoint.getLatitude(), dataPoint.getLongitude()));
+            }
+
+            for (LocationPoint locationPoint : allFromFlight) {
+                outputData.registerFlightAtIndex(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex());
+                // registered all the visited grids for this flight
+            }
 
         }
 
-
-
-
-
-        FeatureProperties[][] outputData = null; // TODO fix this later
-
-//        generateJson.generateJson(outputData); TODO
+//        generateJson.generateJson(outputData);
     }
 }
