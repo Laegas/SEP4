@@ -1,4 +1,4 @@
-package launchable;
+package launchable.potentialtests;
 
 import database.DAO.DaoManager;
 import model.igc.Flight;

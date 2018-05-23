@@ -1,4 +1,4 @@
-package launchable;
+package launchable.visualization;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
