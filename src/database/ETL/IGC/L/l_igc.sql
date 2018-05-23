@@ -18,6 +18,7 @@ insert into D_GLIDER (
         GLIDER_REGNO
     FROM (SELECT DISTINCT GLIDER_REGNO
           FROM TRANSFORM_IGC_EMPTY_GLIDER_REGNO)
+    WHERE GLIDER_REGNO not in (select GLIDER_ID from D_GLIDER)
 );
 
 -- inserting new flights into d_flights
