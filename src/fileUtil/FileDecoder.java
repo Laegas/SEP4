@@ -38,17 +38,19 @@ public class FileDecoder {
 		while (sc.hasNextLine()) {
 			String l = sc.nextLine();
 			if(l.startsWith("1") || l.startsWith("2")) {
-				if (l.substring(13, 18).equals("METAR")) {
+				if (l.substring(13, 18).equals("METAR") && !l.substring(32,36).equals("NIL=")) {
 					Year year = new Year(Integer.parseInt(l.substring(0, 4)));
 					Month month = new Month(Integer.parseInt(l.substring(4, 6)));
 					Day day = new Day(Integer.parseInt(l.substring(6,8)));
 					Hour hour = new Hour(Integer.parseInt(l.substring(8,10)));
 					Minute minute = new Minute(Integer.parseInt(l.substring(10,12)));
-
 					ICAOAirportCode airportCode = new ICAOAirportCode(l.substring(19, 23));
+					int padding = 0;
+					if(l.substring(32,36).equals("AUTO"))
+						padding += 5;
+					
 
-
-					System.out.println(l.substring(33, 37));
+					System.out.println(l.substring(32+padding, 36+padding));
 				}
 			}
 		}
