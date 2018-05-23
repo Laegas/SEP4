@@ -11,6 +11,7 @@ import model.outputData.FeatureProperties;
 import model.outputData.OutputData;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
+import visualization.InvalidGridDimensionException;
 import visualization.javaFxMaps.GenerateJson;
 
 import java.util.ArrayList;
@@ -61,6 +62,10 @@ public class CountThermalsAnalasys {
 
         }
 
-//        generateJson.generateJson(outputData);
+        try {
+            generateJson.generateJson(outputData);
+        } catch (InvalidGridDimensionException e) {
+            e.printStackTrace();
+        }
     }
 }
