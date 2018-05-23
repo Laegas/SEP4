@@ -23,11 +23,11 @@ public class OutputData implements Iterable<FeatureProperties>{
     }
 
     public void registerThermalAtIndex(int latIndex, int longIndex) {
-        this.featureProperties[longIndex][latIndex].incrementNumberOfRegisteredThermal();
+        this.featureProperties[latIndex][longIndex].incrementNumberOfRegisteredThermal();
     }
 
     public void registerFlightAtIndex(int latIndex, int longIndex) {
-        this.featureProperties[longIndex][latIndex].incrementNumberOfRegisteredFlights();
+        this.featureProperties[latIndex][longIndex].incrementNumberOfRegisteredFlights();
     }
 
     @Override
