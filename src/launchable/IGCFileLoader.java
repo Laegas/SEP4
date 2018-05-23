@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class IGCFileLoader {
 
-    private static final File dirWithIGCLogFiles = new File("C:\\igc");
+    private static final File dirWithIGCLogFiles = new File("src/resources/igc");
 
     public static void main(String[] args) {
 

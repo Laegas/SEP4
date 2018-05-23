@@ -21,7 +21,7 @@ create sequence weather_record_id
   start with 1
   increment by 1
   cache 100
-  nomaxvalue
+  nomaxvalue;
 
 create table weather_record
 (
