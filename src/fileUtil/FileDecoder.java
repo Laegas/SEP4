@@ -10,8 +10,9 @@ import model.igc.DataPoint;
 import model.geography.Latitude;
 import model.geography.Longitude;
 import model.igc.Glider;
-import model.time.Time;
-import model.time.Date;
+import model.time.*;
+import model.weather.ICAOAirportCode;
+import model.weather.WeatherRecord;
 
 public class FileDecoder {
 	private Scanner sc;
@@ -26,8 +27,38 @@ public class FileDecoder {
 			e.printStackTrace();
 		}
 	}
+
+	public WeatherRecord readMETARFile() {
+
+		try {
+			sc = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		while (sc.hasNextLine()) {
+			String l = sc.nextLine();
+			if(l.startsWith("1") || l.startsWith("2")) {
+				if (l.substring(13, 18).equals("METAR")) {
+					Year year = new Year(Integer.parseInt(l.substring(0, 4)));
+					Month month = new Month(Integer.parseInt(l.substring(4, 6)));
+					Day day = new Day(Integer.parseInt(l.substring(6,8)));
+					Hour hour = new Hour(Integer.parseInt(l.substring(8,10)));
+					Minute minute = new Minute(Integer.parseInt(l.substring(10,12)));
+
+					ICAOAirportCode airportCode = new ICAOAirportCode(l.substring(19, 23));
+
+
+					System.out.println(l.substring(19, 23));
+				}
+			}
+		}
+
+		return null;/*new WeatherRecord(airportCode, wind, varyingWindDirection, temperature, dewPoint, day, month,
+		year,
+				hour, minute);*/
+	}
 	
-	public Flight readFile()
+	public Flight readIGCFile()
 	{
 		ArrayList<DataPoint> points = new ArrayList<>();
 		Flight logger = null;

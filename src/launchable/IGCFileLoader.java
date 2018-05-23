@@ -1,5 +1,6 @@
 package launchable;
 
+import config.FileConfig;
 import database.DAO.DaoManager;
 import database.DAO.IGCDataDAO;
 import fileUtil.FileDecoder;
@@ -12,7 +13,7 @@ import java.io.File;
  */
 public class IGCFileLoader {
 
-    private static final File dirWithIGCLogFiles = new File("src/resources/igc");
+    private static final File dirWithIGCLogFiles = new File(FileConfig.IGC_DIRECTORY_PATH);
 
     public static void main(String[] args) {
 
@@ -27,7 +28,7 @@ public class IGCFileLoader {
 
         for (File file : IGC_files) {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
-            dataLogger = fileDecoder.readFile();
+            dataLogger = fileDecoder.readIGCFile();
             igc_dao.insertDataLogger(dataLogger);
             System.out.println("finished loading file #" + counter++);
         }

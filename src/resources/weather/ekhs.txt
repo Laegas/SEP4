@@ -1,0 +1,16 @@
+##########################################################
+# Query made at 05/23/2018 08:39:43 UTC
+# Time interval: from 05/11/2018 00:00  to 05/12/2018 23:59  UTC
+##########################################################
+
+##########################################################
+# EKHS, Hadsund (Denmark)
+# WMO index: 06048
+# Latitude 56-43N. Longitude 010-07E. Altitude 2 m.
+##########################################################
+
+# No METAR/SPECI reports frome EKHS in database.
+
+# No short TAF reports from EKHS in databse.
+
+# No large TAF reports from EKHS in databse.

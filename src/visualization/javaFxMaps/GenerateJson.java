@@ -3,6 +3,8 @@ package visualization.javaFxMaps;
 
 import model.geography.Latitude;
 import model.geography.Longitude;
+import model.outputData.FeatureProperties;
+import model.outputData.OutputData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import visualization.InvalidGridDimensionException;
@@ -15,6 +17,7 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,15 +35,14 @@ public class GenerateJson {
         return instance;
     }
     
-    public void generateJson(int[][] grid) throws InvalidGridDimensionException {
-        if(grid.length != HEIGHT || grid[0].length != WIDTH)
-            throw new InvalidGridDimensionException("Required dimensions: [" + HEIGHT + "][" + WIDTH + "]. Was [" +
-                    grid.length + "][" + grid[0].length + "]");
+    public void generateJson(OutputData data) throws InvalidGridDimensionException {
+
+        FeatureProperties[][] grid = data.getFeatureProperties();
 
         DecimalFormat df = new DecimalFormat("#.######", new DecimalFormatSymbols(Locale.US));
         List<String> lines = new ArrayList<>();
         lines.add("var json = [");
-        int[][] chunkGrid = new int[HEIGHT / CHUNKS][WIDTH / CHUNKS];
+        FeatureProperties[][] chunkGrid = new FeatureProperties[HEIGHT / CHUNKS][WIDTH / CHUNKS];
 
         for(int chunkColumn = 0; chunkColumn < CHUNKS; chunkColumn++) {
             for(int chunkRow = 0; chunkRow < CHUNKS; chunkRow++) {
@@ -54,11 +56,12 @@ public class GenerateJson {
 
                 for(int i = 0; i < chunkGrid.length; i++) {
                     for(int j = 0; j < chunkGrid[0].length; j++) {
-                        if(chunkGrid[i][j] != 0)
+                        if(chunkGrid[i][j].isMeaningful())
                             features.put(new JSONObject()
                                 .put("type", "Feature")
                                 .put("properties", new JSONObject()
-                                    .put("value", chunkGrid[i][j] + ""))
+                                    .put("flights", chunkGrid[i][j].getNumberOfRegisteredFlights() + "")
+                                    .put("thermals", chunkGrid[i][j].getNumberOfRegisteredThermal() + ""))
                                 .put("geometry", new JSONObject()
                                     .put("type", "Polygon")
                                     .put("coordinates", new JSONArray()
