@@ -11,6 +11,7 @@ public interface ThermalFinder {
     List<ThermalDataPointGroup> findThermalsUsingGPSAltitude(Flight flight);
 
     List<ThermalDataPointGroup> findThermalsUsingPressureAltitude(Flight flight);
-
 }
+
+
 
