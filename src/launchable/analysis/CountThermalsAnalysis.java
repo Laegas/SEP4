@@ -1,4 +1,4 @@
-package launchable;
+package launchable.analysis;
 
 import com.sun.xml.internal.bind.v2.TODO;
 import database.DAO.DaoManager;
@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * Created by kenneth on 22/05/2018.
  */
-public class CountThermalsAnalasys {
+public class CountThermalsAnalysis {
     public static void main(String[] args) {
         GenerateJson generateJson = GenerateJson.getInstance();
 

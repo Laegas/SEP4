@@ -1,4 +1,4 @@
-package launchable;
+package launchable.visualization;
 
 import visualization.InvalidGridDimensionException;
 import visualization.PrintToExcelSXSSF;
@@ -6,7 +6,7 @@ import visualization.PrintToTxt;
 
 import static config.VisualizationConfig.*;
 
-public class VisualizationMain {
+public class TxtAndExcelMain {
     public static void main(String[] args) {
 
         int[][] grid = new int[HEIGHT][WIDTH];

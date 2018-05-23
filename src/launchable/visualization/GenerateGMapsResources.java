@@ -1,4 +1,4 @@
-package launchable;
+package launchable.visualization;
 
 import model.outputData.OutputData;
 import visualization.javaFxMaps.GenerateJSSettings;

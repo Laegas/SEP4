@@ -1,4 +1,4 @@
-package launchable;
+package launchable.fileloaders;
 
 import config.FileConfig;
 import database.DAO.DaoManager;

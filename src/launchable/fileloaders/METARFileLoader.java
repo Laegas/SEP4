@@ -1,11 +1,9 @@
-package launchable;
+package launchable.fileloaders;
 
 import config.FileConfig;
 import database.DAO.DaoManager;
-import database.DAO.IGCDataDAO;
 import database.DAO.METARSourceDAO;
 import fileUtil.FileDecoder;
-import model.igc.Flight;
 import model.weather.WeatherRecord;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package launchable;
+package launchable.potentialtests;
 
 import config.VisualizationConfig;
 import model.geography.InvalidCoordinatesException;
