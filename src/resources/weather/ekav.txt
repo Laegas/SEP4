@@ -1,0 +1,16 @@
+##########################################################
+# Query made at 05/23/2018 08:50:03 UTC
+# Time interval: from 05/11/2018 00:00  to 05/12/2018 23:59  UTC
+##########################################################
+
+##########################################################
+# EKAV, Avno Danish Air Force Base  (Denmark)
+# WMO index: 06150
+# Latitude 55-05N. Longitude 011-47E. Altitude 4 m.
+##########################################################
+
+# No METAR/SPECI reports frome EKAV in database.
+
+# No short TAF reports from EKAV in databse.
+
+# No large TAF reports from EKAV in databse.

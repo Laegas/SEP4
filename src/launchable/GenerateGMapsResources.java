@@ -1,5 +1,6 @@
 package launchable;
 
+import model.outputData.OutputData;
 import visualization.javaFxMaps.GenerateJSSettings;
 import visualization.javaFxMaps.GenerateJson;
 import visualization.InvalidGridDimensionException;
@@ -12,13 +13,19 @@ public class GenerateGMapsResources {
 
         GenerateJSSettings.getInstance().generateSettings();
 
-        int[][] grid = new int[HEIGHT][WIDTH];
-        for(int i = 0; i < grid.length; i++) {
-            for(int j = 0; j < grid[0].length; j++) {
-                // random data generation
-                grid[i][j] = (Math.random() > 0.9) ? (int) (Math.floor(Math.random() * 10) + 1) : 0;
+        OutputData grid = new OutputData();
+
+        for(int i = 0; i < HEIGHT; i++) {
+            for(int j = 0; j < WIDTH; j++) {
+                int count = ((Math.random() > 0.9) ? (int) (Math.floor(Math.random() * 10) + 1) : 0);
+                for(int k = 0; k < count; k++) {
+                    grid.registerFlightAtIndex(i, j);
+                    grid.registerThermalAtIndex(i, j);
+                }
             }
         }
+
+
 
         try {
             GenerateJson.getInstance().generateJson(grid);

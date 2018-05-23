@@ -9,7 +9,7 @@ public class TestLoadToSourceDB {
     public static void main(String args[])
     {
         FileDecoder file = new FileDecoder(FileConfig.PROJECT_PATH + FileConfig.IGC_FILE);
-        Flight logger = file.readFile();
+        Flight logger = file.readIGCFile();
 
         DaoManager.IGC_SOURCE_DAO.insertDataLogger(logger);
     }
