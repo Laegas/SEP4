@@ -32,17 +32,17 @@ public class METARTXTFilePreprocessor {
 
         List<String> lines = new ArrayList<>();
 
-        String prev, curr;
+        String s;
 
         while (sc.hasNextLine()) {
-            curr = sc.nextLine();
-            if(curr.length() != 0) {
-                if(curr.startsWith(" ")) {
-                    curr = lines.get(lines.size()-1) + " " + curr.trim();;
+            s = sc.nextLine();
+            if(s.length() != 0) {
+                if(s.startsWith(" ")) {
+                    s = lines.get(lines.size()-1) + " " + s.trim();;
                     lines.remove(lines.size()-1);
-                    lines.add(curr);
+                    lines.add(s);
                 } else {
-                    lines.add(curr);
+                    lines.add(s);
                 }
             }
         }
