@@ -12,12 +12,17 @@ public class OutputData implements Iterable<FeatureProperties>{
     FeatureProperties[][] featureProperties;
 
     public OutputData() {
-        this.featureProperties = new FeatureProperties[VisualizationConfig.WIDTH][VisualizationConfig.HEIGHT];
+        this.featureProperties = new FeatureProperties[VisualizationConfig.HEIGHT][VisualizationConfig.WIDTH];
+        // initialising all feature properties
+        for (int h = 0; h < VisualizationConfig.HEIGHT; h++) {
+            for (int w = 0 ; w < VisualizationConfig.WIDTH; w++) {
+                this.featureProperties[h][w] = new FeatureProperties();
+            }
+        }
 
     }
 
     public void registerThermalAtIndex(int latIndex, int longIndex) {
-        this.featureProperties[longIndex][latIndex].incrementNumberOfRegisteredFlights();
         this.featureProperties[longIndex][latIndex].incrementNumberOfRegisteredThermal();
     }
 
@@ -39,13 +44,14 @@ public class OutputData implements Iterable<FeatureProperties>{
         private FeatureProperties tempFeatureProperties;
 
         public OutputDataIterator(FeatureProperties[][] featureProperties) {
+            this.featureProperties = featureProperties;
             this.height = 0;
             this.width = 0;
         }
 
         @Override
         public boolean hasNext() {
-            return !(width == VisualizationConfig.WIDTH && height == VisualizationConfig.HEIGHT);
+            return (width < VisualizationConfig.WIDTH && height < VisualizationConfig.HEIGHT);
         }
 
         @Override
@@ -62,16 +68,6 @@ public class OutputData implements Iterable<FeatureProperties>{
                 return null;
             }
         }
-    }
-
-    public static void main(String[] args) {
-        OutputData outputData = new OutputData();
-
-        int i = 0;
-        for (FeatureProperties f : outputData) {
-            i++;
-        }
-        System.out.println(i);
     }
 }
 
