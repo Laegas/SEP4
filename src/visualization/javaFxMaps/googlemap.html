@@ -34,7 +34,7 @@
             }
 
             document.map.data.setStyle(function(feature) {
-                var value = feature.getProperty('value');
+                var value = feature.getProperty('thermals');
                 var color = "rgba(255, 0, 0, " + (value / 10) + ")";
                 return {
                     fillColor: color,
@@ -44,7 +44,8 @@
 
             document.map.data.addListener('mouseover', function(event) {
                 document.getElementById('info').className = "";
-                document.getElementById('info').textContent = event.feature.getProperty('value');
+                document.getElementById('info').textContent = event.feature.getProperty('thermals') + " / " +
+                    event.feature.getProperty('flights');
             });
 
             document.map.data.addListener('mouseout', function(event) {
