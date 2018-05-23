@@ -2,7 +2,7 @@ package test;
 
 import config.FileConfig;
 import database.DAO.DaoManager;
-import fileUtil.FileDecoder;
+import util.file.FileDecoder;
 import model.igc.Flight;
 
 public class TestLoadToSourceDB {

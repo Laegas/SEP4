@@ -1,8 +1,9 @@
-package fileUtil;
+package util.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import model.igc.Flight;
@@ -11,7 +12,6 @@ import model.geography.Latitude;
 import model.geography.Longitude;
 import model.igc.Glider;
 import model.time.*;
-import model.weather.ICAOAirportCode;
 import model.weather.WeatherRecord;
 
 public class FileDecoder {
@@ -28,23 +28,28 @@ public class FileDecoder {
 		}
 	}
 
-	public WeatherRecord readMETARFile() {
+	public WeatherRecord[] readMETARFile() {
 
-		try {
-			sc = new Scanner(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		List<WeatherRecord> weatherRecords = new ArrayList<>();
+
 		while (sc.hasNextLine()) {
 			String l = sc.nextLine();
 			if(l.startsWith("1") || l.startsWith("2")) {
+				System.out.println(l.substring(13, l.length()));
+				//weatherRecords.add(MetarReader.decodeMetar(l.substring(13, l.length())));
+				/*
 				if (l.substring(13, 18).equals("METAR") && !l.substring(32,36).equals("NIL=")) {
-					Year year = new Year(Integer.parseInt(l.substring(0, 4)));
-					Month month = new Month(Integer.parseInt(l.substring(4, 6)));
-					Day day = new Day(Integer.parseInt(l.substring(6,8)));
-					Hour hour = new Hour(Integer.parseInt(l.substring(8,10)));
-					Minute minute = new Minute(Integer.parseInt(l.substring(10,12)));
-					ICAOAirportCode airportCode = new ICAOAirportCode(l.substring(19, 23));
+
+					String[] strings = l.split(" ");
+
+					System.out.println(strings[0] + " " + strings[2]);
+
+					Year year = new Year(Integer.parseInt(strings[0].substring(0, 4)));
+					Month month = new Month(Integer.parseInt(strings[0].substring(4, 6)));
+					Day day = new Day(Integer.parseInt(strings[0].substring(6,8)));
+					Hour hour = new Hour(Integer.parseInt(strings[0].substring(8,10)));
+					Minute minute = new Minute(Integer.parseInt(strings[0].substring(10,12)));
+					ICAOAirportCode airportCode = new ICAOAirportCode(strings[2]);
 					int padding = 0;
 					if(l.substring(32,36).equals("AUTO"))
 						padding += 5;
@@ -52,6 +57,7 @@ public class FileDecoder {
 
 					System.out.println(l.substring(32+padding, 36+padding));
 				}
+				*/
 			}
 		}
 

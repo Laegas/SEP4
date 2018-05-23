@@ -3,7 +3,7 @@ package launchable.fileloaders;
 import config.FileConfig;
 import database.DAO.DaoManager;
 import database.DAO.IGCDataDAO;
-import fileUtil.FileDecoder;
+import util.file.FileDecoder;
 import model.igc.Flight;
 
 import java.io.File;
