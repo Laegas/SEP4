@@ -5,6 +5,7 @@
 
 -- select * from DATA_LOGGER;
 TRUNCATE table FULLY_EXTRACTED_IGC;
+
 insert into FULLY_EXTRACTED_IGC (
   igc_ID,
   TIME_OF_LOG,
@@ -17,16 +18,16 @@ insert into FULLY_EXTRACTED_IGC (
   FLIGHT_DATE,
   GLIDER_REGNO
 ) (SELECT
-                 igc.ID,
-                 igc.TIME_OF_LOG,
-                 igc.LATITUDE,
-                 igc.LONGITUDE,
-                 igc.SATELLITE_COVERAGE,
-                 igc.PRESSURE_ALTITUDE,
-                 igc.GPS_ALTITUDE,
-                 igc.FLIGHt_ID,
-                 log.FLIGHT_DATE,
-                 log.GLIDER_REGNO
+       igc.ID,
+       igc.TIME_OF_LOG,
+       igc.LATITUDE,
+       igc.LONGITUDE,
+       igc.SATELLITE_COVERAGE,
+       igc.PRESSURE_ALTITUDE,
+       igc.GPS_ALTITUDE,
+       igc.FLIGHt_ID,
+       log.FLIGHT_DATE,
+       log.GLIDER_REGNO
    FROM IGC_SOURCE_DATA igc
      left JOIN data_logger log ON
                             igc.FLIGHt_ID = log.ID

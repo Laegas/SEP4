@@ -17,7 +17,7 @@ insert into D_GLIDER (
         GLIDER_SURR_KEY.nextval,
         GLIDER_REGNO
     FROM (SELECT DISTINCT GLIDER_REGNO
-          FROM FULLY_EXTRACTED_IGC)
+          FROM TRANSFORM_IGC_EMPTY_GLIDER_REGNO)
 );
 
 -- inserting new flights into d_flights
@@ -27,7 +27,7 @@ insert into D_FLIGHT (
 ) (select flight_id,
     flight_date from
     (select distinct flight_id,
-    FLIGHT_DATE from FULLY_EXTRACTED_IGC
+    FLIGHT_DATE from TRANSFORM_IGC_EMPTY_GLIDER_REGNO
     where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT))
 );
 
@@ -53,10 +53,16 @@ insert into F_IGC_LOG (
     PRESSURE_ALTITUDE,
     GPS_ALTITUDE,
     SATELLITE_COVERAGE
-  from FULLY_EXTRACTED_IGC
+  from TRANSFORM_IGC_EMPTY_GLIDER_REGNO
     where igc_id not IN (select SURR_KEY_LOG from F_IGC_LOG)
 );
 
-
+SELECT * from D_GLIDER;
+SELECT * FROM D_FLIGHT;
+SELECT FLIGHT_ID, count(*) FROM IGC_SOURCE_DATA gROUP BY FLIGHT_ID;
+SELECT * FROM DATA_LOGGER;
+SELECT count(*) from D_FLIGHT;
+select count(*) from D_GLIDER;
+SELECT count(*) from F_IGC_LOG;
 COMMIT ;
 
