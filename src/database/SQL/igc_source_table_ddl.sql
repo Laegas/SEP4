@@ -7,6 +7,7 @@ BEGIN
     RAISE;
   END IF;
 END;
+/
 
 BEGIN
   EXECUTE IMMEDIATE 'drop sequence data_Logger_ID';
@@ -17,6 +18,7 @@ EXCEPTION
     RAISE;
   END IF;
 END;
+/
 
 create sequence data_Logger_ID
   start with 1
@@ -51,3 +53,5 @@ create table IGC_Source_Data
 );
 
 COMMIT;
+
+select count(*) from IGC_Source_Data;

@@ -6,7 +6,7 @@ BEGIN
     RAISE;
   END IF;
 END;
-
+/
 BEGIN
   EXECUTE IMMEDIATE 'drop sequence weather_record_id';
 EXCEPTION
@@ -15,8 +15,7 @@ EXCEPTION
     RAISE;
   END IF;
 END;
-
-
+/
 create sequence weather_record_id
   start with 1
   increment by 1
@@ -36,4 +35,6 @@ create table weather_record
   the_date date,
   hour int,
   minute int
-)
+);
+
+-- select count (*) from weather_record;

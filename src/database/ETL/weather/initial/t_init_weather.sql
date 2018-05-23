@@ -20,6 +20,7 @@ create table transform_weather_hour_minute_to_time as
   dew_point,
   the_date
 from FULLY_EXTRACTED_WEATHER)
+;
 
 alter table transform_weather_hour_minute_to_time
   ADD time timestamp
