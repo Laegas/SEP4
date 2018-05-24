@@ -13,6 +13,7 @@ import model.outputData.OutputData;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
 import visualization.InvalidGridDimensionException;
+import visualization.javaFxMaps.GenerateJSSettings;
 import visualization.javaFxMaps.GenerateJson;
 
 import java.util.ArrayList;
@@ -72,5 +73,8 @@ public class CountThermalsAnalysis {
         } catch (InvalidGridDimensionException e) {
             e.printStackTrace();
         }
+
+        GenerateJSSettings.getInstance().generateSettings();
+
     }
 }
