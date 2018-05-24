@@ -13,25 +13,42 @@ public class MetarReader {
 // source for decoding metar used: https://en.wikipedia.org/wiki/METAR
 
 
-    public static WeatherRecord decodeMetar(String metar) {
+    public static WeatherRecord decodeMetar(String metar) throws NotMETARException {
+        // METAR	eksn 170950z 01012kt cavok 15/10 q1016
+        /*
+
+					Year year = new Year(Integer.parseInt(strings[0].substring(0, 4)));
+					Month month = new Month(Integer.parseInt(strings[0].substring(4, 6)));
+					Day day = new Day(Integer.parseInt(strings[0].substring(6,8)));
+					Hour hour = new Hour(Integer.parseInt(strings[0].substring(8,10)));
+					Minute minute = new Minute(Integer.parseInt(strings[0].substring(10,12)));
+					ICAOAirportCode airportCode = new ICAOAirportCode(strings[2]);
+					int padding = 0;
+					if(l.substring(32,36).equals("AUTO"))
+						padding += 5;
+
+
+					System.out.println(l.substring(32+padding, 36+padding));
+				*/
         WeatherRecord weatherRecord = new WeatherRecord();
 
-        if (metar.substring(0, 5).equalsIgnoreCase("metar")) {
-            // it is a metar and not a special report, meaning that this is a scheduled hourly update
-            String[] split = metar.substring(5, metar.length()).split(" ");
+        if (metar.substring(13, 18).equalsIgnoreCase("metar")) {
+            String[] split = metar.split(" ");
+            if(!split[4].equalsIgnoreCase("nil=")) {
+                for (String s : split) {
+                    System.out.print("." + s + ".");
+                }
+                System.out.println();
+            }
 
             int counter = 0;
             for (String item : split) {
-                System.out.println(counter);
-                item = item.trim();         // trimming each section
-                System.out.println("item: "  + item);
-                switch (counter) {
+                switch (counter++) {
                     case 0: // setting record id/code
                         if (item.length() != 4) {
                             continue;
                         }
                         weatherRecord.setAirportCode(new ICAOAirportCode(split[0]));
-                        counter++;
                         break;
                     case 1: // case for time
                         String dayTimeString = item;
@@ -57,7 +74,6 @@ public class MetarReader {
                             WindDirection windDirection = new WindDirection(new Degree(intWindDirection));
                             WindSpeed windSpeed = new WindSpeed(intWindSpeed);
                             weatherRecord.setWind(new Wind(windDirection, windSpeed));
-                            counter++;
                         }
                         break;
                     case 3: // temperature and dew point:
@@ -86,29 +102,14 @@ public class MetarReader {
                                 dewPoint = new DegreeCelcius((double) temp);
                             }
                             weatherRecord.setDewPoint(degreeCelcius);
-                            counter++;
                         }
                         break;
                 }
-
             }
-
-
         } else {
-            throw new RuntimeException("error in reading metar");
+            throw new NotMETARException("Not a METAR record");
         }
+
         return weatherRecord;
-    }
-
-    public static void main(String[] args) {
-        WeatherRecord weatherRecord = decodeMetar("METAR	eksn 170950z 01012kt cavok 15/10 q1016");
-
-        System.out.println("airport code:" + weatherRecord.getAirportCode().getICAOCode());
-        System.out.println("temperature:" + weatherRecord.getTemperature().getTemperature());
-        System.out.println("Wind speed:" + weatherRecord.getWind().getWindSpeed());
-        System.out.println("Wind Direction:" + weatherRecord.getWind().getWindDirection());
-        System.out.println("Time of measurement:" + weatherRecord.getHour());
-        System.out.println("Day of measurement:" + weatherRecord.getDayOfMonth().getDayOfMonth());
-        System.out.println("Minute of measurement:" + weatherRecord.getMinute());
     }
 }

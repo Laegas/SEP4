@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by kenneth on 22/05/2018.
  */
+@Deprecated
 public interface FlightSplitter {
     List<IGCDataGroup> splitFlight(Flight flight);
 }

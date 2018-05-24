@@ -13,6 +13,7 @@ import util.flight.FlightSplitterImp;
 import util.igc.RemoveDuplicate;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
+import visualization.javaFxMaps.GenerateJson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,11 +28,16 @@ public class AnalysisOfThermalsWithWeatherData {
 
     }
 
+    /**
+     * this method will change the output data object
+     * @param flights
+     * @param outputData
+     */
     public static void analyse(List<Flight> flights, OutputData outputData) {
 
         // join all the data points with the weather for each flight
 
-        ThermalFinder thermalFinder = new ThermalFinderImp();
+        ThermalFinder thermalFinder = new ThermalFinderImp(0.5);
         WeatherFactory weatherFactory = WeatherFactory.getINSTANCE();
 
         //looping through all flights
@@ -56,9 +62,28 @@ public class AnalysisOfThermalsWithWeatherData {
 
             }
 
-            //loopin through all data points to register flihts at indexes with temperature
-            for (DataPoint dataPoint : flight.getDatalog()) {
-                //join with weather
+            //find unique data points from data in flights
+            List<DataPoint> uniqueDataPoints = RemoveDuplicate.getUniqueDataPoint(flight.getDatalog());
+            List<IGCJoinWeather> joinWeathers = new ArrayList<>();
+            IGCJoinWeather igcJoinWeather;
+            for (DataPoint dataPoint : uniqueDataPoints) {
+                igcJoinWeather = new IGCJoinWeather(dataPoint, weatherFactory.getWeather(flight.getDate(), dataPoint.getTime()));
+                joinWeathers.add(igcJoinWeather);
+            }
+
+            //add all the unique join with weather as flights
+            for (IGCJoinWeather item : joinWeathers) {
+                double tempTemperature = item.getWeatherRecord().getTemperature().getTemperature();
+                int latIndex = item.getDataPoint().getLatitude().getGridIndex();
+                int longIndex = item.getDataPoint().getLongitude().getGridIndex();
+
+                if (tempTemperature >= 0 && tempTemperature < 10) {
+                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenZeroAndTenDegree().incrementRegisteredFlight();
+                } else if (tempTemperature >= 10 && tempTemperature < 20) {
+                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenTenAndTwentyDegree().incrementRegisteredFlight();
+                } else if (tempTemperature >= 20 && tempTemperature < 30) {
+                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenTwentyAndThirtyDegree().incrementRegisteredFlight();
+                }
             }
 
             //finding unique indexes in this flight and registering the thermals
@@ -77,9 +102,6 @@ public class AnalysisOfThermalsWithWeatherData {
                 }
             }
         }
-
-
-
 
     }
 }

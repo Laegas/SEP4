@@ -29,7 +29,7 @@ public class GenerateJSSettings {
         lines.add("var latitude = " + ((LATITUDE_START + LATITUDE_END) / 2) + ";");
         lines.add("var longitude = " + ((LONGITUDE_START + LONGITUDE_END) / 2) + ";");
         lines.add("var zoom = " + ZOOM + ";");
-        lines.add("var max_flights = " + grid.getMaxRegisteredFlightCount() + ";");
+        lines.add("var max_flights = " + grid.getMaxTotalRegisteredFlightCount() + ";");
         lines.add("var alphaProperty = \"" + ALPHA_PROPERTY + "\";");
         lines.add("var hoverProperty1 = \"" + HOVER_PROPERTY1 + "\";");
         lines.add("var hoverProperty2 = \"" + HOVER_PROPERTY2 + "\";");
