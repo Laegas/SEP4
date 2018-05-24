@@ -1,6 +1,5 @@
 package launchable.analysis;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import database.DAO.DaoManager;
 import database.DAO.IGCDimensionalDao;
 import model.geography.InvalidCoordinatesException;
@@ -8,14 +7,12 @@ import model.geography.LocationPoint;
 import model.igc.DataPoint;
 import model.igc.Flight;
 import model.igc.ThermalDataPointGroup;
-import model.outputData.FeatureProperties;
 import model.outputData.OutputData;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
-import visualization.InvalidGridDimensionException;
+import visualization.javaFxMaps.GenerateJSSettings;
 import visualization.javaFxMaps.GenerateJson;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,11 +22,10 @@ import java.util.Set;
  */
 public class CountThermalsAnalysis {
     public static void main(String[] args) {
-        GenerateJson generateJson = GenerateJson.getInstance();
 
         IGCDimensionalDao igcDAO = DaoManager.IGC_DIMENSIONAL_DAO;
         List<Flight> flights = igcDAO.getAllFlights();
-        ThermalFinder thermalFinder = new ThermalFinderImp();
+        ThermalFinder thermalFinder = new ThermalFinderImp(1);
 
         // some output data structure
         OutputData outputData = new OutputData();
@@ -60,17 +56,15 @@ public class CountThermalsAnalysis {
                 try {
                     outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredFlight();
                 } catch (InvalidCoordinatesException e) {
-
+                    e.printStackTrace();
                 }
                 // registered all the visited grids for this flight
             }
 
         }
 
-        try {
-            generateJson.generateJson(outputData);
-        } catch (InvalidGridDimensionException e) {
-            e.printStackTrace();
-        }
+        GenerateJson.getInstance().generateJson(outputData);
+        GenerateJSSettings.getInstance().generateSettings(outputData);
+
     }
 }
