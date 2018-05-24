@@ -28,8 +28,7 @@ public class METARTXTFilePreprocessor {
         }
     }
 
-    public void preprocess() {
-
+    public void preProcess() {
         List<String> lines = new ArrayList<>();
 
         String s;
@@ -47,9 +46,6 @@ public class METARTXTFilePreprocessor {
             }
         }
 
-        for(String line : lines)
-            System.out.println(line);
-        /*
         try {
             Path file = Paths.get(filename);
             Files.write(file, lines, Charset.forName("UTF-8"));
@@ -57,6 +53,5 @@ public class METARTXTFilePreprocessor {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-        */
     }
 }
