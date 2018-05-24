@@ -11,16 +11,20 @@ public class OutputData implements Iterable<FeatureProperties>{
 
     FeatureProperties[][] featureProperties;
 
-    public int getMaxRegisteredFlightCount() {
+    public int getMaxTotalRegisteredFlightCount() {
         int currentMax = -1;
         for (int h = 0; h < featureProperties.length; h++) {
             for (int w = 0; w < featureProperties[0].length; w++) {
-                if (featureProperties[h][w].getNumberOfRegisteredFlights() > currentMax) {
-                    currentMax = featureProperties[h][w].getNumberOfRegisteredFlights();
+                if (featureProperties[h][w].getTotal().getNumberOfRegisteredFlights() > currentMax) {
+                    currentMax = featureProperties[h][w].getTotal().getNumberOfRegisteredFlights();
                 }
             }
         }
         return currentMax;
+    }
+
+    public FeatureProperties getFeatureProperties(int latIndex, int longIndex) {
+        return featureProperties[latIndex][longIndex];
     }
 
     public OutputData() {
@@ -34,13 +38,7 @@ public class OutputData implements Iterable<FeatureProperties>{
 
     }
 
-    public void registerThermalAtIndex(int latIndex, int longIndex) {
-        this.featureProperties[latIndex][longIndex].incrementNumberOfRegisteredThermal();
-    }
 
-    public void registerFlightAtIndex(int latIndex, int longIndex) {
-        this.featureProperties[latIndex][longIndex].incrementNumberOfRegisteredFlights();
-    }
 
     @Override
     public Iterator<FeatureProperties> iterator() {

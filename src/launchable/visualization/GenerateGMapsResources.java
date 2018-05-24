@@ -19,8 +19,8 @@ public class GenerateGMapsResources {
             for(int j = 0; j < WIDTH; j++) {
                 int count = ((Math.random() > 0.9) ? (int) (Math.floor(Math.random() * 10) + 1) : 0);
                 for(int k = 0; k < count; k++) {
-                    grid.registerFlightAtIndex(i, j);
-                    grid.registerThermalAtIndex(i, j);
+                    grid.getFeatureProperties(i,j).getTotal().incrementRegisteredFlight();
+                    grid.getFeatureProperties(i,j).getTotal().incrementRegisteredThermal();
                 }
             }
         }

@@ -46,7 +46,7 @@ public class CountThermalsAnalysis {
             // add thermalIndexSet to output structure
 
             for (LocationPoint locationPoint : thermalIndexSet) {
-                outputData.registerThermalAtIndex(locationPoint.getLatitude().getGridIndex(),locationPoint.getLongitude().getGridIndex());
+                outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(),locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
                 // all thermals have been put into output data object
             }
 
@@ -58,7 +58,7 @@ public class CountThermalsAnalysis {
 
             for (LocationPoint locationPoint : allFromFlight) {
                 try {
-                    outputData.registerFlightAtIndex(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex());
+                    outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredFlight();
                 } catch (InvalidCoordinatesException e) {
 
                 }
