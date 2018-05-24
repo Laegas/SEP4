@@ -6,7 +6,6 @@ import util.file.FileDecoder;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestThermalFinder {
