@@ -1,8 +1,8 @@
 
--------- F_Flight and B_Flight_Member table ddl --------
+-------- F_Duration and B_Flight_Member table ddl --------
 BEGIN
 
-   EXECUTE IMMEDIATE 'DROP TABLE F_flight';
+   EXECUTE IMMEDIATE 'DROP TABLE F_Duration';
    EXECUTE IMMEDIATE 'DROP TABLE B_FLIGHT_MEMBER';
 EXCEPTION
    WHEN OTHERS THEN
@@ -37,7 +37,9 @@ create table B_FLIGHT_MEMBER (
   primary key(id_group, ID_MEMBER)
 );
 
-create table F_FLIGHT(
+-----F_Duration was previously F_Flight-----
+create table F_Duration(
+  surr_key_flight int,
   id_group_flight_member int,
   id_launch_time int,
   id_launch_date int,
