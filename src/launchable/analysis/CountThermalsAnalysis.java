@@ -30,7 +30,7 @@ public class CountThermalsAnalysis {
 
         IGCDimensionalDao igcDAO = DaoManager.IGC_DIMENSIONAL_DAO;
         List<Flight> flights = igcDAO.getAllFlights();
-        ThermalFinder thermalFinder = new ThermalFinderImp();
+        ThermalFinder thermalFinder = new ThermalFinderImp(1);
 
         // some output data structure
         OutputData outputData = new OutputData();

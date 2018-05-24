@@ -3,23 +3,25 @@ package util.thermal;
 import model.igc.DataPoint;
 import model.igc.Flight;
 import model.igc.ThermalDataPointGroup;
-import model.outputData.IGCDataGroup;
-
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class ThermalFinderImp implements ThermalFinder  {
     private int thermalStart = -1;
     private int thermalEnd = -1;
+    private int scopeSize = 5;
+    private double altitudeGainPerSecond;
+
+    public ThermalFinderImp( double altitudeGainedPerSecond)
+    {
+        this.altitudeGainPerSecond=altitudeGainedPerSecond;
+    }
 
     private ThermalDataPointGroup makeGroup(List<DataPoint> list, int start, int end)
     {
         ArrayList<DataPoint> glist = new ArrayList<>();
-        System.out.println(start+" "+end);
-        for(int i = start;i<end+1;i++)
+        for(int i = start;i<end-1;i++)
         {
             glist.add(list.get(i));
         }
@@ -34,45 +36,51 @@ public class ThermalFinderImp implements ThermalFinder  {
         int index = 0;
         ArrayList<DataPoint> scope = new ArrayList<>();
         ThermalDataPointGroup group = null;
+
         while(index<list.size())
         {
+
             thermalStart=-1;
             thermalEnd=-1;
-
-            for (; index < list.size(); index++)
+            boolean thermalStop = false;
+            while (!thermalStop&&index<list.size())
             {
                 scope.add(list.get(index));
-                if(scope.size()>10)
+                if(scope.size()>scopeSize)
                     scope.remove(0);
-                if(checkScopeUsingGPSAltitude(scope)&&thermalStart==-1)
+                if(checkScopeUsingGPSAltitude(scope))
                 {
-                    thermalStart=index-9;
+                    if(thermalStart==-1)thermalStart=index-scopeSize+1;
                 }
-            }
-            if(thermalStart==-1)
-            {
-                thermalEnd=index;
+                else
+                {
+                    thermalStop = true;
+                }
+                index++;
             }
             if(thermalStart!=-1)
             {
+                thermalEnd=index;
                 group = makeGroup(list, thermalStart, thermalEnd);
                 thermalGroups.add(group);
             }
         }
+
         return thermalGroups;
     }
 
     private boolean checkScopeUsingGPSAltitude(ArrayList<DataPoint> scope) {
 
-        if(scope.size()<10)
+        if(scope.size()!=scopeSize)
             return false;
-        double sum = 0;
-        double firstNumber = scope.get(0).getGPSAltitude();
-        for(int i =0;i<scope.size();i++)
+        int before = scope.get(0).getGPSAltitude();
+        for(int i = 1;i<scope.size();i++ )
         {
-            sum+=scope.get(i).getGPSAltitude();
+            if(altitudeGainPerSecond>(scope.get(i).getGPSAltitude()-before))
+                return false;
+            before = scope.get(i).getGPSAltitude();
         }
-        return 0<(sum/scope.size()-firstNumber);
+        return true;
     }
 
     @Override
@@ -93,11 +101,11 @@ public class ThermalFinderImp implements ThermalFinder  {
             while (!thermalStop&&index<list.size())
             {
                 scope.add(list.get(index));
-                if(scope.size()>10)
+                if(scope.size()>scopeSize)
                     scope.remove(0);
                 if(checkScopeUsingPressureAltitude(scope))
                 {
-                    if(thermalStart==-1)thermalStart=index-9;
+                    if(thermalStart==-1)thermalStart=index-scopeSize+1;
                 }
                 else
                 {
@@ -118,14 +126,15 @@ public class ThermalFinderImp implements ThermalFinder  {
 
     private boolean checkScopeUsingPressureAltitude(ArrayList<DataPoint> scope) {
 
-        if(scope.size()<=9)
+        if(scope.size()!=scopeSize)
             return false;
-        double sum = 0;
-        double firstNumber = scope.get(0).getPressureAltitude();
-        for(int i =0;i<scope.size();i++)
-        {
-            sum+=scope.get(i).getPressureAltitude();
-        }
-        return 3<(sum/scope.size()-firstNumber);
+    int before = scope.get(0).getPressureAltitude();
+    for(int i = 1;i<scope.size();i++ )
+    {
+        if(altitudeGainPerSecond>(scope.get(i).getPressureAltitude()-before))
+            return false;
+        before = scope.get(i).getPressureAltitude();
+    }
+    return true;
     }
 }
