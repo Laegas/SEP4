@@ -41,12 +41,13 @@ public class CountThermalsAnalysis {
             }
             // add thermalIndexSet to output structure
 
+
             for (LocationPoint locationPoint : thermalIndexSet) {
                 outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(),locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
                 // all thermals have been put into output data object
             }
 
-            // get all unique location points from a flight and register them in outputdata object
+            // get all unique location points from a flight and register them in output data object
             Set<LocationPoint> allFromFlight = new HashSet<>();
             for (DataPoint dataPoint : flight.getDatalog()) {
                 allFromFlight.add(new LocationPoint(dataPoint.getLatitude(), dataPoint.getLongitude()));

@@ -22,6 +22,7 @@ public class LocationPoint {
         return longitude;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof LocationPoint)) {
             return false;
