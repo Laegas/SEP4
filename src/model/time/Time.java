@@ -76,5 +76,19 @@ public class Time implements Comparable<Time>{
         }
         return 0;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+
+        Time time = (Time) object;
+
+        if (!hour.equals(time.hour)) return false;
+        if (!minute.equals(time.minute)) return false;
+        return second.equals(time.second);
+    }
+
+
 }
 
