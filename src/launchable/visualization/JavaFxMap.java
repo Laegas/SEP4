@@ -28,7 +28,7 @@ public class JavaFxMap extends Application {
         WebEngine webEngine = webView.getEngine();
 
         // Load page
-        webEngine.load(getClass().getResource("../visualization/javaFxMaps/googlemap.html").toString());
+        webEngine.load(getClass().getResource("../../visualization/javaFxMaps/googlemap.html").toString());
 
         // create map type buttons
         final ToggleGroup mapTypeGroup = new ToggleGroup();
@@ -85,7 +85,7 @@ public class JavaFxMap extends Application {
         stage.setTitle("Web Map");
         Scene scene = new Scene(root,1000,700, Color.web("#666970"));
         stage.setScene(scene);
-        scene.getStylesheets().add(getClass().getResource("../visualization/javaFxMaps/map.css").toString());
+        scene.getStylesheets().add(getClass().getResource("../../visualization/javaFxMaps/map.css").toString());
         // show stage
         stage.show();
     }
