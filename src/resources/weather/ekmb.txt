@@ -2,13 +2,11 @@
 # Query made at 05/23/2018 08:49:48 UTC
 # Time interval: from 05/11/2018 00:00  to 05/12/2018 23:59  UTC
 ##########################################################
-
 ##########################################################
 # EKMB, Maribo Lufthavn (Denmark)
 # WMO index: 06143
 # Latitude 54-42N. Longitude 011-27E. Altitude 5 m.
 ##########################################################
-
 ###################################
 #  METAR/SPECI from EKMB
 ###################################
@@ -108,7 +106,5 @@
 201805110120 METAR EKMB NIL=
 201805110050 METAR EKMB NIL=
 201805110020 METAR EKMB NIL=
-
 # No short TAF reports from EKMB in databse.
-
 # No large TAF reports from EKMB in databse.

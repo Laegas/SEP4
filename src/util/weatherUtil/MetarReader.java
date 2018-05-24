@@ -11,8 +11,13 @@ public class MetarReader {
 
         if (metar.substring(13, 18).equalsIgnoreCase("metar")) {
             String[] split = metar.split(" ");
-            if(split[4].equalsIgnoreCase("nil=")) {
+            try {
+            if(split[3].equalsIgnoreCase("nil=") || split[4].equalsIgnoreCase("nil=")) {
                 throw new METARException("NIL Record");
+            } } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println(metar);
+                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
 
             weatherRecord.setYear(new Year(Integer.parseInt(split[0].substring(0, 4))));

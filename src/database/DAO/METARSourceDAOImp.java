@@ -10,13 +10,10 @@ import java.sql.SQLException;
 public class METARSourceDAOImp implements METARSourceDAO {
     private Connection conn;
 
-    public METARSourceDAOImp()
+    METARSourceDAOImp()
     {
         conn = DatabaseHelper.getInstance().getConnection();
     }
-
-
-
 
     public void insertWeatherRecord(WeatherRecord record) {
         try {
@@ -27,7 +24,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
             try {
                 windDirection = record.getWind().getWindDirection().getDegree().getDegree();
             } catch (Exception e) {
-                e.printStackTrace();
+                // ignore
             }
             int windDirectionFrom, windDirectionTo;
             if(record.getVaryingWindDirection() == null) {
@@ -42,9 +39,12 @@ public class METARSourceDAOImp implements METARSourceDAO {
             Date date = new Date(record.getDayOfMonth().getDayOfMonth(),record.getMonth().getMonthNumber(),record.getYear().getYear());
             int minute = record.getMinute().getMinute();
             int hour = record.getHour().getHour();
-             PreparedStatement stmt = conn.prepareStatement("INSERT INTO weather_record (id, ICAO_airport_code, wind_direction, wind_speed, wind_direction_from, wind_direction_to" +
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO weather_record (w_id, ICAO_airport_code, " +
+                     "wind_direction, wind_speed, wind_direction_from, wind_direction_to" +
                      ", temperature, dew_point, the_date, minute, hour) VALUES (weather_record_id.nextval, ?, ?, ?, ?, ?, ?, ?, to_Date(?, \' yy/mm/dd\'), ?, ? )");
-
+            /*System.out.println(ICAO_airport_code + " " + windSpeed + " " + windDirection + " " + windDirectionFrom +
+                    " " + windDirectionTo + " " + temperature + " " + dewPoint + " " + date.toString() + " " + hour +
+                    " " + minute);*/
              stmt.setString(1, ICAO_airport_code);
              stmt.setInt(2,windSpeed);
              stmt.setInt(3,windDirection);

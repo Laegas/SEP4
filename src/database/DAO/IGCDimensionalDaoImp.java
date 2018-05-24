@@ -25,7 +25,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
     private boolean debug = false;
     private Connection connection;
 
-    public IGCDimensionalDaoImp() {
+    IGCDimensionalDaoImp() {
         this.connection = DatabaseHelper.getInstance().getConnection();
     }
 
