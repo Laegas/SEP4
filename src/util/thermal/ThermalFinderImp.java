@@ -18,6 +18,10 @@ public class ThermalFinderImp implements ThermalFinder  {
         this.altitudeGainPerSecond=altitudeGainedPerSecond;
     }
 
+    public ThermalFinderImp() {
+
+    }
+
     private ThermalDataPointGroup makeGroup(List<DataPoint> list, int start, int end)
     {
         ArrayList<DataPoint> glist = new ArrayList<>();

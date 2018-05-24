@@ -1,7 +1,9 @@
 package util.igc;
 
+import database.DAO.DaoManager;
 import model.IGCJoinWeather;
 import model.igc.DataPoint;
+import model.igc.Flight;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +14,18 @@ import java.util.Map;
  * Created by kenneth on 24/05/2018.
  */
 public class RemoveDuplicate {
+
+    public static void main(String[] args) {
+        //test getUniqueDataPoint
+        List<DataPoint> points = new ArrayList<>();
+
+        List<Flight> flights = DaoManager.IGC_DIMENSIONAL_DAO.getAllFlights();
+        points = flights.get(0).getDatalog();
+
+        System.out.println("before size: " + points.size());
+        List<DataPoint> dataPoints = getUniqueDataPoint(points);
+        System.out.println("after size: "  + dataPoints.size());
+    }
 
     public static List<IGCJoinWeather> getUniqueByGridIndex(List<IGCJoinWeather> list) {
         Map<String, IGCJoinWeather> map = new HashMap<>();
