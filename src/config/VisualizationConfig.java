@@ -24,8 +24,8 @@ public class VisualizationConfig {
     public static final String[] PROPERTIES = new String[]{"flights", "thermals"};
     public static String[] PROPERTY_VALUES(FeatureProperties feature) {
         String[] values = new String[PROPERTIES.length];
-        values[0] = feature.getNumberOfRegisteredFlights() + "";
-        values[1] = feature.getNumberOfRegisteredThermal() + "";
+        values[0] = feature.getTotal().getNumberOfRegisteredFlights() + "";
+        values[1] = feature.getTotal().getNumberOfRegisteredThermal() + "";
         return values;
     }
 
