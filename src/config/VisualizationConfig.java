@@ -1,5 +1,8 @@
 package config;
 
+import model.outputData.FeatureProperties;
+import model.outputData.OutputData;
+
 public class VisualizationConfig {
 
     // config for area
@@ -18,7 +21,20 @@ public class VisualizationConfig {
 
     // config for resource (JSON) generation
     public static final int CHUNKS = 1;
+    public static final String[] PROPERTIES = new String[]{"flights", "thermals"};
+    public static String[] PROPERTY_VALUES(FeatureProperties feature) {
+        String[] values = new String[PROPERTIES.length];
+        values[0] = feature.getNumberOfRegisteredFlights() + "";
+        values[1] = feature.getNumberOfRegisteredThermal() + "";
+        return values;
+    }
 
     // additional config for Google Maps
     public static final int ZOOM = 7;
+    public static final String ALPHA_PROPERTY = PROPERTIES[0];
+    public static final String HOVER_PROPERTY1 = PROPERTIES[1];
+    public static final String HOVER_PROPERTY2 = PROPERTIES[0];
+    public static final double MINIMUM_ALPHA = 0.3;
+
+
 }
