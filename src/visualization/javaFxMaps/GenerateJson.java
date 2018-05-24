@@ -7,7 +7,6 @@ import model.outputData.FeatureProperties;
 import model.outputData.OutputData;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import visualization.InvalidGridDimensionException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -17,7 +16,6 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +33,7 @@ public class GenerateJson {
         return instance;
     }
     
-    public void generateJson(OutputData data) throws InvalidGridDimensionException {
+    public void generateJson(OutputData data) {
 
         FeatureProperties[][] grid = data.getFeatureProperties();
 
@@ -56,12 +54,13 @@ public class GenerateJson {
 
                 for(int i = 0; i < chunkGrid.length; i++) {
                     for(int j = 0; j < chunkGrid[0].length; j++) {
-                        if(chunkGrid[i][j].isMeaningful())
+                        if(chunkGrid[i][j].isMeaningful()) {
+                            String[] propertyValues = PROPERTY_VALUES(chunkGrid[i][j]);
                             features.put(new JSONObject()
                                 .put("type", "Feature")
                                 .put("properties", new JSONObject()
-                                    .put("flights", chunkGrid[i][j].getNumberOfRegisteredFlights() + "")
-                                    .put("thermals", chunkGrid[i][j].getNumberOfRegisteredThermal() + ""))
+                                    .put(PROPERTIES[0], propertyValues[0] + "")
+                                    .put(PROPERTIES[1], propertyValues[1] + ""))
                                 .put("geometry", new JSONObject()
                                     .put("type", "Polygon")
                                     .put("coordinates", new JSONArray()
@@ -105,6 +104,7 @@ public class GenerateJson {
                                     )
                                 )
                             );
+                        }
                     }
                 }
 

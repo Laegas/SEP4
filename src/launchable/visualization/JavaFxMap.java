@@ -1,5 +1,6 @@
 package launchable.visualization;
 
+import config.FileConfig;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -28,7 +29,7 @@ public class JavaFxMap extends Application {
         WebEngine webEngine = webView.getEngine();
 
         // Load page
-        webEngine.load(getClass().getResource("../../visualization/javaFxMaps/googlemap.html").toString());
+        webEngine.load(getClass().getResource(FileConfig.VISUALIZATION_RESOURCES_PATH+"googlemap.html").toString());
 
         // create map type buttons
         final ToggleGroup mapTypeGroup = new ToggleGroup();
@@ -82,10 +83,10 @@ public class JavaFxMap extends Application {
         root.setCenter(webView);
         root.setTop(toolBar);
         // create scene
-        stage.setTitle("Web Map");
+        stage.setTitle("Thermal Seeker");
         Scene scene = new Scene(root,1000,700, Color.web("#666970"));
         stage.setScene(scene);
-        scene.getStylesheets().add(getClass().getResource("../../visualization/javaFxMaps/map.css").toString());
+        scene.getStylesheets().add(getClass().getResource(FileConfig.VISUALIZATION_RESOURCES_PATH+"map.css").toString());
         // show stage
         stage.show();
     }
