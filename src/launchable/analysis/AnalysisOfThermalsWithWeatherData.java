@@ -37,7 +37,7 @@ public class AnalysisOfThermalsWithWeatherData {
 
         // join all the data points with the weather for each flight
 
-        ThermalFinder thermalFinder = new ThermalFinderImp();
+        ThermalFinder thermalFinder = new ThermalFinderImp(0.5);
         WeatherFactory weatherFactory = WeatherFactory.getINSTANCE();
 
         //looping through all flights
