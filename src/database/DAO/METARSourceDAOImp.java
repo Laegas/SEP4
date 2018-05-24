@@ -20,12 +20,23 @@ public class METARSourceDAOImp implements METARSourceDAO {
 
     public void insertWeatherRecord(WeatherRecord record) {
         try {
-
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
             int windSpeed = record.getWind().getWindSpeed().getKonts();
-            int windDirection = record.getWind().getWindDirection().getDegree().getDegree();
-            int windDirectionFrom = record.getVaryingWindDirection().getFrom().getDegree();
-            int windDirectionTo = record.getVaryingWindDirection().getTo().getDegree();
+            // todo windDirection is set to zero when windDirection is variable #notveryawsome
+            int windDirection = 0;
+            try {
+                windDirection = record.getWind().getWindDirection().getDegree().getDegree();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            int windDirectionFrom, windDirectionTo;
+            if(record.getVaryingWindDirection() == null) {
+                windDirectionTo = -1;
+                windDirectionFrom = -1;
+            } else {
+                windDirectionFrom = record.getVaryingWindDirection().getFrom().getDegree();
+                windDirectionTo = record.getVaryingWindDirection().getTo().getDegree();
+            }
             double temperature = record.getTemperature().getTemperature();
             double dewPoint = record.getDewPoint().getTemperature();
             Date date = new Date(record.getDayOfMonth().getDayOfMonth(),record.getMonth().getMonthNumber(),record.getYear().getYear());

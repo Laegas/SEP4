@@ -7,7 +7,7 @@ public class Degree {
     private int degree;
 
     public Degree(int degree) {
-        this.degree = degree;
+        setDegree(degree);
     }
 
     public int getDegree() {

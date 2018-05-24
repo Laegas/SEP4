@@ -14,7 +14,7 @@ import model.igc.Glider;
 import model.time.*;
 import model.weather.WeatherRecord;
 import util.weatherUtil.MetarReader;
-import util.weatherUtil.NotMETARException;
+import util.weatherUtil.METARException;
 
 public class FileDecoder {
 	private Scanner sc;
@@ -39,15 +39,17 @@ public class FileDecoder {
 			if(l.startsWith("1") || l.startsWith("2")) {
 				try {
 					weatherRecords.add(MetarReader.decodeMetar(l));
-				} catch (NotMETARException e) {
+				} catch (METARException e) {
 					// ignore
 				}
 			}
 		}
 
-		return null;/*new WeatherRecord(airportCode, wind, varyingWindDirection, temperature, dewPoint, day, month,
-		year,
-				hour, minute);*/
+		WeatherRecord[] w = new WeatherRecord[weatherRecords.size()];
+		for(int i = 0; i < w.length; i++)
+			w[i] = weatherRecords.get(i);
+
+		return w;
 	}
 	
 	public Flight readIGCFile()
