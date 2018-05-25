@@ -15,9 +15,7 @@ import visualization.javaFxMaps.GenerateJSSettings;
 import visualization.javaFxMaps.GenerateJson;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by kenneth on 22/05/2018.
@@ -27,7 +25,8 @@ public class CountThermalsAnalysis {
 
         IGCDimensionalDao igcDAO = DaoManager.IGC_DIMENSIONAL_DAO;
         List<Flight> flights = igcDAO.getAllFlights();
-        ThermalFinder thermalFinder = new ThermalFinderImp(1);
+        System.out.println("number of flights " + flights.size());
+        ThermalFinder thermalFinder = new ThermalFinderImp();
 
         // some output data structure
         OutputData outputData = new OutputData();
@@ -42,9 +41,9 @@ public class CountThermalsAnalysis {
                 }
             }
             // add thermalIndexSet to output structure
+                List<LocationPoint> uniquePoints  = RemoveDuplicate.getUniqueLocationPointsIndexe(thermalIndexes);
 
-
-            for (LocationPoint locationPoint : thermalIndexes) {
+            for (LocationPoint locationPoint : uniquePoints) {
                 outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(),locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
                 // all thermals have been put into output data object
             }
@@ -54,8 +53,8 @@ public class CountThermalsAnalysis {
             for (DataPoint dataPoint : flight.getDatalog()) {
                 allFromFlight.add(new LocationPoint(dataPoint.getLatitude(), dataPoint.getLongitude()));
             }
-            allFromFlight = RemoveDuplicate.getUniqueLocationPointsIndexes(allFromFlight);
-            for (LocationPoint locationPoint : allFromFlight) {
+            List<LocationPoint> uniqueLocationPoints = RemoveDuplicate.getUniqueLocationPointsIndexe(allFromFlight);
+            for (LocationPoint locationPoint : uniqueLocationPoints) {
                 try {
                     outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredFlight();
                 } catch (InvalidCoordinatesException e) {

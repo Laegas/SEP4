@@ -2,6 +2,7 @@ package util.igc;
 
 import database.DAO.DaoManager;
 import model.IGCJoinWeather;
+import model.geography.InvalidCoordinatesException;
 import model.geography.LocationPoint;
 import model.igc.DataPoint;
 import model.igc.Flight;
@@ -63,18 +64,22 @@ public class RemoveDuplicate {
         return result;
 
     }
-    public static List<LocationPoint> getUniqueLocationPointsIndexes(List<LocationPoint> points)
+    public static List<LocationPoint> getUniqueLocationPointsIndexe(List<LocationPoint> points)
     {
-        HashSet<LocationPoint>  set = new HashSet<>();
-
-        for (LocationPoint point:points ) {
-            set.add(point);
+        List<LocationPoint> uniqueList = new ArrayList<>();
+        for (LocationPoint point: points)
+        { try {
+            if(!uniqueList.contains(point))
+            {
+                    uniqueList.add(point);
+            }
+            }
+                catch(InvalidCoordinatesException e)
+            {
+                System.out.println("hey hey remove me in Class RemoveDuplicate, when ETL is fixed");
+            }
         }
-        List<LocationPoint> result = new ArrayList<>();
-        for (LocationPoint point: set) {
-            result.add(point);
-        }
-        return result;
+        return uniqueList;
     }
 
 }

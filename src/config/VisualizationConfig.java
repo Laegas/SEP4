@@ -31,7 +31,7 @@ public class VisualizationConfig {
 
     // additional config for Google Maps
     public static final int ZOOM = 7;
-    public static final String ALPHA_PROPERTY = PROPERTIES[0];
+    public static final String ALPHA_PROPERTY = PROPERTIES[1];
     public static final String HOVER_PROPERTY1 = PROPERTIES[1];
     public static final String HOVER_PROPERTY2 = PROPERTIES[0];
     public static final double MINIMUM_ALPHA = 0.3;
