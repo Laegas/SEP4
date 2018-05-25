@@ -20,6 +20,7 @@ public class MetarReader {
                 e.printStackTrace();
             }
 
+            System.out.println(split[0]);
             weatherRecord.setYear(new Year(Integer.parseInt(split[0].substring(0, 4))));
             weatherRecord.setMonth(new Month(Integer.parseInt(split[0].substring(4, 6))));
             weatherRecord.setDay(new Day(Integer.parseInt(split[0].substring(6,8))));

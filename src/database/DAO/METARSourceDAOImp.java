@@ -53,8 +53,8 @@ public class METARSourceDAOImp implements METARSourceDAO {
              stmt.setDouble(6,temperature);
              stmt.setDouble(7,dewPoint);
              stmt.setString(8,date.toString());
-             stmt.setInt(9, hour);
-             stmt.setInt(10,minute);
+             stmt.setInt(9, minute);
+             stmt.setInt(10,hour);
              stmt.execute();
              stmt.close();
              conn.commit();
