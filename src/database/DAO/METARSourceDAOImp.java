@@ -61,6 +61,8 @@ public class METARSourceDAOImp implements METARSourceDAO {
              } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

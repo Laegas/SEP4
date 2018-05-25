@@ -9,8 +9,11 @@ public class WindSpeed {
     public WindSpeed(int knots) {
         setKonts(knots);
     }
+    public WindSpeed() {
+        this.konts = -1;
+    }
 
-    public int getKonts() {
+    public int getKonts() throws Exception{
         return konts;
     }
 
