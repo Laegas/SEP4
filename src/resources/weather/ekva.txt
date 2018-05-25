@@ -2,13 +2,11 @@
 # Query made at 05/23/2018 08:46:59 UTC
 # Time interval: from 05/11/2018 00:00  to 05/12/2018 23:59  UTC
 ##########################################################
-
 ##########################################################
 # EKVA, Vandel (Denmark)
 # WMO index: 06100
 # Latitude 55-42N. Longitude 009-12E. Altitude 73 m.
 ##########################################################
-
 ###################################
 #  METAR/SPECI from EKVA
 ###################################
@@ -108,7 +106,5 @@
 201805110120 METAR EKVA NIL=
 201805110050 METAR EKVA NIL=
 201805110020 METAR EKVA NIL=
-
 # No short TAF reports from EKVA in databse.
-
 # No large TAF reports from EKVA in databse.

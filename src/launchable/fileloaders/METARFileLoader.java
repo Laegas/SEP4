@@ -23,22 +23,14 @@ public class METARFileLoader {
 
         int counter = 1;
         for (File file : METAR_files) {
-            if (counter > 1) break;
             preprocessor = new METARTXTFilePreprocessor(file.getAbsolutePath());
             preprocessor.preProcess();
-            System.out.println("finished preprocessing file #" + counter++);
-        }
+            System.out.println("finished preprocessing file #" + counter + " " + file.getName());
 
-        counter = 1;
-
-        for (File file : METAR_files) {
-            if(counter > 1) break;
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             weatherRecords = fileDecoder.readMETARFile();
-            /*
             for(WeatherRecord r : weatherRecords)
                 METARDAO.insertWeatherRecord(r);
-            */
             System.out.println("finished loading file #" + counter++);
         }
     }

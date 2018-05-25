@@ -2,13 +2,11 @@ package util.igc;
 
 import database.DAO.DaoManager;
 import model.IGCJoinWeather;
+import model.geography.LocationPoint;
 import model.igc.DataPoint;
 import model.igc.Flight;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by kenneth on 24/05/2018.
@@ -65,4 +63,18 @@ public class RemoveDuplicate {
         return result;
 
     }
+    public static List<LocationPoint> getUniqueLocationPointsIndexes(List<LocationPoint> points)
+    {
+        HashSet<LocationPoint>  set = new HashSet<>();
+
+        for (LocationPoint point:points ) {
+            set.add(point);
+        }
+        List<LocationPoint> result = new ArrayList<>();
+        for (LocationPoint point: set) {
+            result.add(point);
+        }
+        return result;
+    }
+
 }

@@ -2,15 +2,11 @@
 # Query made at 05/23/2018 08:46:09 UTC
 # Time interval: from 05/11/2018 00:00  to 05/12/2018 23:59  UTC
 ##########################################################
-
 ##########################################################
 # EKAT, Anholt Island Automated Reporting Station  (Denmark)
 # WMO index: 06078
 # Latitude 56-42N. Longitude 011-33E. Altitude 8 m.
 ##########################################################
-
 # No METAR/SPECI reports frome EKAT in database.
-
 # No short TAF reports from EKAT in databse.
-
 # No large TAF reports from EKAT in databse.
