@@ -21,11 +21,12 @@ public class VisualizationConfig {
 
     // config for resource (JSON) generation
     public static final int CHUNKS = 1;
-    public static final String[] PROPERTIES = new String[]{"flights", "thermals"};
+    public static final String[] PROPERTIES = new String[]{"flights", "thermals", "test"};
     public static String[] PROPERTY_VALUES(FeatureProperties feature) {
         String[] values = new String[PROPERTIES.length];
         values[0] = feature.getTotal().getNumberOfRegisteredFlights() + "";
         values[1] = feature.getTotal().getNumberOfRegisteredThermal() + "";
+        values[2] = "1";
         return values;
     }
 
