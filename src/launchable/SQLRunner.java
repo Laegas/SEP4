@@ -10,8 +10,8 @@ public class SQLRunner {
 
     public static void main(String[] args) {
 //        runAllDDL();
-//        runETL();
-          runAfterETL();
+        runETL();
+//          runAfterETL();
     }
 
     public static void runAllDDL() {
