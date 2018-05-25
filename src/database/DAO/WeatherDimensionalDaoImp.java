@@ -2,12 +2,11 @@ package database.DAO;
 
 import model.geography.Degree;
 import model.time.*;
+import model.time.Date;
+import model.time.Time;
 import model.weather.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
     @Override
     public List<WeatherRecord> getWeatherRecord(Date date) {
         Connection conn = DatabaseHelper.getInstance().getConnection();
-        String sql = "select the_date,hour,wind_direction,wind_speed,temperature,dew_point,airport_code, minute, wind_direction_from,WIND_DIRECTION_TO from f_weather_record where the_date = TO_DATE(?/?/?, DD/MM/YYYY)";
+        String sql = "select w_date,w_time,wind_direction,wind_speed,WIND_DIRECTION_FROM,WIND_DIRECTION_TO,temperature,dew_point,airport_code from f_weather_record where w_date = TO_DATE(?/?/?, 'dd/mm/yyyy')";
 
 
         try {
@@ -48,24 +47,21 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
             WindDirection tmpWindDirectionFrom;
             WindDirection tmpWindDirectionTo;
             VaryingWindDirection tmpVaryingWindDirection;
-            int hour;
-            int minute;
             while (rs.next()) {
-                tmpDate = new Date(rs.getDate(1));
-                hour = rs.getInt(2);
-                tmpWindDirection = new WindDirection(new Degree(rs.getInt(3)));
-                tmpWindSpeed = new WindSpeed(rs.getInt(4));
-                tmpTemperature = new DegreeCelcius(rs.getDouble(5));
-                tempDewPoint = new DegreeCelcius(rs.getDouble(6));
-                airportCode = new ICAOAirportCode(rs.getString(7));
-                minute = rs.getInt(8);
-                tmpWindDirectionFrom = new WindDirection(new Degree(rs.getInt(9)));
-                tmpWindDirectionTo = new WindDirection(new Degree(rs.getInt(10)));
+                tmpDate = new Date(rs.getDate("w_date"));
+                tmpWindDirection = new WindDirection(new Degree(rs.getInt("wind_direction")));
+                tmpWindSpeed = new WindSpeed(rs.getInt("wind_speed"));
+                tmpTemperature = new DegreeCelcius(rs.getDouble("temperature"));
+                tempDewPoint = new DegreeCelcius(rs.getDouble("dew_point"));
+                airportCode = new ICAOAirportCode(rs.getString("airport_code"));
+                tmpWindDirectionFrom = new WindDirection(new Degree(rs.getInt("wind_direction_from")));
+                tmpWindDirectionTo = new WindDirection(new Degree(rs.getInt("wind_direction_to")));
 
                 tmpVaryingWindDirection = new VaryingWindDirection(tmpWindDirectionFrom.getDegree(), tmpWindDirectionTo.getDegree());
                 tmpWind = new Wind(tmpWindDirection, tmpWindSpeed);
-                tmpTime = new Time(new Hour(hour), new Minute(minute), new Second(0));
-                System.out.println("awsome minute :" +  minute);
+
+                java.sql.Time sqlTime = rs.getTime("w_time");
+                tmpTime = new Time(new Hour(sqlTime.getHours()), new Minute(sqlTime.getMinutes()), new Second(0));
 
                 records.add(new WeatherRecord(airportCode,tmpWind,tmpVaryingWindDirection,tmpTemperature,tempDewPoint,tmpDate.getDay(),tmpDate.getMonth(),tmpDate.getYear(),tmpTime.getHour(),tmpTime.getMinute() ));
             }

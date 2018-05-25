@@ -14,7 +14,7 @@ insert into F_WEATHER_RECORD (
     AIRPORT_CODE
     ) (select
     WEATHER_ID,
-    (select SURR_KEY_FLIGHT from D_FLIGHT f where f.START_DATE = THE_DATE) as surr_key_flight,
+    1 as surr_key_flight, -- this is going to be deleted anyways
     THE_DATE,
     TIME,
     WIND_DIRECTION,
