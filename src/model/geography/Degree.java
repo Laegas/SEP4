@@ -16,7 +16,6 @@ public class Degree {
 
     public void setDegree(int degree) {
         if (degree < 0 || degree > 360) {
-            throw new RuntimeException("Not a valid degree");
         }
         this.degree = degree;
     }

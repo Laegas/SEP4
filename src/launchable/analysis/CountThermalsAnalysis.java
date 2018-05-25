@@ -34,7 +34,7 @@ public class CountThermalsAnalysis {
         for (Flight flight : flights) {
 
             List<LocationPoint> thermalIndexes = new ArrayList<>();
-            List<ThermalDataPointGroup> thermalDataPointGroups = thermalFinder.findThermalsUsingGPSAltitude(flight);
+            List<ThermalDataPointGroup> thermalDataPointGroups = thermalFinder.findThermalsUsingPressureAltitude(flight);
             for (ThermalDataPointGroup group : thermalDataPointGroups) {
                 for (DataPoint dataPoint : group.getGroup()) {
                     thermalIndexes.add(new LocationPoint(dataPoint.getLatitude(), dataPoint.getLongitude()));
