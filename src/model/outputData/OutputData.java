@@ -11,7 +11,12 @@ public class OutputData implements Iterable<FeatureProperties>{
 
     FeatureProperties[][] featureProperties;
 
+    /**
+     * returns a vlaue 2/3 ed of the max value
+     * @return
+     */
     public int getMaxTotalRegisteredFlightCount() {
+
         int currentMax = -1;
         for (int h = 0; h < featureProperties.length; h++) {
             for (int w = 0; w < featureProperties[0].length; w++) {
@@ -20,7 +25,8 @@ public class OutputData implements Iterable<FeatureProperties>{
                 }
             }
         }
-        return currentMax;
+
+        return (int)(currentMax*2.0/3.0);
     }
 
     public FeatureProperties getFeatureProperties(int latIndex, int longIndex) {

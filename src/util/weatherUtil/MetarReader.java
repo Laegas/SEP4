@@ -1,115 +1,71 @@
 package util.weatherUtil;
 
 import model.geography.Degree;
-import model.time.Day;
-import model.time.Hour;
-import model.time.Minute;
+import model.time.*;
 import model.weather.*;
 
-/**
- * Created by kenneth on 17/05/2018.
- */
 public class MetarReader {
-// source for decoding metar used: https://en.wikipedia.org/wiki/METAR
-
-
-    public static WeatherRecord decodeMetar(String metar) throws NotMETARException {
-        // METAR	eksn 170950z 01012kt cavok 15/10 q1016
-        /*
-
-					Year year = new Year(Integer.parseInt(strings[0].substring(0, 4)));
-					Month month = new Month(Integer.parseInt(strings[0].substring(4, 6)));
-					Day day = new Day(Integer.parseInt(strings[0].substring(6,8)));
-					Hour hour = new Hour(Integer.parseInt(strings[0].substring(8,10)));
-					Minute minute = new Minute(Integer.parseInt(strings[0].substring(10,12)));
-					ICAOAirportCode airportCode = new ICAOAirportCode(strings[2]);
-					int padding = 0;
-					if(l.substring(32,36).equals("AUTO"))
-						padding += 5;
-
-
-					System.out.println(l.substring(32+padding, 36+padding));
-				*/
+// source for decoding metar used: http://pykl3radar.com/library/afpam11-238.pdf
+    public static WeatherRecord decodeMetar(String metar) throws METARException {
         WeatherRecord weatherRecord = new WeatherRecord();
 
         if (metar.substring(13, 18).equalsIgnoreCase("metar")) {
             String[] split = metar.split(" ");
-            if(!split[4].equalsIgnoreCase("nil=")) {
-                for (String s : split) {
-                    System.out.print("." + s + ".");
-                }
-                System.out.println();
+            try {
+            if(split[3].equalsIgnoreCase("nil=") || split[4].equalsIgnoreCase("nil=")) {
+                throw new METARException("NIL Record");
+            } } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println(metar);
+                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
 
-            int counter = 0;
-            for (String item : split) {
-                switch (counter++) {
-                    case 0: // setting record id/code
-                        if (item.length() != 4) {
-                            continue;
-                        }
-                        weatherRecord.setAirportCode(new ICAOAirportCode(split[0]));
-                        break;
-                    case 1: // case for time
-                        String dayTimeString = item;
-                        if (dayTimeString.charAt(dayTimeString.length() - 1) == 'z') {
-                            //this is the day and time bit
-                            String dayOfMonth = dayTimeString.substring(0, 2);
-                            weatherRecord.setDay(new Day(Integer.parseInt(dayOfMonth)));
+            System.out.println(split[0]);
+            weatherRecord.setYear(new Year(Integer.parseInt(split[0].substring(0, 4))));
+            weatherRecord.setMonth(new Month(Integer.parseInt(split[0].substring(4, 6))));
+            weatherRecord.setDay(new Day(Integer.parseInt(split[0].substring(6,8))));
+            weatherRecord.setHour(new Hour(Integer.parseInt(split[0].substring(8,10))));
+            weatherRecord.setMinute(new Minute(Integer.parseInt(split[0].substring(10,12))));
 
-                            String hour = dayTimeString.substring(2, 4);
-                            weatherRecord.setHour(new Hour(Integer.parseInt(hour)));
+            if(split[2].length() != 4)
+                throw new METARException("Invalid ICAO length. Expected 4. Got " + split[2].length());
+            weatherRecord.setAirportCode(new ICAOAirportCode(split[2]));
 
-                            String minute = dayTimeString.substring(4, 6);
-                            weatherRecord.setMinute(new Minute(Integer.parseInt(minute)));
-                            counter++;
-                        }
-                        break;
-                    case 2: // wind
-                        if (item.substring(item.length() - 2, item.length()).equalsIgnoreCase("kt")) {
+            int padding = 0;
+            if(split[4].equalsIgnoreCase("auto"))
+                padding++;
 
-                            int intWindDirection = Integer.parseInt(item.substring(0, 3));
-                            int intWindSpeed = Integer.parseInt(item.substring(3, 5));
-
-                            WindDirection windDirection = new WindDirection(new Degree(intWindDirection));
-                            WindSpeed windSpeed = new WindSpeed(intWindSpeed);
-                            weatherRecord.setWind(new Wind(windDirection, windSpeed));
-                        }
-                        break;
-                    case 3: // temperature and dew point:
-                        String[] temps = item.split("/");
-                        if (temps.length == 2) {
-                            // getting the temperature (index 0)
-                            DegreeCelcius degreeCelcius;
-                            if (temps[0].charAt(0) == 'M') {
-                                int temp = Integer.parseInt(temps[0].substring(1, 3));
-                                double theTemp = 0 - temp;
-                                degreeCelcius = new DegreeCelcius(theTemp);
-                            } else {
-                                int temp = Integer.parseInt(temps[0]);
-                                degreeCelcius = new DegreeCelcius((double) temp);
-                            }
-                            weatherRecord.setTemperature(degreeCelcius);
-
-                            //getting (dew point)
-                            DegreeCelcius dewPoint;
-                            if (temps[1].charAt(0) == 'M') {
-                                int temp = Integer.parseInt(temps[1].substring(1, 3));
-                                double theTemp = 0 - temp;
-                                dewPoint = new DegreeCelcius(theTemp);
-                            } else {
-                                int temp = Integer.parseInt(temps[1]);
-                                dewPoint = new DegreeCelcius((double) temp);
-                            }
-                            weatherRecord.setDewPoint(degreeCelcius);
-                        }
-                        break;
-                }
+            if(!split[4+padding].matches("([0-9]{3}|VRB)[0-9]{2}KT")) {
+                throw new METARException("Invalid wind direction and wind speed. Expected format 00000KT or VRB00KT. " +
+                        "Got " + split[4+padding]);
             }
+
+            if(split[4+padding].substring(0,3).equalsIgnoreCase("VRB")) {
+                weatherRecord.setWind(new Wind(new WindDirection(), new WindSpeed(Integer.parseInt(split[4+padding].substring(3,5)))));
+            } else {
+                weatherRecord.setWind(new Wind(new WindDirection(new Degree(Integer.parseInt(split[4 + padding].substring(0, 3)))), new WindSpeed(Integer.parseInt(split[4+padding].substring(3,5)))));
+            }
+
+            if(split[5+padding].matches("[0-9]{3}V[0-9]{3}")) {
+                weatherRecord.setVaryingWindDirection(new VaryingWindDirection(new Degree(Integer.parseInt
+                        (split[5+padding].substring(0,3))),
+                        new Degree(Integer.parseInt(split[5+padding].substring(4,7)))));
+                padding++;
+            }
+
+            if(!split[7+padding].matches("[0-9]{2}/M?[0-9]{2}")) {
+                throw new METARException("Invalid temperature and dew point. Expected format 00/00 or 00/M00. Got " +
+                        split[7+padding]);
+            }
+
+            weatherRecord.setTemperature(new DegreeCelcius(Double.parseDouble(split[7+padding].substring(0,2))));
+            int p = 0;
+            if(split[7+padding].indexOf('M') > 0)
+                p = 1;
+            weatherRecord.setDewPoint(new DegreeCelcius(Double.parseDouble(split[7+padding].substring(3+p,5+p))));
         } else {
-            throw new NotMETARException("Not a METAR record");
+            throw new METARException("Not a METAR record");
         }
-
         return weatherRecord;
     }
 }
