@@ -69,6 +69,8 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
