@@ -57,13 +57,13 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
                 tmpWindDirectionFrom = new WindDirection(new Degree(rs.getInt("wind_direction_from")));
                 tmpWindDirectionTo = new WindDirection(new Degree(rs.getInt("wind_direction_to")));
 
-                tmpVaryingWindDirection = new VaryingWindDirection(tmpWindDirectionFrom.getDegree(), tmpWindDirectionTo.getDegree());
+               // tmpVaryingWindDirection = new VaryingWindDirection(tmpWindDirectionFrom.getDegree(), tmpWindDirectionTo.getDegree());
                 tmpWind = new Wind(tmpWindDirection, tmpWindSpeed);
 
                 java.sql.Time sqlTime = rs.getTime("w_time");
                 tmpTime = new Time(new Hour(sqlTime.getHours()), new Minute(sqlTime.getMinutes()), new Second(0));
 
-                records.add(new WeatherRecord(airportCode,tmpWind,tmpVaryingWindDirection,tmpTemperature,tempDewPoint,tmpDate.getDay(),tmpDate.getMonth(),tmpDate.getYear(),tmpTime.getHour(),tmpTime.getMinute() ));
+               // records.add(new WeatherRecord(airportCode,tmpWind,tmpVaryingWindDirection,tmpTemperature,tempDewPoint,tmpDate.getDay(),tmpDate.getMonth(),tmpDate.getYear(),tmpTime.getHour(),tmpTime.getMinute() ));
             }
 
 
