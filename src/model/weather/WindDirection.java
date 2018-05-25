@@ -10,8 +10,15 @@ public class WindDirection {
     private boolean variable;
 
     public WindDirection(Degree degree) {
-        this.degree = degree;
+        setDegree(degree);
         this.variable = false;
+    }
+
+    public void setDegree(Degree degree) {
+        if (degree.getDegree() < 0) {
+            this.variable = true;
+        }
+        this.degree = degree;
     }
 
     public WindDirection() {
@@ -19,9 +26,9 @@ public class WindDirection {
         this.variable = true;
     }
 
-    public Degree getDegree(){
+    public Degree getDegree() throws Exception{
         if(variable)
-           return null;
+           throw new Exception("the degree is now measureble");
         return degree;
     }
 }

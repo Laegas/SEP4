@@ -5,20 +5,15 @@ package model.weather;
  */
 public class WindSpeed {
     private int konts;
-    private boolean isValid;
 
     public WindSpeed(int knots) {
         setKonts(knots);
-        this.isValid = true;
     }
     public WindSpeed() {
         this.konts = -1;
-        this.isValid = false;
     }
 
     public int getKonts() throws Exception{
-        if (!isValid)
-            throw new Exception("not valid data");
         return konts;
     }
 

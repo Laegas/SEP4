@@ -15,17 +15,23 @@ import java.util.List;
  * Created by kenneth on 24/05/2018.
  */
 public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
+
+    public static void main(String[] args) {
+        WeatherDimensionalDao dao = new WeatherDimensionalDaoImp();
+        List<WeatherRecord> weatherRecords = dao.getWeatherRecord(new Date(11, 5, 2018));
+        System.out.println(weatherRecords.size());
+    }
     @Override
     public List<WeatherRecord> getWeatherRecord(Date date) {
         Connection conn = DatabaseHelper.getInstance().getConnection();
-        String sql = "select the_date,hour,wind_direction,wind_speed,temperature,dew_point,airport_code, minute, wind_direction_from,WIND_DIRECTION_TO from f_weather_record where the_date = TO_DATE(?/?/?, dd/mm/yyyy)";
+        String sql = "select the_date,hour,wind_direction,wind_speed,temperature,dew_point,airport_code, minute, wind_direction_from,WIND_DIRECTION_TO from f_weather_record where the_date = TO_DATE(?/?/?, DD/MM/YYYY)";
 
 
         try {
             PreparedStatement stm = conn.prepareStatement(sql);
-            stm.setString(1,String.format("%02d", date.getDay()));
-            stm.setString(2, String.format("%02d", date.getMonth()));
-            stm.setString(3, String.format("%04d", date.getYear()));
+            stm.setString(1,String.format("%02d", date.getDay().getDayOfMonth()));
+            stm.setString(2, String.format("%02d", date.getMonth().getMonthNumber()));
+            stm.setString(3, String.format("%04d", date.getYear().getYear()));
 
 
             ResultSet rs = stm.executeQuery();
