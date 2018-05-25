@@ -32,10 +32,10 @@ public class VisualizationConfig {
 
     // additional config for Google Maps
     public static final int ZOOM = 7;
-    public static final String ALPHA_PROPERTY = PROPERTIES[1];
-    public static final String HOVER_PROPERTY1 = PROPERTIES[1];
-    public static final String HOVER_PROPERTY2 = PROPERTIES[0];
+    public static final String ALPHA_PROPERTY = PROPERTIES[0];
+    public static final String[] DISPLAY_PROPERTIES = new String[]{PROPERTIES[1], PROPERTIES[0]};
     public static final double MINIMUM_ALPHA = 0.3;
+    public static final String DISPLAY_STRING_FORMAT = "T:@1 / F:@2"; // @1 through to @9 represents DISPLAY_PROPERTIES
 
 
 }
