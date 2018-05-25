@@ -16,12 +16,12 @@ public class WindDirection {
 
     public WindDirection() {
         this.degree = null;
-        this.variable = false;
+        this.variable = true;
     }
 
-    public Degree getDegree() throws Exception {
+    public Degree getDegree(){
         if(variable)
-            throw new Exception("Wind direction is variable");
+           return null;
         return degree;
     }
 }

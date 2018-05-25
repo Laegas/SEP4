@@ -12,4 +12,4 @@ select count(*) from F_IGC_LOG;
 SELECT DISTINCT hour
 FROM WEATHER_RECORD;
 
-select count(distinct ICAO_AIRPORT_CODE) from WEATHER_RECORD;
+select * from weather_record;
