@@ -33,12 +33,7 @@ public class Time implements Comparable<Time>{
         this.minute= new Minute(minute);
         this.second= new Second(second);
     }
-    public Time(int seconds)
-    {
-        this.hour= new Hour(seconds/3600);
-        this.minute = new Minute(seconds%3600/60);
-        this.second = new Second(seconds%3600%60);
-    }
+
 
     public Minute getMinute() {
         return minute;
