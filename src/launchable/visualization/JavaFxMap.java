@@ -4,6 +4,8 @@ import config.FileConfig;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -70,11 +72,34 @@ public class JavaFxMap extends Application {
         zoomIn.setOnAction(actionEvent -> webEngine.executeScript("document.zoomIn()"));
         Button zoomOut = new Button("Zoom Out");
         zoomOut.setOnAction(actionEvent -> webEngine.executeScript("document.zoomOut()"));
+
+        // creating radio buttons
+        final ToggleGroup radioButtonGroup = new ToggleGroup();
+        RadioButton rb1 = new RadioButton("Red");
+        rb1.setUserData("Red");
+        rb1.setToggleGroup(radioButtonGroup);
+        rb1.setSelected(true);
+        RadioButton rb2 = new RadioButton("Green");
+        rb2.setToggleGroup(radioButtonGroup);
+        rb2.setUserData("Green");
+
+        radioButtonGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+                switch(new_toggle.getUserData().toString()) {
+                    case "Red": webEngine.executeScript("document.restyle(0)"); break;
+                    case "Green": webEngine.executeScript("document.restyle(1)"); break;
+                }
+            }
+        });
+
         // create toolbar
         ToolBar toolBar = new ToolBar();
         toolBar.getStyleClass().add("map-toolbar");
         toolBar.getItems().addAll(
                 road, satellite, hybrid, terrain,
+                createSpacer(),
+                rb1, rb2,
                 createSpacer(),
                 new Label("Location:"), searchBox, zoomIn, zoomOut);
         // create root

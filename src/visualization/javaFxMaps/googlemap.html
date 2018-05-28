@@ -33,22 +33,48 @@
                 document.map.data.addGeoJson(json[i]);
             }
 
-            document.map.data.setStyle(function(feature) {
-                var alpha = feature.getProperty(alphaProperty);
-                var alphaChannel = (minimumAlpha + (alpha * (1 - minimumAlpha)) / max_flights);
-                if(alphaChannel > 1)
-                    alphaChannel = 1;
-                var color = "rgba(255, 0, 0, " + alphaChannel + ")";
-                return {
-                    fillColor: color,
-                    strokeWeight: 0
-                }
-            });
+            document.restyle = function restyle(selector) {
+                document.map.data.setStyle(function(feature) {
+                    var alpha, alphaChannel, color;
+                    switch (selector) {
+                        case 0:
+                            alpha = feature.getProperty(alphaProperty);
+                            alphaChannel = (minimumAlpha + (alpha * (1 - minimumAlpha)) / max_flights);
+                            if (alphaChannel > 1)
+                                alphaChannel = 1;
+                            color = "rgba(255, 0, 0, " + alphaChannel + ")";
+                            return {
+                                fillColor: color,
+                                strokeWeight: 0
+                            };
+                        case 1:
+                            alpha = feature.getProperty(alphaProperty);
+                            alphaChannel = (minimumAlpha + (alpha * (1 - minimumAlpha)) / max_flights);
+                            if (alphaChannel > 1)
+                                alphaChannel = 1;
+                            color = "rgba(0, 255, 0, " + alphaChannel + ")";
+                            return {
+                                fillColor: color,
+                                strokeWeight: 0
+                            };
+                    }
+                });
+            };
+
+            document.restyle(0);
 
             document.map.data.addListener('mouseover', function(event) {
                 document.getElementById('info').className = "";
-                document.getElementById('info').textContent = event.feature.getProperty(hoverProperty1) + " / " +
-                    event.feature.getProperty(hoverProperty2);
+                var displayString = displayStringFormat;
+                for(var i = 0; i < displayProperties.length; i++)
+                {
+                    var index = displayString.indexOf("@" + (i+1));
+                    if (index >= 0)
+                        displayString = displayString.substring(0, index) +
+                            event.feature.getProperty(displayProperties[i]) +
+                            displayString.substring(index + 2, displayString.length);
+                }
+                document.getElementById('info').textContent = displayString;
             });
 
             document.map.data.addListener('mouseout', function(event) {

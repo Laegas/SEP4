@@ -35,6 +35,8 @@ public class GenerateJson {
     
     public void generateJson(OutputData data) {
 
+
+
         FeatureProperties[][] grid = data.getFeatureProperties();
 
         DecimalFormat df = new DecimalFormat("#.######", new DecimalFormatSymbols(Locale.US));
@@ -56,11 +58,13 @@ public class GenerateJson {
                     for(int j = 0; j < chunkGrid[0].length; j++) {
                         if(chunkGrid[i][j].isMeaningful()) {
                             String[] propertyValues = PROPERTY_VALUES(chunkGrid[i][j]);
+                            JSONObject properties = new JSONObject();
+                            for(int propertyIndex = 0; propertyIndex < PROPERTIES.length; propertyIndex++) {
+                                properties.put(PROPERTIES[propertyIndex], propertyValues[propertyIndex]);
+                            }
                             features.put(new JSONObject()
                                 .put("type", "Feature")
-                                .put("properties", new JSONObject()
-                                    .put(PROPERTIES[0], propertyValues[0] + "")
-                                    .put(PROPERTIES[1], propertyValues[1] + ""))
+                                .put("properties", properties)
                                 .put("geometry", new JSONObject()
                                     .put("type", "Polygon")
                                     .put("coordinates", new JSONArray()
