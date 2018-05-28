@@ -28,7 +28,7 @@ public class WindDirection {
 
     public Degree getDegree() throws Exception{
         if(variable)
-           throw new Exception("the degree is now measureble");
+           throw new Exception("the degree is not measurable");
         return degree;
     }
 }

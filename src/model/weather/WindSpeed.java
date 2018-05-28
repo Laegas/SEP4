@@ -4,23 +4,23 @@ package model.weather;
  * Created by kenneth on 17/05/2018.
  */
 public class WindSpeed {
-    private int konts;
+    private int knots;
 
     public WindSpeed(int knots) {
-        setKonts(knots);
+        setKnots(knots);
     }
     public WindSpeed() {
-        this.konts = -1;
+        this.knots = -1;
     }
 
-    public int getKonts() throws Exception{
-        return konts;
+    public int getKnots() throws Exception{
+        return knots;
     }
 
-    public void setKonts(int konts) {
-        if (konts < 0) {
+    public void setKnots(int knots) {
+        if (knots < 0) {
             throw new RuntimeException("We can not have wind speed less than 0");
         }
-        this.konts = konts;
+        this.knots = knots;
     }
 }
