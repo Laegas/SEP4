@@ -54,9 +54,8 @@ public class GenerateJson {
 
                 for (int i = 0; i < chunkGrid.length; i++) {
                     for (int j = 0; j < chunkGrid[0].length; j++) {
-                        if (chunkGrid[i][j].isMeaningful()) {
-                            String[] propertyValues = new String[0];
-                            propertyValues = PROPERTY_VALUES(chunkGrid[i][j]);
+                        if (IS_MEANINGFUL(chunkGrid[i][j])) {
+                            String[] propertyValues = PROPERTY_VALUES(chunkGrid[i][j]);
                             JSONObject properties = new JSONObject();
                             for (int propertyIndex = 0; propertyIndex < PROPERTIES.length; propertyIndex++) {
                                 properties.put(PROPERTIES[propertyIndex], propertyValues[propertyIndex]);

@@ -30,12 +30,13 @@ public class CountThermalsAnalysis {
         // some output data structure
         OutputData outputData = new OutputData();
 
-        analayse(flights, outputData);
+        analyse(flights, outputData);
 
         GenerateJson.getInstance().generateJson(outputData);
+        GenerateJSSettings.getInstance().generateSettings(outputData);
     }
 
-    public static void analayse(List<Flight> flights, OutputData outputData) {
+    public static void analyse(List<Flight> flights, OutputData outputData) {
 
         ThermalFinder thermalFinder = new ThermalFinderImp();
         for (Flight flight : flights) {

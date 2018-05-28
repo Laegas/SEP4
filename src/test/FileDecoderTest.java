@@ -7,12 +7,10 @@ import model.weather.WeatherRecord;
 import org.junit.Test;
 import util.file.FileDecoder;
 
-import javax.xml.crypto.Data;
-
 import static org.junit.Assert.*;
 
 public class FileDecoderTest {
-@Test
+    @Test
     public void readIGCTestFileWithExpectedValues()
 {
     FileDecoder fd = new FileDecoder(FileConfig.TEST_PATH+"/testIGCexpected.igc");
@@ -73,6 +71,4 @@ public class FileDecoderTest {
 //        nothing is supposed to happen other than a METAR Exception was caught in the FileDecoder method decode readMETARFile()
 //        no lines have been successfully decoded.
     }
-
-
 }

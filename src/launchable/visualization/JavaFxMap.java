@@ -149,7 +149,7 @@ public class JavaFxMap extends Application {
                 createSpacer(),
                 new Label("Visible:"), slider,
                 createSpacer(),
-                rb1, rb2,
+                rb1, rb2, rb3, rb4,
                 createSpacer(),
                 new Label("Location:"), searchBox);
         // create root
