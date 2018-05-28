@@ -28,4 +28,16 @@ public class Hour implements Comparable<Hour>{
             return -1;
         }
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+
+        Hour hour1 = (Hour) object;
+
+        return hour == hour1.hour;
+    }
+
+
 }

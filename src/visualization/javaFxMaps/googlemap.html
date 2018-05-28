@@ -34,8 +34,11 @@
             }
 
             document.map.data.setStyle(function(feature) {
-                var value = feature.getProperty('flights');
-                var color = "rgba(255, 0, 0, " + (value / 10) + ")";
+                var alpha = feature.getProperty(alphaProperty);
+                var alphaChannel = (minimumAlpha + (alpha * (1 - minimumAlpha)) / max_flights);
+                if(alphaChannel > 1)
+                    alphaChannel = 1;
+                var color = "rgba(255, 0, 0, " + alphaChannel + ")";
                 return {
                     fillColor: color,
                     strokeWeight: 0
@@ -44,8 +47,8 @@
 
             document.map.data.addListener('mouseover', function(event) {
                 document.getElementById('info').className = "";
-                document.getElementById('info').textContent = event.feature.getProperty('thermals') + " / " +
-                    event.feature.getProperty('flights');
+                document.getElementById('info').textContent = event.feature.getProperty(hoverProperty1) + " / " +
+                    event.feature.getProperty(hoverProperty2);
             });
 
             document.map.data.addListener('mouseout', function(event) {

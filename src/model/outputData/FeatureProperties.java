@@ -1,34 +1,71 @@
 package model.outputData;
 
 import config.VisualizationConfig;
+import model.RegisteredFlightAndThermalCount;
 
 /**
  * Created by kenneth on 22/05/2018.
  */
 public class FeatureProperties {
-    private int numberOfRegisteredFlights;
-    private int numberOfRegisteredThermal;
+    private RegisteredFlightAndThermalCount total;
+
+    public RegisteredFlightAndThermalCount getTotal() {
+        return total;
+    }
+
+    public RegisteredFlightAndThermalCount getBetweenZeroAndTenDegree() {
+        return betweenZeroAndTenDegree;
+    }
+
+    public RegisteredFlightAndThermalCount getBetweenTenAndTwentyDegree() {
+        return betweenTenAndTwentyDegree;
+    }
+
+    public RegisteredFlightAndThermalCount getBetweenTwentyAndThirtyDegree() {
+        return betweenTwentyAndThirtyDegree;
+    }
+
+    private RegisteredFlightAndThermalCount betweenZeroAndTenDegree;
+    private RegisteredFlightAndThermalCount betweenTenAndTwentyDegree;
+    private RegisteredFlightAndThermalCount betweenTwentyAndThirtyDegree;
+
 
     public FeatureProperties() {
-
-        this.numberOfRegisteredThermal = 0;
-        this.numberOfRegisteredFlights = 0;
-
+        this.total = new RegisteredFlightAndThermalCount();
+        this.betweenZeroAndTenDegree = new RegisteredFlightAndThermalCount();
+        this.betweenTenAndTwentyDegree = new RegisteredFlightAndThermalCount();
+        this.betweenTwentyAndThirtyDegree = new RegisteredFlightAndThermalCount();
+    }
+    public void incrementZeroToTenFlight() {
+        this.betweenZeroAndTenDegree.incrementRegisteredFlight();
+    }
+    public void incrementZeroToTenThermal() {
+     this.betweenZeroAndTenDegree.incrementRegisteredThermal();
+    }
+    public int getZeroToTenFlight() {
+        return this.betweenZeroAndTenDegree.getNumberOfRegisteredFlights();
+    }
+    public int getZeroToTenThermal() {
+        return this.betweenZeroAndTenDegree.getNumberOfRegisteredThermal();
+    }
+    public int getZeroToTenPercentThermal() {
+        return (int) ((double) this.betweenZeroAndTenDegree.getNumberOfRegisteredThermal() / (double) this.betweenZeroAndTenDegree.getNumberOfRegisteredFlights());
     }
 
-    public void incrementNumberOfRegisteredThermal() {
-        numberOfRegisteredThermal++;
+
+    public void incrementTotalNumberOfRegisteredThermal() {
+        this.total.incrementRegisteredThermal();;
     }
-    public void incrementNumberOfRegisteredFlights() {
-        numberOfRegisteredFlights++;
+    public void incrementTotalNumberOfRegisteredFlights() {
+        this.total.incrementRegisteredFlight();
     }
 
-    public int getNumberOfRegisteredFlights() {
-        return numberOfRegisteredFlights;
+    public int getTotalNumberOfRegisteredFlights() {
+        return this.total.getNumberOfRegisteredFlights();
     }
 
-    public int getNumberOfRegisteredThermal() {
-        return numberOfRegisteredThermal;
+    public int getTotalNumberOfRegisteredThermal() {
+        return this.total.getNumberOfRegisteredThermal();
     }
 
     /**
@@ -37,17 +74,16 @@ public class FeatureProperties {
      * @return true if feature properties are meaningful to show in visualization.
      */
     public boolean isMeaningful() {
-        return numberOfRegisteredFlights > 0;
+        return this.total.getNumberOfRegisteredFlights()> 0;
 //        return Math.random() > 0.9;
 //        return (numberOfRegisteredThermal > 0);
     }
-
 
     /**
      * returns a number between 0 and 100
      * @return
      */
-    public int getPercentageChanceOfThermal() {
-        return (int) ((double) numberOfRegisteredThermal / (double) numberOfRegisteredFlights);
+    public int getTotalPercentageChanceOfThermal() {
+        return (int) ((double) this.total.getNumberOfRegisteredThermal() / (double) this.total.getNumberOfRegisteredFlights());
     }
 }

@@ -84,4 +84,16 @@ public class DataPoint implements Comparable<DataPoint>{
 	public int compareTo(DataPoint o) {
 		return this.time.compareTo(o.getTime());
 	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) return true;
+		if (object == null || getClass() != object.getClass()) return false;
+
+		DataPoint dataPoint = (DataPoint) object;
+
+		return time.equals(dataPoint.time);
+	}
+
+
 }
