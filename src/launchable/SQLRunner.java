@@ -9,9 +9,9 @@ import java.io.InputStreamReader;
 public class SQLRunner {
 
     public static void main(String[] args) {
-        runAllDDL();
-//        runETL();
-//          runAfterETL();
+//        runAllDDL();
+        runETL();
+          runAfterETL();
     }
 
     public static void runAllDDL() {
@@ -35,16 +35,17 @@ public class SQLRunner {
     }
 
     public static void runETL() {
+        //running ETL for IGC
+        executeSql(SQLRunnerConfig.IGC_E.getAbsolutePath());
+        executeSql(SQLRunnerConfig.IGC_T.getAbsolutePath());
+        executeSql(SQLRunnerConfig.IGC_L.getAbsolutePath());
 
         //running etl for weather
         executeSql(SQLRunnerConfig.WEATHER_E.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_T.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_L.getAbsolutePath());
 
-        //running ETL for IGC
-        executeSql(SQLRunnerConfig.IGC_E.getAbsolutePath());
-        executeSql(SQLRunnerConfig.IGC_T.getAbsolutePath());
-        executeSql(SQLRunnerConfig.IGC_L.getAbsolutePath());
+
 
 
     }

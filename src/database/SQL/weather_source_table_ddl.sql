@@ -30,8 +30,8 @@ create table weather_record
   wind_speed int,
   wind_direction_from int,
   wind_direction_to int,
-  temperature number(3,2),
-  dew_point number(3,2),
+  temperature number(5,2),
+  dew_point number(5,2),
   the_date date,
   hour int,
   minute int

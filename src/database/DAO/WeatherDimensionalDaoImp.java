@@ -23,17 +23,26 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
     @Override
     public List<WeatherRecord> getWeatherRecord(Date date) {
         Connection conn = DatabaseHelper.getInstance().getConnection();
-        String sql = "select w_date,w_time,wind_direction,wind_speed,WIND_DIRECTION_FROM,WIND_DIRECTION_TO,temperature,dew_point,airport_code from f_weather_record where w_date = TO_DATE(?/?/?, 'dd/mm/yyyy')";
+        String sql = "select w_date,w_time,wind_direction,wind_speed,WIND_DIRECTION_FROM,WIND_DIRECTION_TO,temperature,dew_point,airport_code from F_WEATHER_RECORD where W_DATE = TO_DATE( ?, 'DD/MM/YYYY')";
 
+//        String sql = "select count(*) from F_WEATHER_RECORD where W_DATE = to_date('11/05/2018', 'DD/MM/YYYY')";
 
         try {
             PreparedStatement stm = conn.prepareStatement(sql);
-            stm.setString(1,String.format("%02d", date.getDay().getDayOfMonth()));
-            stm.setString(2, String.format("%02d", date.getMonth().getMonthNumber()));
-            stm.setString(3, String.format("%04d", date.getYear().getYear()));
+            // build the argument
+            String argument = "";
+            argument += String.format("%02d", date.getDay().getDayOfMonth());
+            argument += "/";
+            argument += String.format("%02d", date.getMonth().getMonthNumber());
+            argument += "/";
+            argument += String.format("%04d", date.getYear().getYear());
+            argument += "";
 
+            stm.setString(1, argument);
 
             ResultSet rs = stm.executeQuery();
+//            rs.next();
+//            System.out.println(rs.getInt(1));
 
             List<WeatherRecord> records = new ArrayList<>();
             Date tmpDate;
@@ -57,16 +66,14 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
                 tmpWindDirectionFrom = new WindDirection(new Degree(rs.getInt("wind_direction_from")));
                 tmpWindDirectionTo = new WindDirection(new Degree(rs.getInt("wind_direction_to")));
 
-               // tmpVaryingWindDirection = new VaryingWindDirection(tmpWindDirectionFrom.getDegree(), tmpWindDirectionTo.getDegree());
+                tmpVaryingWindDirection = new VaryingWindDirection(tmpWindDirectionFrom.getDegree(), tmpWindDirectionTo.getDegree());
                 tmpWind = new Wind(tmpWindDirection, tmpWindSpeed);
 
                 java.sql.Time sqlTime = rs.getTime("w_time");
                 tmpTime = new Time(new Hour(sqlTime.getHours()), new Minute(sqlTime.getMinutes()), new Second(0));
 
-               // records.add(new WeatherRecord(airportCode,tmpWind,tmpVaryingWindDirection,tmpTemperature,tempDewPoint,tmpDate.getDay(),tmpDate.getMonth(),tmpDate.getYear(),tmpTime.getHour(),tmpTime.getMinute() ));
+                records.add(new WeatherRecord(airportCode,tmpWind,tmpVaryingWindDirection,tmpTemperature,tempDewPoint,tmpDate.getDay(),tmpDate.getMonth(),tmpDate.getYear(),tmpTime.getHour(),tmpTime.getMinute() ));
             }
-
-
             return records;
 
         } catch (SQLException e) {
