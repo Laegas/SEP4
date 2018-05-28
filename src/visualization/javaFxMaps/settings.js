@@ -2,7 +2,7 @@
 var latitude = 56.0;
 var longitude = 9.5;
 var zoom = 7;
-var max_flights = 208;
+var max_flights = 15;
 var alphaProperty = "flights";
 var displayProperties = ["thermals", "flights"];
 var minimumAlpha = 0.3;
