@@ -32,6 +32,13 @@ public class Second implements Comparable<Second>{
     }
 
     @Override
+    public String toString() {
+        return "Second{" +
+                "second=" + second +
+                '}';
+    }
+
+    @Override
     public int compareTo(Second o) {
 
         if (this.second > o.getSecond()) {

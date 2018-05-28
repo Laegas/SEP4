@@ -4,6 +4,13 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 
 public class Minute implements Comparable<Minute>{
 
+    @Override
+    public String toString() {
+        return "Minute{" +
+                "minute=" + minute +
+                '}';
+    }
+
     private int minute;
 
     public Minute(int minute)

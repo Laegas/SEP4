@@ -76,7 +76,8 @@ public class FeatureProperties {
     public boolean isMeaningful() {
         if(total.getNumberOfRegisteredFlights()==0)
             return false;
-        return  total.getNumberOfRegisteredFlights()>8 && ((double)total.getNumberOfRegisteredThermal()/(double)total.getNumberOfRegisteredFlights()*100)>30.0;
+        return true;
+//        return  total.getNumberOfRegisteredFlights()>8 && ((double)total.getNumberOfRegisteredThermal()/(double)total.getNumberOfRegisteredFlights()*100)>30.0;
 //        return Math.random() > 0.9;
 //        return (numberOfRegisteredThermal > 0);
 
