@@ -18,7 +18,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
     public void insertWeatherRecord(WeatherRecord record) {
         try {
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
-            int windSpeed = record.getWind().getWindSpeed().getKonts();
+            int windSpeed = record.getWind().getWindSpeed().getKnots();
             // todo windDirection is set to zero when windDirection is variable #notveryawsome
             int windDirection = 0;
             try {
