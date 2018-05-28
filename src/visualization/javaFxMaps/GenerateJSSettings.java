@@ -31,9 +31,18 @@ public class GenerateJSSettings {
         lines.add("var zoom = " + ZOOM + ";");
         lines.add("var max_flights = " + grid.getMaxTotalRegisteredFlightCount() + ";");
         lines.add("var alphaProperty = \"" + ALPHA_PROPERTY + "\";");
-        lines.add("var hoverProperty1 = \"" + HOVER_PROPERTY1 + "\";");
-        lines.add("var hoverProperty2 = \"" + HOVER_PROPERTY2 + "\";");
+        StringBuilder displayPropertiesString = new StringBuilder("var displayProperties = [");
+        for(int i = 0; i < DISPLAY_PROPERTIES.length; i++) {
+            displayPropertiesString.append("\"");
+            displayPropertiesString.append(DISPLAY_PROPERTIES[i]);
+            displayPropertiesString.append("\"");
+            if(i < DISPLAY_PROPERTIES.length - 1)
+                displayPropertiesString.append(", ");
+        }
+        displayPropertiesString.append("];");
+        lines.add(displayPropertiesString.toString());
         lines.add("var minimumAlpha = " + MINIMUM_ALPHA + ";");
+        lines.add("var displayStringFormat = \"" + DISPLAY_STRING_FORMAT + "\";");
 
 
         try {
