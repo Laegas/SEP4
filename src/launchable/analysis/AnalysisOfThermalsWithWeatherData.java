@@ -13,6 +13,8 @@ import util.flight.FlightSplitterImp;
 import util.igc.RemoveDuplicate;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
+import model.geography.Latitude;
+import model.geography.Longitude;
 
 import java.util.ArrayList;
 import java.util.Arrays;

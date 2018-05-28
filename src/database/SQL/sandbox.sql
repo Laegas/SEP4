@@ -7,13 +7,17 @@ select * from DATA_LOGGER;
 
 select * from LOAD_F_IGC_LOGGER;
 
-select surr_key_flight from D_FLIGHT where
-  START_DATE = (select to_Date( (DAY || '.' || MONTH || '.' || YEAR), 'DD.MM.YYYY') from D_DATE
-  where
-  d_date.year = extract(year from START_DATE) AND
-  d_date.month= extract(month from START_DATE) AND
-  d_date.day = extract(day from START_DATE));
+select ID_DATE from D_Date
+where (select to_Date( (DAY || '.' || MONTH || '.' || YEAR), 'DD.MM.YYYY') from D_DATE)
+      = (select D_Flight.START_DATE from D_FLIGHT)
+     intersect
+select id_launch_date from F_DURATION;
 
 select *from D_FLIGHT;
 
-select * from D_DATE where d_date.year = extract(year from (select distinct START_DATE from D_FLIGHT));
+select D_IGC_WEATHER.SURR_KEY_IGC_WEATHER from D_IGC_WEATHER
+join F_WEATHER_RECORD
+  on (F_WEATHER_RECORD.SURR_KEY_IGC_WEATHER = D_IGC_WEATHER.SURR_KEY_IGC_WEATHER)
+join D_flight
+  on (D_flight.START_DATE = F_WEATHER_RECORD.W_DATE);
+

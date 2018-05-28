@@ -32,12 +32,36 @@ insert into D_FLIGHT (
     where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT))
 );
 
+--insert the flight surr key and it's starting date into the F_Duration table (linking DWHs)
+insert into F_DURATION (
+    SURR_KEY_FLIGHT,
+    ID_GROUP_FLIGHT_MEMBER,
+    ID_LAUNCH_TIME,
+    ID_LAUNCH_DATE,
+    ID_LAND_TIME,
+    ID_LAND_DATE,
+    DURATION
+) (select SURR_KEY_FLIGHT,
+    -1,
+    -1,
+    (select id_date from d_date where
+      d_date.year = extract(year from START_DATE) AND
+      d_date.month= extract(month from START_DATE) AND
+      d_date.day = extract(day from START_DATE)),
+    -1,
+    -1,
+    -1
+   from D_FLIGHT
+   where SURR_KEY_FLIGHT not in (select SURR_KEY_FLIGHT from F_DURATION)
+);
+
 -- select * from FULLY_EXTRACTED_IGC;
 -- now inserting all new f_igc_log
 insert into F_IGC_LOG (
     SURR_KEY_LOG,
     SURR_KEY_FLIGHT,
     SURR_KEY_GLIDER,
+    SURR_KEY_IGC_WEATHER,
     TIME,
     LAT_NORTH,
     LONG_EAST,
@@ -48,6 +72,12 @@ insert into F_IGC_LOG (
     igc_ID,
     FLIGht_ID,
     (select SURR_KEY_GLIDER from d_glider g where g.GLIDER_ID = GLIDER_REGNO) as surr_key_glider,
+    (select diw.SURR_KEY_IGC_WEATHER from D_IGC_WEATHER diw
+        join F_WEATHER_RECORD fw
+            on (fw.SURR_KEY_IGC_WEATHER = diw.SURR_KEY_IGC_WEATHER)
+        join D_flight df
+            on (START_DATE = W_DATE)
+        where SURR_KEY_FLIGHT = df.SURR_KEY_FLIGHT),
     TIME_OF_LOG,
     LATITUDE,
     LONGITUDE,

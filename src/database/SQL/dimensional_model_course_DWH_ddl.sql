@@ -46,7 +46,7 @@ create table F_Duration(
   id_land_time int,
   id_land_date int,
   duration int,
-  primary key(id_group_flight_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
+  primary key(surr_key_flight, id_group_flight_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
 );
 
 create sequence seq_id_flights
@@ -155,7 +155,7 @@ declare
  end;
  /
 
------- Static D_Date DDL and populating ------
+------ Static D_Time DDL and populating ------
 BEGIN
   EXECUTE IMMEDIATE 'DROP TABLE d_time';
   EXCEPTION

@@ -44,12 +44,14 @@ update flights_to_load_with_surr_key a set a.id_LANDTIME = (
     d_time.minute = to_char(a.LANDINGTIME, 'MI') AND
     d_time.second = to_char(a.LANDINGTIME, 'SS')
 );
+
 update flights_to_load_with_surr_key a set a.id_LAUNCHDATE = (
   select id_date from d_date where
     d_date.year = extract(year from a.LAUNCHTIME) AND
     d_date.month= extract(month from a.LAUNCHTIME) AND
     d_date.day = extract(day from a.LAUNCHTIME)
 );
+
 update flights_to_load_with_surr_key a set a.id_LANDDATE = (
   select id_date from d_date where
     d_date.year = extract(year from a.LANDINGTIME) AND
@@ -57,10 +59,6 @@ update flights_to_load_with_surr_key a set a.id_LANDDATE = (
     d_date.day = extract(day from a.LANDINGTIME)
 );
 
-/*update flights_to_load_with_surr_key a set a.surr_key_flight = (
-    select surr_key_flight from D_FLIGHT where
-      START_DATE = (select )
-);*/
 
 --describe flights_to_load_with_surr_key;
 --describe d_member;
@@ -75,7 +73,7 @@ begin
   DBMS_OUTPUT.put_line('like this here');
   for c in (SELECT
               pilot1init, pilot2init, pilot1_Non_UNIQUE_INITIALS, pilot2_Non_UNIQUE_INITIALS,
-              id_launchtime , id_launchdate , id_landtime , id_landdate, surr_key_flight
+              id_launchtime , id_landtime , id_landdate, surr_key_flight
             from flights_to_load_with_surr_key) loop
 
     if(c.pilot1_non_unique_initials <> 'T')
@@ -112,14 +110,16 @@ begin
     end if;
 
     --inserting flight facts
-    insert into f_duration(  id_group_flight_member , id_launch_time , id_launch_date , id_land_time , id_land_date , duration) VALUES (
+    insert into f_duration(  id_group_flight_member , SURR_KEY_FLIGHT, id_launch_time , id_land_time , id_land_date , duration) VALUES (
       SEQ_ID_B_FLIGHT_MEMBER.currval,
+      c.surr_key_flight,
       c.id_launchtime,
-      c.id_launchdate,
       c.id_landtime,
       c.id_landdate,
       120
     );
+
+  
   end loop;
 end;
 /

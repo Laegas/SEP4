@@ -1,10 +1,20 @@
 -------- finding new flights------
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE toHandleLaterFlights';
+  EXECUTE IMMEDIATE 'DROP TABLE lastExtractedFlights';
 
--- CREATE TABLE toHandleLaterFlights AS (SELECT * FROM TAFLIGHTSVEJLE);
--- ALTER TABLE toHandleLaterFlights ADD (clubName VARCHAR(100));
+  EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -942 THEN
+    RAISE;
+  END IF;
+END;
+/
+CREATE TABLE toHandleLaterFlights AS (SELECT * FROM TAFLIGHTSVEJLE);
+ALTER TABLE toHandleLaterFlights ADD (clubName VARCHAR(100));
 
--- CREATE TABLE lastExtractedFlights (lastDate date);
--- INSERT INTO LASTEXTRACTEDFLIGHTS (lastDate) VALUES (CURRENT_DATE);
+CREATE TABLE lastExtractedFlights (lastDate date);
+INSERT INTO LASTEXTRACTEDFLIGHTS (lastDate) VALUES (CURRENT_DATE);
 
 UPDATE lastExtractedFlights set lastDate = CURRENT_DATE;
 

@@ -14,8 +14,9 @@ alter table flights_to_load add (duration int);
 create table flights_to_load_with_surr_key as (select * from flights_to_load);
 
 alter table flights_to_load_with_surr_key add (
-  id_launchtime int default null,
+  surr_key_flight int default null,
   id_launchdate int default null,
+  id_launchtime int default null,
   id_landtime int default null,
   id_landdate int default null,
   id_flight int default null
