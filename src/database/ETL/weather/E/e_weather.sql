@@ -32,3 +32,5 @@ insert into FULLY_EXTRACTED_WEATHER (
       WHERE W_ID NOT IN (SELECT SURR_KEY_WEATHER
                             FROM F_WEATHER_RECORD) --extract only new ones
   );
+
+COMMIT ;
