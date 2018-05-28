@@ -12,17 +12,6 @@ public class Time implements Comparable<Time>{
         this.second=second;
     }
 
-    public Time(int seconds) {
-        int hour = (int) (seconds / 3600);
-        int remain_sec = seconds - hour * 3600;
-        int minute = (int) (remain_sec / 60);
-        remain_sec = remain_sec - minute * 60;
-
-        setHour(new Hour(hour));
-        setMinute(new Minute(minute));
-        setSecond(new Second(remain_sec));
-    }
-
     public Time(java.sql.Time time) {
         this(time.getHours(), time.getMinutes(), time.getSeconds());
     }
@@ -35,9 +24,9 @@ public class Time implements Comparable<Time>{
     }
     public Time(int seconds)
     {
-        this.hour= new Hour(seconds/3600);
-        this.minute = new Minute(seconds%3600/60);
-        this.second = new Second(seconds%3600%60);
+        setHour(new Hour(seconds/3600));
+        setMinute(new Minute(seconds%3600/60));
+        setSecond(new Second(seconds%60));
     }
 
     public Minute getMinute() {
