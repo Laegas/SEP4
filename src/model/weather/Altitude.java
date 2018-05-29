@@ -4,7 +4,7 @@ public class Altitude {
     private int altitude;
 
 
-    Altitude(int altitude)
+    public Altitude(int altitude)
     {
         setAltitude(altitude);
     }

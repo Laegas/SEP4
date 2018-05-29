@@ -89,18 +89,6 @@ public class JavaFxMap extends Application {
         rb4.setToggleGroup(radioButtonGroup);
         rb4.setUserData("20-30");
 
-        radioButtonGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-            public void changed(ObservableValue<? extends Toggle> ov,
-                                Toggle old_toggle, Toggle new_toggle) {
-                switch(new_toggle.getUserData().toString()) {
-                    case "All": webEngine.executeScript("document.restyle(-1, 0)"); break;
-                    case "0-10": webEngine.executeScript("document.restyle(1, 0)"); break;
-                    case "10-20": webEngine.executeScript("document.restyle(2, 0)"); break;
-                    case "20-30": webEngine.executeScript("document.restyle(3, 0)"); break;
-                }
-            }
-        });
-
         // create slider
         Slider slider = new Slider();
         slider.setMin(0);
@@ -139,6 +127,21 @@ public class JavaFxMap extends Application {
                 webEngine.executeScript("document.restyle(-1, " + (1 - newValue.intValue() / 100.0) + ")");
             });
             pause.playFromStart();
+        });
+
+        // radio buttons listener
+        radioButtonGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+                int sliderValue = (int)(slider.getValue()), selector = -1;
+                switch(new_toggle.getUserData().toString()) {
+                    case "All": selector = -1; break;
+                    case "0-10": selector = 1; break;
+                    case "10-20": selector = 2; break;
+                    case "20-30": selector = 3; break;
+                }
+                webEngine.executeScript("document.restyle(" + selector + ", " + (100 - sliderValue) + ")");
+            }
         });
 
         // create toolbar

@@ -1,6 +1,9 @@
 package database.DAO;
 
+import model.geography.CountryName;
 import model.geography.Degree;
+import model.geography.Latitude;
+import model.geography.Longitude;
 import model.time.*;
 import model.time.Date;
 import model.time.Time;
@@ -24,6 +27,7 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
     public List<WeatherRecord> getWeatherRecord(Date date, ICAOAirportCode airportCode) {
         Connection conn = DatabaseHelper.getInstance().getConnection();
         String sql = "select w_date,w_time,wind_direction,wind_speed,WIND_DIRECTION_FROM,WIND_DIRECTION_TO,temperature,dew_point,airport_code from F_WEATHER_RECORD where W_DATE = TO_DATE( ?, 'DD/MM/YYYY') AND AIRPORT_CODE = ?";
+
 
 //        String sql = "select count(*) from F_WEATHER_RECORD where W_DATE = to_date('11/05/2018', 'DD/MM/YYYY')";
 
@@ -85,5 +89,70 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
 
 
         return null;
+    }
+
+    @Override
+    public Airport getAirportByDateAndICAOCode(ICAOAirportCode code, Date date) {
+        Connection conn = DatabaseHelper.getInstance().getConnection();
+        Airport airport = null;
+        try{
+            PreparedStatement stm = conn.prepareStatement("SELECT ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX FROM AIRPORT WHERE AIRPORT_CODE = ?");
+            stm.setString(1,code.getICAOCode());
+            ResultSet rs = stm.executeQuery();
+            while(rs.next())
+            {
+                airport.setWmoIndex(new WMOIndex(rs.getString("WMO_INDEX")));
+                airport.setAirportName(rs.getString("AIRPORTNAME"));
+                airport.setAirport(code);
+                airport.setAltitude(new Altitude(rs.getInt("ALTITUDE")));
+                airport.setCountryName(new CountryName(rs.getString("COUNTRYNAME")));
+                String latitude = rs.getString("LATITUDE");
+                airport.setLatitude(new Latitude(Integer.parseInt(latitude.substring(0, 2)), Integer.parseInt(latitude.substring(2, 4)), Integer.parseInt(latitude.substring(4, 7))));
+                String longitude = rs.getString("LONGITUDE");
+                airport.setLongitude(new Longitude(Integer.parseInt(longitude.substring(0, 3)), Integer.parseInt(longitude.substring(3, 5)), Integer.parseInt(longitude.substring(5, 8))));
+            }
+            stm.close();
+            airport.setWeatherRecords((WeatherRecord[]) getWeatherRecord(date,code).toArray());
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return airport;
+    }
+
+    @Override
+    public List<Airport> getAirportsByDate(Date date) {
+        Connection conn = DatabaseHelper.getInstance().getConnection();
+
+        List<Airport> airports = new ArrayList<>();
+        try{
+            PreparedStatement stm = conn.prepareStatement("SELECT ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX FROM AIRPORT");
+            ResultSet rs = stm.executeQuery();
+            while(rs.next())
+            {
+                Airport airport =new Airport();
+                airport.setWmoIndex(new WMOIndex(rs.getString("WMO_INDEX")));
+                airport.setAirportName(rs.getString("AIRPORTNAME"));
+                ICAOAirportCode airport_code =new ICAOAirportCode(rs.getString("ICAO_AIRPORT_CODE"));
+                airport.setAirport(airport_code);
+                airport.setAltitude(new Altitude(rs.getInt("ALTITUDE")));
+                airport.setCountryName(new CountryName(rs.getString("COUNTRYNAME")));
+                String latitude = rs.getString("LATITUDE");
+                airport.setLatitude(new Latitude(Integer.parseInt(latitude.substring(0, 2)), Integer.parseInt(latitude.substring(2, 4)), Integer.parseInt(latitude.substring(4, 7))));
+                String longitude = rs.getString("LONGITUDE");
+                airport.setLongitude(new Longitude(Integer.parseInt(longitude.substring(0, 3)), Integer.parseInt(longitude.substring(3, 5)), Integer.parseInt(longitude.substring(5, 8))));
+                airport.setWeatherRecords((WeatherRecord[]) getWeatherRecord(date,airport_code).toArray());
+                airports.add(airport);
+            }
+            stm.close();
+
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return airports;
+
     }
 }

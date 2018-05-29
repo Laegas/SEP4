@@ -23,7 +23,6 @@ public class METARSourceDAOImp implements METARSourceDAO {
         try {
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
             int windSpeed = record.getWind().getWindSpeed().getKnots();
-            // todo windDirection is set to zero when windDirection is variable #notveryawsome
             int windDirection = 0;
             try {
                 windDirection = record.getWind().getWindDirection().getDegree().getDegree();
@@ -43,15 +42,15 @@ public class METARSourceDAOImp implements METARSourceDAO {
             Date date = new Date(record.getDayOfMonth().getDayOfMonth(),record.getMonth().getMonthNumber(),record.getYear().getYear());
             int minute = record.getMinute().getMinute();
             int hour = record.getHour().getHour();
-             PreparedStatement stmt = conn.prepareStatement("INSERT INTO weather_record (w_id, ICAO_airport_code, " +
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO weather_record (id, ICAO_airport_code, " +
                      "wind_direction, wind_speed, wind_direction_from, wind_direction_to" +
                      ", temperature, dew_point, the_date, minute, hour) VALUES (weather_record_id.nextval, ?, ?, ?, ?, ?, ?, ?, to_Date(?, \' yy/mm/dd\'), ?, ? )");
             /*System.out.println(ICAO_airport_code + " " + windSpeed + " " + windDirection + " " + windDirectionFrom +
                     " " + windDirectionTo + " " + temperature + " " + dewPoint + " " + date.toString() + " " + hour +
                     " " + minute);*/
              stmt.setString(1, ICAO_airport_code);
-             stmt.setInt(2,windSpeed);
-             stmt.setInt(3,windDirection);
+             stmt.setInt(2,windDirection);
+             stmt.setInt(3,windSpeed);
              stmt.setInt(4,windDirectionFrom);
             stmt.setInt(5, windDirectionTo);
                 stmt.setDouble(6, temperature);
@@ -87,7 +86,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
     @Override
     public void insertAirport(Airport airport) {
 
-        // insert airports into souce tables
+        // insert airports into source tables
 
 //        String sql = "";
         String sql = "insert into airport (ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX) VALUES " +
