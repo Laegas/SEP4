@@ -36,14 +36,14 @@ public class AnalysisOfThermalsWithWeatherData {
         System.out.println("number of flights: " + flights.size());
 
 
-        System.out.println("thermal weather analasys start:");
+        System.out.println("thermal weather analysis start:");
         try {
             analyse(flights, outputData);
         } catch (InvalidCoordinatesException e) {
             System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
             e.printStackTrace();
         }
-        System.out.println("Count thermal no weather analasys start:");
+        System.out.println("Count thermal no weather analysis start:");
         try {
             CountThermalsAnalysis.analyse(flights, outputData);
         } catch (InvalidCoordinatesException e) {
