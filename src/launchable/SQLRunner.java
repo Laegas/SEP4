@@ -8,10 +8,19 @@ import java.io.InputStreamReader;
 
 public class SQLRunner {
 
+    private static int counter = 0;
+    private static StringBuilder onlyErrors = new StringBuilder(), wholeMessage = new StringBuilder();
+
     public static void main(String[] args) {
-        runAllDDL();
-//        runETL();
-//        runAfterETL();
+//        runAllDDL();
+        runETL();
+        runAfterETL();
+        showOutput(true);
+    }
+
+    public static void showOutput(boolean showWholeMessage) {
+        if(showWholeMessage) System.out.println(wholeMessage.toString());
+        if(counter > 0) System.out.println("***** " + counter + " ERRORS *****\n" + onlyErrors.toString());
     }
 
     public static void runAllDDL() {
@@ -64,6 +73,7 @@ public class SQLRunner {
 
     private static void executeSql(String sqlFilePath) {
         try {
+            boolean readNextErrorLine = false;
             String line;
             Process p = Runtime.getRuntime().exec("cmd.exe /c echo exit | sqlplus -S " + DatabaseConfig.INSTANCE.getUSERNAME() + "/"
                     + DatabaseConfig.INSTANCE.getPASSWORD() + "@" + DatabaseConfig.INSTANCE.getSID() + " @" + sqlFilePath);
@@ -74,7 +84,18 @@ public class SQLRunner {
             BufferedReader bre = new BufferedReader
                     (new InputStreamReader(p.getErrorStream()));
             while ((line = bri.readLine()) != null) {
-                System.out.println(line);
+                wholeMessage.append(line);
+                wholeMessage.append("\n");
+                if(line.matches("(.*)ERROR(.*)") || readNextErrorLine) {
+                    onlyErrors.append(line);
+                    if(!readNextErrorLine) {
+                        onlyErrors.append(" ");
+                        onlyErrors.append(sqlFilePath);
+                        counter++;
+                    }
+                    readNextErrorLine = !readNextErrorLine;
+                    onlyErrors.append("\n");
+                }
             }
             bri.close();
             while ((line = bre.readLine()) != null) {

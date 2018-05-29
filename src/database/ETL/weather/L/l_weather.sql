@@ -1,4 +1,3 @@
-select * from TRANSFORM_WEATHER_HOUR_MINUTE_TO_TIME;
 
 insert into D_AIRPORT(
     SURR_KEY_AIRPORT,
