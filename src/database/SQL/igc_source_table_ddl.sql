@@ -33,7 +33,7 @@ create sequence IGC_Source_Data_ID
   cache 100
   nomaxvalue;
 
-create table Data_Logger
+create table Data_Logger_Source
 (
     id int primary key,
     glider_RegNo varchar(10),

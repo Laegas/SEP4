@@ -55,3 +55,5 @@ CREATE sequence d_member_id
   cache 100
   noMaxValue
   ;
+
+COMMIT;

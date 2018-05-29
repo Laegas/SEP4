@@ -24,7 +24,8 @@ insert into D_GLIDER (
 -- inserting new flights into d_flights
 insert into D_FLIGHT (
     SURR_KEY_FLIGHT,
-    START_DATE
+    START_DATE,
+    GLIDER_SURR_KEY
 ) (select flight_id,
     flight_date from
     (select distinct flight_id,
@@ -60,25 +61,19 @@ insert into F_DURATION (
 insert into F_IGC_LOG (
     SURR_KEY_LOG,
     SURR_KEY_FLIGHT,
-    SURR_KEY_GLIDER,
-    SURR_KEY_IGC_WEATHER,
-    TIME,
+    ID_TIME,
     LAT_NORTH,
     LONG_EAST,
     PRESS_ALTITUDE,
     GPS_ALTITUDE,
     GPS_OK
 ) (select
-    igc_ID,
-    FLIGht_ID,
-    (select SURR_KEY_GLIDER from d_glider g where g.GLIDER_ID = GLIDER_REGNO) as surr_key_glider,
-    (select diw.SURR_KEY_IGC_WEATHER from D_IGC_WEATHER diw
-        join F_WEATHER_RECORD fw
-            on (fw.SURR_KEY_IGC_WEATHER = diw.SURR_KEY_IGC_WEATHER)
-        join D_flight df
-            on (START_DATE = W_DATE)
-        where SURR_KEY_FLIGHT = df.SURR_KEY_FLIGHT),
-    TIME_OF_LOG,
+    IGC_ID,
+    FLIGHT_ID,
+   (select id_time from d_time where
+     d_time.hour = extract(hour from TIME_OF_LOG) AND
+     d_time.minute= extract(minute from TIME_OF_LOG) AND
+     d_time.second = extract(second from TIME_OF_LOG)),
     LATITUDE,
     LONGITUDE,
     PRESSURE_ALTITUDE,

@@ -1,8 +1,8 @@
 package config;
 
 public class DatabaseConfig {
-    public static final String USERNAME = "DVK";
-    public static final String PASSWORD = "svx28bag";
-    public static final String SID = "DVK";
+    public static final String USERNAME = "NIC";
+    public static final String PASSWORD = "teentitans1sasu";
+    public static final String SID = "ORCL";
     public static final String CONNECTION_STRING = "jdbc:oracle:thin:@localhost:1521:" + SID.toLowerCase();
 }

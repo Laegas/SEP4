@@ -22,10 +22,10 @@ create sequence weather_record_id
   cache 100
   nomaxvalue;
 
-create table weather_record
+create table weather_source
 (
   w_id int,
-  ICAO_airport_code varchar(4),
+  ICAO_airport_code varchar(4) references airport_source(ICAO_Airport_Code),
   wind_direction int,
   wind_speed int,
   wind_direction_from int,
@@ -37,5 +37,17 @@ create table weather_record
   minute int
 );
 
+create table airport_source(
+  ICAO_Airport_Code varchar(4) primary key,
+  altitude int,
+  airport_longitude varchar(8),
+  airport_latitude varchar(7),
+  airport_name varchar(50),
+  country_name varchar(100),
+  WMO_Index varchar(5),
+  id_valid_from int references D_DATE(ID_DATE),
+  id_valid_to int references D_DATE(ID_DATE)
+);
 
+COMMIT;
 -- select count (*) from weather_record;

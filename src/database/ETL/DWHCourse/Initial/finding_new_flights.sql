@@ -34,3 +34,5 @@ INSERT INTO TOHANDLELATERFLIGHTS
     WHERE launchtime > (select lastdate FROM LASTEXTRACTEDFLIGHTS)
   );
 ---------- finished finding flights ----------
+
+COMMIT;

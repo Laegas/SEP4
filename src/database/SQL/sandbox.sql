@@ -15,9 +15,33 @@ select id_launch_date from F_DURATION;
 
 select *from D_FLIGHT;
 
-select D_IGC_WEATHER.SURR_KEY_IGC_WEATHER from D_IGC_WEATHER
-join F_WEATHER_RECORD
-  on (F_WEATHER_RECORD.SURR_KEY_IGC_WEATHER = D_IGC_WEATHER.SURR_KEY_IGC_WEATHER)
-join D_flight
-  on (D_flight.START_DATE = F_WEATHER_RECORD.W_DATE);
 
+
+select count(*) from WEATHER_RECORD;
+select count(*) from IGC_SOURCE_DATA;
+select count(*) from DATA_LOGGER;
+select * from DATA_LOGGER;
+
+select fw.SURR_KEY_IGC_WEATHER from F_WEATHER_RECORD fw
+     join D_flight df
+          on (df.START_DATE = fw.W_DATE)
+     join TRANSFORM_IGC_EMPTY_GLIDER_REGNO tr
+          on (df.SURR_KEY_FLIGHT = tr.FLIGHT_ID)
+where tr.FLIGHT_ID = SURR_KEY_FLIGHT;
+
+select diw.SURR_KEY_IGC_WEATHER from D_IGC_WEATHER diw
+  join F_WEATHER_RECORD fw
+    on (fw.SURR_KEY_IGC_WEATHER = diw.SURR_KEY_IGC_WEATHER)
+  join D_flight df
+    on (START_DATE = W_DATE)
+  join TRANSFORM_IGC_EMPTY_GLIDER_REGNO tr
+    on (df.SURR_KEY_FLIGHT = tr.FLIGHT_ID)
+where AIRPORT_CODE = 'EKAH';
+
+select * from F_WEATHER_RECORD where AIRPORT_CODE = 'EKAH';
+
+select * from F_WEATHER_RECORD;
+select * from F_WEATHER_RECORD;
+
+select * from F_WEATHER_RECORD;
+select * from F_IGC_LOG;

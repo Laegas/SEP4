@@ -14,3 +14,5 @@ create SEQUENCE igc_weather_surr_key
   CACHE 100
   NOMAXVALUE
 ;
+
+COMMIT;

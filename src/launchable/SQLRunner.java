@@ -17,21 +17,21 @@ public class SQLRunner {
     public static void runAllDDL() {
         // rebuilding dimentional model
         System.out.println(SQLRunnerConfig.DIMENSIONAL_MODEL_DDL.getAbsoluteFile());
-        executeSql(SQLRunnerConfig.DIMENSIONAL_MODEL_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.DIMENSIONAL_WEATHER_DDL.getAbsolutePath());
+        executeSql(SQLRunnerConfig.DIMENSIONAL_MODEL_DDL.getAbsolutePath());
 
         //running DDL for source table
-        executeSql(SQLRunnerConfig.IGC_SOURCE_TABLE_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_SOURCE_TABLE_DDL.getAbsolutePath());
+        executeSql(SQLRunnerConfig.IGC_SOURCE_TABLE_DDL.getAbsolutePath());
 
         //running ETL init sql
+        executeSql(SQLRunnerConfig.WEATHER_E_INIT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.WEATHER_T_INIT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.WEATHER_L_INIT.getAbsolutePath());
+
         executeSql(SQLRunnerConfig.IGC_E_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_T_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_L_INIT.getAbsolutePath());
-
-        executeSql(SQLRunnerConfig.WEATHER_E_INIT.getAbsolutePath());
-        executeSql(SQLRunnerConfig.WEATHER_T_INIT.getAbsolutePath());
-
     }
 
     public static void runETL() {

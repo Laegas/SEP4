@@ -14,6 +14,8 @@ import util.igc.RemoveDuplicate;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
 import visualization.javaFxMaps.GenerateJson;
+import model.geography.Longitude;
+import model.geography.Latitude;
 
 import java.util.ArrayList;
 import java.util.Arrays;

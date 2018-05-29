@@ -7,7 +7,11 @@ BEGIN
   END IF;
 END;
 /
+/*create table FULLY_EXTRACTED_AIRPORT as
+  (
+      select
 
+  );*/
 create table FULLY_EXTRACTED_WEATHER as
   (select
   W_ID as weather_id,
@@ -23,3 +27,5 @@ create table FULLY_EXTRACTED_WEATHER as
   MINUTE
 from WEATHER_RECORD)
 ;
+
+COMMIT;

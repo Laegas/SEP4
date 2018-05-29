@@ -15,3 +15,4 @@ create SEQUENCE glider_surr_key
   NOMAXVALUE
 ;
 
+COMMIT;
