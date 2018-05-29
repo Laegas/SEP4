@@ -10,15 +10,15 @@ END;
 
 create table transform_weather_hour_minute_to_time as
   (select
-  WEATHER_ID,
-  ICAO_airport_code,
-  wind_direction,
-  wind_speed,
-  wind_direction_from,
-  wind_direction_to,
-  temperature,
-  dew_point,
-  the_date
+     WEATHER_ID,
+     ICAO_AIRPORT_CODE,
+     WIND_DIRECTION,
+     WIND_SPEED,
+     WIND_DIRECTION_FROM,
+     WIND_DIRECTION_TO,
+     TEMPERATURE,
+     DEW_POINT,
+     THE_DATE
 from FULLY_EXTRACTED_WEATHER)
 ;
 

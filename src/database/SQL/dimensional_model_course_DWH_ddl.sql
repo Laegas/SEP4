@@ -62,7 +62,10 @@ END;
 /
 --insert values for date not found
 INSERT INTO D_DATE (id_date, day, month, year, day_of_week, quarter) VALUES (-1, 'NA', 'NA','NAN', 'N', 'N');
+--insert values for end of time date
+INSERT INTO D_DATE (id_date, day, month, year, day_of_week, quarter) VALUES (0, 31,12,9999,'7','4');
 
+--dimension time creation and insert
 create table d_time(
   id_time int primary key,
   hour varchar(2),
