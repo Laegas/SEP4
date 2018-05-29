@@ -10,7 +10,7 @@ BEGIN
   END IF;
 END;
 /
-CREATE TABLE toHandleLaterFlights AS (SELECT * FROM TAFLIGHTSVEJLE);
+CREATE TABLE toHandleLaterFlights AS (SELECT * FROM TAFLIGHTSVEJLE where 1=0);
 ALTER TABLE toHandleLaterFlights ADD (clubName VARCHAR(100));
 
 CREATE TABLE lastExtractedFlights (lastDate date);
