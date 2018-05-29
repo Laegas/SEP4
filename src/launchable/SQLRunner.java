@@ -11,7 +11,7 @@ public class SQLRunner {
     public static void main(String[] args) {
 //        runAllDDL();
         runETL();
-          runAfterETL();
+        runAfterETL();
     }
 
     public static void runAllDDL() {
