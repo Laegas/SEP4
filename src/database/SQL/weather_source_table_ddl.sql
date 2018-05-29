@@ -12,7 +12,7 @@ END;
 BEGIN
   EXECUTE IMMEDIATE 'drop sequence airport_id';
   EXECUTE IMMEDIATE 'drop sequence weather_record_id';
-  EXCEPTION
+EXCEPTION
   WHEN OTHERS THEN
   IF SQLCODE != -2289 THEN
     RAISE;
@@ -35,13 +35,14 @@ create sequence weather_record_id
 
 create table airport
 (
-   id int primary key,
-   ICAO_airport_Code varchar(4),
-   latitude varchar(7),
-   longitude varchar(8),
-   countryName varchar(100),
-   airportName varchar(100),
-   altitude int
+  id int primary key,
+  ICAO_airport_Code varchar2(4),
+  latitude varchar2(7),
+  longitude varchar2(8),
+  countryName varchar2(100),
+  airportName varchar2(100),
+  altitude int,
+  wmo_index VARCHAR2(5)
 );
 
 create table weather_record
