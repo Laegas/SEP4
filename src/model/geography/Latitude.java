@@ -92,4 +92,8 @@ public class Latitude {
 					() + "'' and expected between " + LATITUDE_START + " and " + LATITUDE_END);
 		return index;
 	}
+
+	public String toDBString() {
+		return null;
+	}
 }
