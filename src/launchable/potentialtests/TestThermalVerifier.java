@@ -1,4 +1,4 @@
-package test;
+package launchable.potentialtests;
 
 import model.geography.Latitude;
 import model.geography.Longitude;

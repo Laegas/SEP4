@@ -166,6 +166,8 @@ public class JavaFxMap extends Application {
         stage.setScene(scene);
         scene.getStylesheets().add(getClass().getResource(FileConfig.VISUALIZATION_RESOURCES_PATH+"map.css").toString());
         // show stage
+        stage.setMaximized(true);
+        stage.setFullScreen(true);
         stage.show();
     }
 
