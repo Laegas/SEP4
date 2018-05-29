@@ -6,18 +6,29 @@ import model.geography.Degree;
  * Created by kenneth on 17/05/2018.
  */
 public class WindDirection {
-    Degree degree;
+    private Degree degree;
+    private boolean variable;
 
-    public Degree getDegree() {
-        return degree;
+    public WindDirection(Degree degree) {
+        setDegree(degree);
+        this.variable = false;
     }
 
     public void setDegree(Degree degree) {
+        if (degree.getDegree() < 0) {
+            this.variable = true;
+        }
         this.degree = degree;
     }
 
-    public WindDirection(Degree degree) {
+    public WindDirection() {
+        this.degree = null;
+        this.variable = true;
+    }
 
-        this.degree = degree;
+    public Degree getDegree() throws Exception{
+        if(variable)
+           throw new Exception("the degree is now measureble");
+        return degree;
     }
 }

@@ -27,7 +27,6 @@ public class VaryingWindDirection {
 
     public VaryingWindDirection(Degree from, Degree to) {
         this.from = from;
-
         this.to = to;
     }
 }

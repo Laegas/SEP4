@@ -1,8 +1,11 @@
 package util.thermal;
 
+import config.ThermalFinderConfig;
 import model.igc.DataPoint;
 import model.igc.Flight;
 import model.igc.ThermalDataPointGroup;
+
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +19,10 @@ public class ThermalFinderImp implements ThermalFinder  {
     public ThermalFinderImp( double altitudeGainedPerSecond)
     {
         this.altitudeGainPerSecond=altitudeGainedPerSecond;
+    }
+
+    public ThermalFinderImp() {
+    this.altitudeGainPerSecond = ThermalFinderConfig.DEFAULT_METER_PER_SECOND;
     }
 
     private ThermalDataPointGroup makeGroup(List<DataPoint> list, int start, int end)

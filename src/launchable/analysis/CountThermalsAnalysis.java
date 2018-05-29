@@ -8,14 +8,14 @@ import model.igc.DataPoint;
 import model.igc.Flight;
 import model.igc.ThermalDataPointGroup;
 import model.outputData.OutputData;
+import util.igc.RemoveDuplicate;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
 import visualization.javaFxMaps.GenerateJSSettings;
 import visualization.javaFxMaps.GenerateJson;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by kenneth on 22/05/2018.
@@ -25,34 +25,36 @@ public class CountThermalsAnalysis {
 
         IGCDimensionalDao igcDAO = DaoManager.IGC_DIMENSIONAL_DAO;
         List<Flight> flights = igcDAO.getAllFlights();
-        ThermalFinder thermalFinder = new ThermalFinderImp(1);
+        System.out.println("number of flights " + flights.size());
+        ThermalFinder thermalFinder = new ThermalFinderImp();
 
         // some output data structure
         OutputData outputData = new OutputData();
 
         for (Flight flight : flights) {
 
-            Set<LocationPoint> thermalIndexSet = new HashSet<>();
-            List<ThermalDataPointGroup> thermalDataPointGroups = thermalFinder.findThermalsUsingGPSAltitude(flight);
+            List<LocationPoint> thermalIndexes = new ArrayList<>();
+            List<ThermalDataPointGroup> thermalDataPointGroups = thermalFinder.findThermalsUsingPressureAltitude(flight);
             for (ThermalDataPointGroup group : thermalDataPointGroups) {
                 for (DataPoint dataPoint : group.getGroup()) {
-                    thermalIndexSet.add(new LocationPoint(dataPoint.getLatitude(), dataPoint.getLongitude()));
+                    thermalIndexes.add(new LocationPoint(dataPoint.getLatitude(), dataPoint.getLongitude()));
                 }
             }
             // add thermalIndexSet to output structure
+                List<LocationPoint> uniquePoints  = RemoveDuplicate.getUniqueLocationPointsIndexe(thermalIndexes);
 
-            for (LocationPoint locationPoint : thermalIndexSet) {
+            for (LocationPoint locationPoint : uniquePoints) {
                 outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(),locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
                 // all thermals have been put into output data object
             }
 
-            // get all unique location points from a flight and register them in outputdata object
-            Set<LocationPoint> allFromFlight = new HashSet<>();
+            // get all unique location points from a flight and register them in output data object
+            List<LocationPoint> allFromFlight = new ArrayList<>();
             for (DataPoint dataPoint : flight.getDatalog()) {
                 allFromFlight.add(new LocationPoint(dataPoint.getLatitude(), dataPoint.getLongitude()));
             }
-
-            for (LocationPoint locationPoint : allFromFlight) {
+            List<LocationPoint> uniqueLocationPoints = RemoveDuplicate.getUniqueLocationPointsIndexe(allFromFlight);
+            for (LocationPoint locationPoint : uniqueLocationPoints) {
                 try {
                     outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredFlight();
                 } catch (InvalidCoordinatesException e) {

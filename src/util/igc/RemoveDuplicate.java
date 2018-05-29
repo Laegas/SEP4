@@ -1,17 +1,30 @@
 package util.igc;
 
+import database.DAO.DaoManager;
 import model.IGCJoinWeather;
+import model.geography.InvalidCoordinatesException;
+import model.geography.LocationPoint;
 import model.igc.DataPoint;
+import model.igc.Flight;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by kenneth on 24/05/2018.
  */
 public class RemoveDuplicate {
+
+    public static void main(String[] args) {
+        //test getUniqueDataPoint
+        List<DataPoint> points = new ArrayList<>();
+
+        List<Flight> flights = DaoManager.IGC_DIMENSIONAL_DAO.getAllFlights();
+        points = flights.get(0).getDatalog();
+
+        System.out.println("before size: " + points.size());
+        List<DataPoint> dataPoints = getUniqueDataPoint(points);
+        System.out.println("after size: "  + dataPoints.size());
+    }
 
     public static List<IGCJoinWeather> getUniqueByGridIndex(List<IGCJoinWeather> list) {
         Map<String, IGCJoinWeather> map = new HashMap<>();
@@ -51,4 +64,22 @@ public class RemoveDuplicate {
         return result;
 
     }
+    public static List<LocationPoint> getUniqueLocationPointsIndexe(List<LocationPoint> points)
+    {
+        List<LocationPoint> uniqueList = new ArrayList<>();
+        for (LocationPoint point: points)
+        { try {
+            if(!uniqueList.contains(point))
+            {
+                    uniqueList.add(point);
+            }
+            }
+                catch(InvalidCoordinatesException e)
+            {
+                System.out.println("hey hey remove me in Class RemoveDuplicate, when ETL is fixed");
+            }
+        }
+        return uniqueList;
+    }
+
 }

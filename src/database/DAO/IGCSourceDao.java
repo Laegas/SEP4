@@ -14,7 +14,7 @@ public class IGCSourceDao implements IGCDataDAO {
 
     private Connection conn;
 
-    public IGCSourceDao()
+    IGCSourceDao()
     {
         conn = DatabaseHelper.getInstance().getConnection();
     }

@@ -13,6 +13,8 @@ import model.geography.Longitude;
 import model.igc.Glider;
 import model.time.*;
 import model.weather.WeatherRecord;
+import util.weatherUtil.MetarReader;
+import util.weatherUtil.METARException;
 
 public class FileDecoder {
 	private Scanner sc;
@@ -35,35 +37,19 @@ public class FileDecoder {
 		while (sc.hasNextLine()) {
 			String l = sc.nextLine();
 			if(l.startsWith("1") || l.startsWith("2")) {
-				System.out.println(l.substring(13, l.length()));
-				//weatherRecords.add(MetarReader.decodeMetar(l.substring(13, l.length())));
-				/*
-				if (l.substring(13, 18).equals("METAR") && !l.substring(32,36).equals("NIL=")) {
-
-					String[] strings = l.split(" ");
-
-					System.out.println(strings[0] + " " + strings[2]);
-
-					Year year = new Year(Integer.parseInt(strings[0].substring(0, 4)));
-					Month month = new Month(Integer.parseInt(strings[0].substring(4, 6)));
-					Day day = new Day(Integer.parseInt(strings[0].substring(6,8)));
-					Hour hour = new Hour(Integer.parseInt(strings[0].substring(8,10)));
-					Minute minute = new Minute(Integer.parseInt(strings[0].substring(10,12)));
-					ICAOAirportCode airportCode = new ICAOAirportCode(strings[2]);
-					int padding = 0;
-					if(l.substring(32,36).equals("AUTO"))
-						padding += 5;
-					
-
-					System.out.println(l.substring(32+padding, 36+padding));
+				try {
+					weatherRecords.add(MetarReader.decodeMetar(l));
+				} catch (METARException e) {
+					// ignore
 				}
-				*/
 			}
 		}
 
-		return null;/*new WeatherRecord(airportCode, wind, varyingWindDirection, temperature, dewPoint, day, month,
-		year,
-				hour, minute);*/
+		WeatherRecord[] w = new WeatherRecord[weatherRecords.size()];
+		for(int i = 0; i < w.length; i++)
+			w[i] = weatherRecords.get(i);
+
+		return w;
 	}
 	
 	public Flight readIGCFile()

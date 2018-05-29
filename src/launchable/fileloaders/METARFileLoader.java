@@ -21,27 +21,17 @@ public class METARFileLoader {
         WeatherRecord[] weatherRecords;
         METARSourceDAO METARDAO = DaoManager.METAR_SOURCE_DAO;
 
-        System.out.println("preprocessing #" + METAR_files.length + " files");
         int counter = 1;
         for (File file : METAR_files) {
-            if (counter > 1) break;
             preprocessor = new METARTXTFilePreprocessor(file.getAbsolutePath());
-            preprocessor.preprocess();
-            System.out.println("finished preprocessing file #" + counter++);
-        }
+            preprocessor.preProcess();
+            System.out.println("finished preprocessing file #" + counter + " " + file.getName());
 
-        /*
-        System.out.println("loading #" + METAR_files.length + " files");
-        int counter = 1;
-
-        for (File file : METAR_files) {
-            if(counter > 1) break;
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             weatherRecords = fileDecoder.readMETARFile();
             for(WeatherRecord r : weatherRecords)
-                //METARDAO.insertWeatherRecord(r);
+                METARDAO.insertWeatherRecord(r);
             System.out.println("finished loading file #" + counter++);
         }
-        */
     }
 }

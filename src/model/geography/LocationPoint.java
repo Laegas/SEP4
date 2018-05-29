@@ -22,6 +22,7 @@ public class LocationPoint {
         return longitude;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof LocationPoint)) {
             return false;
@@ -29,8 +30,8 @@ public class LocationPoint {
 
         LocationPoint other = (LocationPoint) obj;
 
-        return (this.latitude.getGridIndex() == ((LocationPoint) obj).getLatitude().getGridIndex() &&
-                this.longitude.getGridIndex() == ((LocationPoint) obj).getLongitude().getGridIndex());
+        return (this.latitude.getGridIndex() == other.getLatitude().getGridIndex() &&
+                this.longitude.getGridIndex() == other.getLongitude().getGridIndex());
 
     }
 }
