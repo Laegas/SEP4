@@ -30,6 +30,7 @@ public class METARFileLoader {
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             airport = fileDecoder.readMETARFile();
             WeatherRecord[] records = airport.getWeatherRecords();
+            METARDAO.insertAirport(airport);
             for(WeatherRecord r : records)
                 METARDAO.insertWeatherRecord(r);
             System.out.println("finished loading file #" + counter++);

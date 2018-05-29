@@ -43,7 +43,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
             Date date = new Date(record.getDayOfMonth().getDayOfMonth(),record.getMonth().getMonthNumber(),record.getYear().getYear());
             int minute = record.getMinute().getMinute();
             int hour = record.getHour().getHour();
-             PreparedStatement stmt = conn.prepareStatement("INSERT INTO weather_record (w_id, ICAO_airport_code, " +
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO weather_record (id, ICAO_airport_code, " +
                      "wind_direction, wind_speed, wind_direction_from, wind_direction_to" +
                      ", temperature, dew_point, the_date, minute, hour) VALUES (weather_record_id.nextval, ?, ?, ?, ?, ?, ?, ?, to_Date(?, \' yy/mm/dd\'), ?, ? )");
             /*System.out.println(ICAO_airport_code + " " + windSpeed + " " + windDirection + " " + windDirectionFrom +

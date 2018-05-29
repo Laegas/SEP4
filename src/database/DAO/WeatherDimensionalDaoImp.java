@@ -1,5 +1,6 @@
 package database.DAO;
 
+import model.geography.CountryName;
 import model.geography.Degree;
 import model.time.*;
 import model.time.Date;
@@ -24,6 +25,7 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
     public List<WeatherRecord> getWeatherRecord(Date date, ICAOAirportCode airportCode) {
         Connection conn = DatabaseHelper.getInstance().getConnection();
         String sql = "select w_date,w_time,wind_direction,wind_speed,WIND_DIRECTION_FROM,WIND_DIRECTION_TO,temperature,dew_point,airport_code from F_WEATHER_RECORD where W_DATE = TO_DATE( ?, 'DD/MM/YYYY') AND AIRPORT_CODE = ?";
+
 
 //        String sql = "select count(*) from F_WEATHER_RECORD where W_DATE = to_date('11/05/2018', 'DD/MM/YYYY')";
 
@@ -84,6 +86,35 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
         }
 
 
+        return null;
+    }
+
+    @Override
+    public Airport getAirportByDateAndICAOCode(ICAOAirportCode code, Date date) {
+        Connection conn = DatabaseHelper.getInstance().getConnection();
+        Airport airport = null;
+        try{
+            PreparedStatement stm = conn.prepareStatement("SELECT ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX FROM AIRPORT WHERE AIRPORT_CODE = ?");
+            stm.setString(1,code.getICAOCode());
+            ResultSet rs = stm.executeQuery();
+            while(rs.next())
+            {
+                airport.setWmoIndex(new WMOIndex(rs.getString("WMO_INDEX")));
+                airport.setAirportName(rs.getString("AIRPORTNAME"));
+                airport.setAirport(code);
+                airport.setAltitude(new Altitude(rs.getInt("ALTITUDE")));
+                airport.setCountryName(new CountryName(rs.getString("COUNTRYNAME")));
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return airport;
+    }
+
+    @Override
+    public List<Airport> getAirportsByDate(Date date) {
         return null;
     }
 }
