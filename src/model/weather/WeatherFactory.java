@@ -50,7 +50,7 @@ public class WeatherFactory {
     }
 
     public ICAOAirportCode getClosestAirort(DataPoint dataPoint) {
-
+        return null;
     }
 
 

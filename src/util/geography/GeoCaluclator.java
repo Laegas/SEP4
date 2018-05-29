@@ -13,7 +13,6 @@ import javax.measure.unit.SI;
  */
 public class GeoCaluclator {
     private static GeodeticCalculator geoCalc = new GeodeticCalculator();
-
     public static double getGeoDistance(Latitude lat1, Longitude long1, Latitude lat2, Longitude long2) {
 
         geoCalc.setStartingGeographicPoint(long1.getSignedDegreeFormat(), lat1.getSignedDegreeFormat());
