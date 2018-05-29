@@ -6,14 +6,13 @@ truncate table deltaMember;
 INSERT INTO deltaMember (
   MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJOINED,
   DATELEFT, OWNSPLANEREG, STATUSSTUDENT, STATUSPILOT,
-  STATUSASCAT, STATUSFULLCAT, SEX, CLUB,OPERATION)
-
-  (SELECT MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJOINED,
+  STATUSASCAT, STATUSFULLCAT, SEX, CLUB,OPERATION
+) (SELECT MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJOINED,
      DATELEFT, OWNSPLANEREG, STATUSSTUDENT, STATUSPILOT, STATUSASCAT, STATUSFULLCAT, SEX, CLUB, 'INS'
    FROM taMember where MemberNo in
-                       (SELECT memberno from taMember
-                        minus
-                        SELECT memberno from member_yesterday)
+       (SELECT memberno from taMember
+        minus
+        SELECT memberno from member_yesterday)
   );
 
 --inserting all the deleted rows

@@ -20,6 +20,8 @@ create table FULLY_EXTRACTED_AIRPORT as
       wmo_index
   from AIRPORT
   );
+alter table FULLY_EXTRACTED_AIRPORT
+  add operation_code varchar2(3);
 
 create table FULLY_EXTRACTED_WEATHER as
   (select
