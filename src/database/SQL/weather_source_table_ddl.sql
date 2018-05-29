@@ -1,13 +1,5 @@
 BEGIN
   EXECUTE IMMEDIATE 'drop table weather_record CASCADE CONSTRAINTS purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
-/
-BEGIN
   EXECUTE IMMEDIATE 'drop table airport CASCADE CONSTRAINTS purge';
   EXCEPTION
   WHEN OTHERS THEN
@@ -16,9 +8,11 @@ BEGIN
   END IF;
 END;
 /
+
 BEGIN
   EXECUTE IMMEDIATE 'drop sequence airport_id';
-EXCEPTION
+  EXECUTE IMMEDIATE 'drop sequence weather_record_id';
+  EXCEPTION
   WHEN OTHERS THEN
   IF SQLCODE != -2289 THEN
     RAISE;
@@ -26,15 +20,6 @@ EXCEPTION
 END;
 /
 
-BEGIN
-  EXECUTE IMMEDIATE 'drop sequence weather_record_id';
-EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -2289 THEN
-    RAISE;
-  END IF;
-END;
-/
 create sequence airport_id
   start with 1
   increment by 1
@@ -50,8 +35,8 @@ create sequence weather_record_id
 
 create table airport
 (
-  id int primary key,
-  ICAO_airport_Code varchar(4),
+   id int primary key,
+   ICAO_airport_Code varchar(4),
    latitude varchar(7),
    longitude varchar(8),
    countryName varchar(100),
