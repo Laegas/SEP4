@@ -2,13 +2,16 @@ package launchable.visualization;
 
 import config.FileConfig;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -18,6 +21,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 public class JavaFxMap extends Application {
     private Timeline locationUpdateTimeline;
@@ -68,29 +72,73 @@ public class JavaFxMap extends Application {
             );
             locationUpdateTimeline.play();
         });
-        Button zoomIn = new Button("Zoom In");
-        zoomIn.setOnAction(actionEvent -> webEngine.executeScript("document.zoomIn()"));
-        Button zoomOut = new Button("Zoom Out");
-        zoomOut.setOnAction(actionEvent -> webEngine.executeScript("document.zoomOut()"));
 
         // creating radio buttons
         final ToggleGroup radioButtonGroup = new ToggleGroup();
-        RadioButton rb1 = new RadioButton("Red");
-        rb1.setUserData("Red");
+        RadioButton rb1 = new RadioButton("All");
+        rb1.setUserData("All");
         rb1.setToggleGroup(radioButtonGroup);
         rb1.setSelected(true);
-        RadioButton rb2 = new RadioButton("Green");
+        RadioButton rb2 = new RadioButton("0-10");
         rb2.setToggleGroup(radioButtonGroup);
-        rb2.setUserData("Green");
+        rb2.setUserData("0-10");
+        RadioButton rb3 = new RadioButton("10-20");
+        rb3.setToggleGroup(radioButtonGroup);
+        rb3.setUserData("10-20");
+        RadioButton rb4 = new RadioButton("20-30");
+        rb4.setToggleGroup(radioButtonGroup);
+        rb4.setUserData("20-30");
 
         radioButtonGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
                 switch(new_toggle.getUserData().toString()) {
-                    case "Red": webEngine.executeScript("document.restyle(0)"); break;
-                    case "Green": webEngine.executeScript("document.restyle(1)"); break;
+                    case "All": webEngine.executeScript("document.restyle(-1, 0)"); break;
+                    case "0-10": webEngine.executeScript("document.restyle(1, 0)"); break;
+                    case "10-20": webEngine.executeScript("document.restyle(2, 0)"); break;
+                    case "20-30": webEngine.executeScript("document.restyle(3, 0)"); break;
                 }
             }
+        });
+
+        // create slider
+        Slider slider = new Slider();
+        slider.setMin(0);
+        slider.setMax(100);
+        slider.setValue(100);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(100);
+        slider.setMinorTickCount(10);
+        slider.setBlockIncrement(10);
+        slider.setLabelFormatter(new StringConverter<Double>() {
+            @Override
+            // todo
+            public String toString(Double n) {
+                if (n < 50) return "None";
+                return "All";
+            }
+
+            // todo
+            @Override
+            public Double fromString(String s) {
+                switch (s) {
+                    case "None":
+                        return 0d;
+                    case "All":
+                        return 100d;
+                    default:
+                        return 100d;
+                }
+            }
+        });
+        PauseTransition pause = new PauseTransition(Duration.millis(500));
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            pause.setOnFinished((event) -> {
+                System.out.println("document.restyle(-1, " + (1 - newValue.intValue() / 100.0) + ")");
+                webEngine.executeScript("document.restyle(-1, " + (1 - newValue.intValue() / 100.0) + ")");
+            });
+            pause.playFromStart();
         });
 
         // create toolbar
@@ -99,9 +147,11 @@ public class JavaFxMap extends Application {
         toolBar.getItems().addAll(
                 road, satellite, hybrid, terrain,
                 createSpacer(),
-                rb1, rb2,
+                new Label("Visible:"), slider,
                 createSpacer(),
-                new Label("Location:"), searchBox, zoomIn, zoomOut);
+                rb1, rb2, rb3, rb4,
+                createSpacer(),
+                new Label("Location:"), searchBox);
         // create root
         BorderPane root = new BorderPane();
         root.getStyleClass().add("map");

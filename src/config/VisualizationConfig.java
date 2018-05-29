@@ -1,7 +1,7 @@
 package config;
 
 import model.outputData.FeatureProperties;
-import model.outputData.OutputData;
+import org.json.JSONException;
 
 public class VisualizationConfig {
 
@@ -19,23 +19,41 @@ public class VisualizationConfig {
     public static final int WIDTH = (int)((LONGITUDE_END - LONGITUDE_START) * 60 / WEST_TO_EAST_ARC);   // 720
     public static final int HEIGHT = (int)((LATITUDE_END - LATITUDE_START) * 60 / SOUTH_TO_NORTH_ARC);  // 360
 
-    // config for resource (JSON) generation
+    // ********************* config for resource (JSON) generation *********************
     public static final int CHUNKS = 1;
-    public static final String[] PROPERTIES = new String[]{"flights", "thermals", "test"};
-    public static String[] PROPERTY_VALUES(FeatureProperties feature) {
+    public static boolean IS_MEANINGFUL(FeatureProperties grid) {
+        return grid.getTotal().getNumberOfRegisteredFlights()!=0;
+        /*return grid.getTotal().getNumberOfRegisteredFlights()>8 &&
+                ((double)grid.getTotal().getNumberOfRegisteredThermal() /
+                 (double)grid.getTotal().getNumberOfRegisteredFlights()*100)>30.0;*/
+    }
+
+    // naming convention for properties: f = flights; t = total; l@ = layer number
+    public static final String[] PROPERTIES = new String[]{"f", "t", "l1f", "l1t", "l2f", "l2t", "l3f", "l3t"};
+    public static String[] PROPERTY_VALUES(FeatureProperties feature) throws JSONException {
         String[] values = new String[PROPERTIES.length];
         values[0] = feature.getTotal().getNumberOfRegisteredFlights() + "";
         values[1] = feature.getTotal().getNumberOfRegisteredThermal() + "";
-        values[2] = "1";
+        values[2] = feature.getBetweenZeroAndTenDegree().getNumberOfRegisteredFlights() + "";
+        values[3] = feature.getBetweenZeroAndTenDegree().getNumberOfRegisteredThermal() + "";
+        values[4] = feature.getBetweenTenAndTwentyDegree().getNumberOfRegisteredFlights() + "";
+        values[5] = feature.getBetweenTenAndTwentyDegree().getNumberOfRegisteredThermal() + "";
+        values[6] = feature.getBetweenTwentyAndThirtyDegree().getNumberOfRegisteredFlights() + "";
+        values[7] = feature.getBetweenTwentyAndThirtyDegree().getNumberOfRegisteredThermal() + "";
+        for(String value : values)
+            if(value == null || value.equals(""))
+                throw new JSONException("Not all properties are initialized");
         return values;
     }
 
     // additional config for Google Maps
     public static final int ZOOM = 7;
-    public static final String ALPHA_PROPERTY = PROPERTIES[0];
-    public static final String[] DISPLAY_PROPERTIES = new String[]{PROPERTIES[1], PROPERTIES[0]};
     public static final double MINIMUM_ALPHA = 0.3;
-    public static final String DISPLAY_STRING_FORMAT = "T:@1 / F:@2"; // @1 through to @9 represents DISPLAY_PROPERTIES
-
+    public static final String ALPHA_PROPERTY = PROPERTIES[1];
+    public static final String VISIBILITY_FACTOR = PROPERTIES[1] + "/" + PROPERTIES[0];
+    public static final String[] DISPLAY_PROPERTIES = new String[]{PROPERTIES[1], PROPERTIES[0], PROPERTIES[3],
+            PROPERTIES[5], PROPERTIES[7]};
+    public static final String DISPLAY_STRING_FORMAT = "T:@1 / F:@2; @3, @4, @5"; // @1 through to @9 represents
+    // DISPLAY_PROPERTIES
 
 }

@@ -6,21 +6,17 @@ import model.IGCJoinWeather;
 import model.igc.DataPoint;
 import model.igc.Flight;
 import model.igc.ThermalDataPointGroup;
-import model.outputData.IGCDataGroup;
 import model.outputData.OutputData;
 import model.weather.WeatherFactory;
 import model.weather.WeatherRecord;
-import util.flight.FlightSplitter;
-import util.flight.FlightSplitterImp;
 import util.igc.RemoveDuplicate;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
+import visualization.javaFxMaps.GenerateJSSettings;
 import visualization.javaFxMaps.GenerateJson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by kenneth on 24/05/2018.
@@ -40,9 +36,10 @@ public class AnalysisOfThermalsWithWeatherData {
         System.out.println("thermal weather analasys start:");
         analyse(flights, outputData);
         System.out.println("Count thermal no weather analasys start:");
-        CountThermalsAnalysis.analayse(flights, outputData);
+        CountThermalsAnalysis.analyse(flights, outputData);
 
         generateJson.generateJson(outputData);
+        GenerateJSSettings.getInstance().generateSettings(outputData);
     }
 
     /**
