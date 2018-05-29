@@ -4,9 +4,9 @@ import database.DAO.DaoManager;
 import database.DAO.WeatherDimensionalDao;
 import model.geography.Latitude;
 import model.geography.Longitude;
-import model.igc.DataPoint;
 import model.time.Date;
 import model.time.Time;
+import util.geography.GeoCaluclator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,13 +19,13 @@ public class WeatherFactory {
     private static final WeatherFactory INSTANCE = new WeatherFactory();
 
     private WeatherDimensionalDao weatherDimensionalDao;
-    private Map<String, List<WeatherRecord>> localWeatherRecoedByDateCache;
+    private Map<String, List<WeatherRecord>> localWeatherRecordByDateAndICAOCache;
 
 
     private WeatherFactory() {
         // TODO MAKE STUFF WHEN THE WEATHER DAO IS IMPLEMENTED
         weatherDimensionalDao = DaoManager.WEATHER_DIMENSIONAL_DAO;
-        localWeatherRecoedByDateCache = new HashMap<>();
+        this.localWeatherRecordByDateAndICAOCache = new HashMap<>();
     }
 
     public static WeatherFactory getINSTANCE() {
@@ -43,28 +43,51 @@ public class WeatherFactory {
      */
     public WeatherRecord getWeather(Date date, Time time, Longitude longitude, Latitude latitude) {
         // get using latitude and longitude
-        ICAOAirportCode airport_code = new ICAOAirportCode("");
+        ICAOAirportCode airport_code = getClosestAirort(latitude, longitude);
+        if (airport_code != null) {
 
-        return getWeather(date, time, airport_code);
+            return getWeather(date, time, airport_code);
+        }
 
-    }
-
-    public ICAOAirportCode getClosestAirort(DataPoint dataPoint) {
         return null;
+
+    }
+
+    private ICAOAirportCode getClosestAirort(Latitude latitude, Longitude longitude) {
+
+        List<Airport> airports = DaoManager.WEATHER_DIMENSIONAL_DAO.getAirportsByDate(new Date(1, 1,1));
+
+        double shortestDistance = Double.MAX_VALUE;
+        Airport resultPointer = null;
+
+        double tempDist = 0;
+        for (Airport airport : airports) {
+            tempDist = GeoCaluclator.getGeoDistance(latitude, longitude, airport.getLatitude(), airport.getLongitude());
+            if (tempDist < shortestDistance) {
+                resultPointer = airport;
+            }
+        }
+
+        try {
+            return resultPointer.getAirport();
+        } catch (NullPointerException e) {
+            return null;
+        }
+
     }
 
 
-    public WeatherRecord getWeather(Date date, Time time, ICAOAirportCode airportCode) {
+    private WeatherRecord getWeather(Date date, Time time, ICAOAirportCode airportCode) {
         // input airport code not currently used
         //EKAH is the airport code for Aarhus CURRENT DEFAULT
-        ICAOAirportCode icao_in_use = new ICAOAirportCode("EKAH");
+        ICAOAirportCode icao_in_use = airportCode;
 
 
         // cache system for weather data maped by a string representing the date
-        List<WeatherRecord> weatherRecords = localWeatherRecoedByDateCache.get(getLocalCacheString(date));
+        List<WeatherRecord> weatherRecords = localWeatherRecordByDateAndICAOCache.get(getLocalCacheString(date, airportCode));
         if (weatherRecords == null) {
             weatherRecords = this.weatherDimensionalDao.getWeatherRecord(date, icao_in_use);
-            localWeatherRecoedByDateCache.put(getLocalCacheString(date), weatherRecords);
+            localWeatherRecordByDateAndICAOCache.put(getLocalCacheString(date, airportCode), weatherRecords);
         }
 
 
@@ -96,7 +119,7 @@ public class WeatherFactory {
         return resultPointer;
     }
 
-    private static String getLocalCacheString(Date date) {
-        return (date.getDay().getDayOfMonth() + ":" + date.getMonth().getMonthNumber() + ":" + date.getYear().getYear());
+    private static String getLocalCacheString(Date date , ICAOAirportCode airportCode) {
+        return (date.getDay().getDayOfMonth() + ":" + date.getMonth().getMonthNumber() + ":" + date.getYear().getYear()) + ":" + airportCode.getICAOCode();
     }
 }

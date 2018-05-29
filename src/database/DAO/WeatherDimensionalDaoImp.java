@@ -88,7 +88,7 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
         }
 
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
