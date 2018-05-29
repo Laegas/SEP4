@@ -70,7 +70,7 @@ update flights_to_load_with_surr_key a set a.id_LANDDATE = (
 declare
   tmp_id_member int;
 begin
-  DBMS_OUTPUT.put_line('like this here');
+
   for c in (SELECT
               pilot1init, pilot2init, pilot1_Non_UNIQUE_INITIALS, pilot2_Non_UNIQUE_INITIALS,
               id_launchtime , id_landtime , id_landdate, surr_key_flight
@@ -101,9 +101,7 @@ begin
         if(tmp_id_member = null)
         then
           tmp_id_member := 0;
-          DBMS_OUTPUT.put_line('NULL');
         end if;
-        DBMS_OUTPUT.put_line(tmp_ID_member);
       end if;
       insert into B_FLIGHT_MEMBER (ID_GROUP, ID_MEMBER, weight) VALUES (
         SEQ_ID_B_FLIGHT_MEMBER.currval, tmp_id_member  , 0.5);
