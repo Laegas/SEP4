@@ -3,6 +3,7 @@ package launchable.analysis;
 import database.DAO.DaoManager;
 import database.DAO.IGCDimensionalDao;
 import model.IGCJoinWeather;
+import model.geography.InvalidCoordinatesException;
 import model.igc.DataPoint;
 import model.igc.Flight;
 import model.igc.ThermalDataPointGroup;
@@ -34,9 +35,19 @@ public class AnalysisOfThermalsWithWeatherData {
 
 
         System.out.println("thermal weather analasys start:");
-        analyse(flights, outputData);
+        try {
+            analyse(flights, outputData);
+        } catch (InvalidCoordinatesException e) {
+            System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
+            e.printStackTrace();
+        }
         System.out.println("Count thermal no weather analasys start:");
-        CountThermalsAnalysis.analyse(flights, outputData);
+        try {
+            CountThermalsAnalysis.analyse(flights, outputData);
+        } catch (InvalidCoordinatesException e) {
+            System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
+            e.printStackTrace();
+        }
 
         generateJson.generateJson(outputData);
         GenerateJSSettings.getInstance().generateSettings(outputData);
@@ -47,7 +58,7 @@ public class AnalysisOfThermalsWithWeatherData {
      * @param flights
      * @param outputData
      */
-    public static void analyse(List<Flight> flights, OutputData outputData) {
+    public static void analyse(List<Flight> flights, OutputData outputData) throws InvalidCoordinatesException {
 
         // join all the data points with the weather for each flight
 

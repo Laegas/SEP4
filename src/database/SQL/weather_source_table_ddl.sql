@@ -62,5 +62,4 @@ create table weather_record
 );
 
 
-
 -- select count (*) from weather_record;

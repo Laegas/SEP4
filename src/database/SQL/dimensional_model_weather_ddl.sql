@@ -20,7 +20,7 @@ CREATE table F_WEATHER_RECORD(
   wind_speed int ,
   temperature decimal (5,2),
   dew_point decimal (5,2),
-  airport_code varchar(4),
+  airport_code varchar22(4),
   PRIMARY KEY (surr_key_weather,surr_key_flight)
 );
 

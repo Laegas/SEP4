@@ -34,4 +34,13 @@ public class Second {
     {
         return second/60;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if(!(obj instanceof Second))
+            return false;
+        Second o = (Second)obj;
+        return o.second == (this.second);
+    }
 }
