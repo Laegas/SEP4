@@ -2,6 +2,7 @@ package database.DAO;
 
 import model.time.Date;
 import model.weather.Airport;
+import model.weather.ICAOAirportCode;
 import model.weather.WeatherRecord;
 
 import java.sql.Connection;
@@ -18,7 +19,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
     }
 
     @Override
-    public void insertWeatherRecord(WeatherRecord record) {
+    public void insertWeatherRecord(WeatherRecord record, ICAOAirportCode airportCode) {
         try {
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
             int windSpeed = record.getWind().getWindSpeed().getKnots();
@@ -95,13 +96,19 @@ public class METARSourceDAOImp implements METARSourceDAO {
             PreparedStatement stm = DatabaseHelper.getInstance().getConnection().prepareStatement(sql);
 
             stm.setString(1, airport.getAirport().getICAOCode());
-//            stm.setString(2,airport.getLatitude().getD);
+            stm.setString(2, airport.getLatitude().toDBString());
+            stm.setString(3,airport.getLongitude().toDBString());
+            stm.setString(4, airport.getCountryName().getCountryName());
+            stm.setString(5,airport.getAirportName());
+            stm.setInt(6,airport.getAltitude().getAltitude());
+            stm.setString(7, airport.getWmoIndex().getWMOIndex());
+
+            stm.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+//         insert weather records with a reference to their respective airports
 
-
-        // insert weather records with a reference to their respective airports
     }
 }

@@ -99,4 +99,8 @@ public class Longitude {
 				o.minute.equals(this.minute) &&
 				o.second.equals(this.second);
 	}
+	public String toDBString() {
+		return String.format("%03d", getDegree()) + String.format("%02d", getMinute()) + String.format("%03d", (int) (getSecond() * 1000));
+
+	}
 }
