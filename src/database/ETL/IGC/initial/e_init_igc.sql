@@ -28,3 +28,5 @@ join data_logger log ON
   igc.FLIGht_ID = log.ID
   where 1 = 0)
 ;
+
+COMMIT;

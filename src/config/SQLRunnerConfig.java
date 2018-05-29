@@ -25,6 +25,7 @@ public class SQLRunnerConfig {
     public static final File WEATHER_SOURCE_TABLE_DDL = new File("src/database/SQL/weather_source_table_ddl.sql");
     public static final File WEATHER_E_INIT = new File("src/database/ETL/weather/initial/e_init_weather.sql");
     public static final File WEATHER_T_INIT = new File("src/database/ETL/weather/initial/t_init_weather.sql");
+    public static final File WEATHER_L_INIT = new File("src/database/ETL/weather/initial/l_init_weather.sql");
 
     public static final File WEATHER_E = new File("src/database/ETL/weather/E/e_weather.sql");
     public static final File WEATHER_T = new File("src/database/ETL/weather/T/t_weather.sql");

@@ -1,5 +1,6 @@
 BEGIN
   EXECUTE IMMEDIATE 'drop table fully_extracted_weather CASCADE CONSTRAINTS purge';
+  EXECUTE IMMEDIATE 'drop table FULLY_EXTRACTED_AIRPORT CASCADE CONSTRAINTS purge';
   EXCEPTION
   WHEN OTHERS THEN
   IF SQLCODE != -942 THEN
@@ -7,6 +8,19 @@ BEGIN
   END IF;
 END;
 /
+create table FULLY_EXTRACTED_AIRPORT as
+  (
+    select
+      id,
+      ICAO_airport_Code,
+      latitude,
+      longitude,
+      countryName,
+      airportName,
+      altitude,
+      wmo_index
+  from AIRPORT
+  );
 
 create table FULLY_EXTRACTED_WEATHER as
   (select
@@ -23,3 +37,5 @@ create table FULLY_EXTRACTED_WEATHER as
   MINUTE
 from WEATHER_RECORD)
 ;
+
+COMMIT;

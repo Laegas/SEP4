@@ -28,3 +28,4 @@ insert into TRANSFORM_IGC_EMPTY_GLIDER_REGNO (
         where IGC_ID not IN (select IGC_ID from TRANSFORM_IGC_EMPTY_GLIDER_REGNO)
   );
 COMMIT ;
+

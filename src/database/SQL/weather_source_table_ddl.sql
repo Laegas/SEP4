@@ -35,8 +35,7 @@ create sequence weather_record_id
 
 create table airport
 (
-  id int primary key,
-  ICAO_airport_Code varchar2(4),
+  ICAO_airport_Code varchar2(4) primary key,
   latitude varchar2(7),
   longitude varchar2(8),
   countryName varchar2(100),
@@ -48,8 +47,7 @@ create table airport
 create table weather_record
 (
   id int primary key,
-  ICAO_airport_code varchar2(4),
-  airport_id int references airport(aiport_id),
+  ICAO_airport_code varchar2(4) references airport(ICAO_airport_code),
   wind_direction int,
   wind_speed int,
   wind_direction_from int,
@@ -61,5 +59,5 @@ create table weather_record
   minute int
 );
 
-
+COMMIT;
 -- select count (*) from weather_record;

@@ -15,6 +15,8 @@ import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
 import visualization.javaFxMaps.GenerateJSSettings;
 import visualization.javaFxMaps.GenerateJson;
+import model.geography.Longitude;
+import model.geography.Latitude;
 
 import java.util.ArrayList;
 import java.util.List;
