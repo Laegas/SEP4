@@ -7,24 +7,41 @@ select * from DATA_LOGGER;
 
 select * from LOAD_F_IGC_LOGGER;
 
-select count(*) from F_IGC_LOG;
+select ID_DATE from D_Date
+where (select to_Date( (DAY || '.' || MONTH || '.' || YEAR), 'DD.MM.YYYY') from D_DATE)
+      = (select D_Flight.START_DATE from D_FLIGHT)
+     intersect
+select id_launch_date from F_DURATION;
 
-SELECT DISTINCT hour
-FROM WEATHER_RECORD;
-
-select * from f_weather_record;
-
-select w_date,w_time,wind_direction,wind_speed,WIND_DIRECTION_FROM,WIND_DIRECTION_TO,temperature,dew_point,airport_code from f_weather_record where w_date = TO_DATE(?/?/?, 'dd/mm/yyyy');
-
-select count(*), AIRPORT_CODE, W_DATE from F_WEATHER_RECORD  group BY AIRPORT_CODE, W_DATE ORDER BY count(*),W_DATE;
-
-select W_DATE from F_WEATHER_RECORD;
-
-SELECT DISTINCT START_DATE from D_FLIGHT;
-select DISTINCT  W_DATE from F_WEATHER_RECORD;
-
-delete from F_IGC_LOG where LAT_NORTH = 0000000;
-COMMIT ;
+select *from D_FLIGHT;
 
 
 
+select count(*) from WEATHER_RECORD;
+select count(*) from IGC_SOURCE_DATA;
+select count(*) from DATA_LOGGER;
+select * from DATA_LOGGER;
+
+select fw.SURR_KEY_IGC_WEATHER from F_WEATHER_RECORD fw
+     join D_flight df
+          on (df.START_DATE = fw.W_DATE)
+     join TRANSFORM_IGC_EMPTY_GLIDER_REGNO tr
+          on (df.SURR_KEY_FLIGHT = tr.FLIGHT_ID)
+where tr.FLIGHT_ID = SURR_KEY_FLIGHT;
+
+select diw.SURR_KEY_IGC_WEATHER from D_IGC_WEATHER diw
+  join F_WEATHER_RECORD fw
+    on (fw.SURR_KEY_IGC_WEATHER = diw.SURR_KEY_IGC_WEATHER)
+  join D_flight df
+    on (START_DATE = W_DATE)
+  join TRANSFORM_IGC_EMPTY_GLIDER_REGNO tr
+    on (df.SURR_KEY_FLIGHT = tr.FLIGHT_ID)
+where AIRPORT_CODE = 'EKAH';
+
+select * from F_WEATHER_RECORD where AIRPORT_CODE = 'EKAH';
+
+select * from F_WEATHER_RECORD;
+select * from F_WEATHER_RECORD;
+
+select * from F_WEATHER_RECORD;
+select * from F_IGC_LOG;

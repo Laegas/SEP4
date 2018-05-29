@@ -24,7 +24,8 @@ insert into D_GLIDER (
 -- inserting new flights into d_flights
 insert into D_FLIGHT (
     SURR_KEY_FLIGHT,
-    START_DATE
+    START_DATE,
+    GLIDER_SURR_KEY
 ) (select flight_id,
     flight_date from
     (select distinct flight_id,
@@ -32,23 +33,47 @@ insert into D_FLIGHT (
     where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT))
 );
 
+--insert the flight surr key and it's starting date into the F_Duration table (linking DWHs)
+insert into F_DURATION (
+    SURR_KEY_FLIGHT,
+    ID_GROUP_FLIGHT_MEMBER,
+    ID_LAUNCH_TIME,
+    ID_LAUNCH_DATE,
+    ID_LAND_TIME,
+    ID_LAND_DATE,
+    DURATION
+) (select SURR_KEY_FLIGHT,
+    -1,
+    -1,
+    (select id_date from d_date where
+      d_date.year = extract(year from START_DATE) AND
+      d_date.month= extract(month from START_DATE) AND
+      d_date.day = extract(day from START_DATE)),
+    -1,
+    -1,
+    -1
+   from D_FLIGHT
+   where SURR_KEY_FLIGHT not in (select SURR_KEY_FLIGHT from F_DURATION)
+);
+
 -- select * from FULLY_EXTRACTED_IGC;
 -- now inserting all new f_igc_log
 insert into F_IGC_LOG (
     SURR_KEY_LOG,
     SURR_KEY_FLIGHT,
-    SURR_KEY_GLIDER,
-    TIME,
+    ID_TIME,
     LAT_NORTH,
     LONG_EAST,
     PRESS_ALTITUDE,
     GPS_ALTITUDE,
     GPS_OK
 ) (select
-    igc_ID,
-    FLIGht_ID,
-    (select SURR_KEY_GLIDER from d_glider g where g.GLIDER_ID = GLIDER_REGNO) as surr_key_glider,
-    TIME_OF_LOG,
+    IGC_ID,
+    FLIGHT_ID,
+   (select id_time from d_time where
+     d_time.hour = extract(hour from TIME_OF_LOG) AND
+     d_time.minute= extract(minute from TIME_OF_LOG) AND
+     d_time.second = extract(second from TIME_OF_LOG)),
     LATITUDE,
     LONGITUDE,
     PRESSURE_ALTITUDE,

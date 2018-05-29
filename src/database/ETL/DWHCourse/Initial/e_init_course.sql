@@ -32,4 +32,4 @@ CREate TABLE deltaMember as (SELECT * FROM taMember where 1 = 0);
 ALTER TABLE deltaMember ADD (operation char(3));
 Create TABLE MEMBER_YESTERDAY as (SELECT * FROM taMember where 1 = 0);
 
-
+COMMIT;

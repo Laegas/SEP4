@@ -1,6 +1,8 @@
 package database.DAO;
 
 import model.time.Date;
+import model.weather.Airport;
+import model.weather.ICAOAirportCode;
 import model.weather.WeatherRecord;
 
 import java.sql.Connection;
@@ -16,6 +18,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
         conn = DatabaseHelper.getInstance().getConnection();
     }
 
+    @Override
     public void insertWeatherRecord(WeatherRecord record) {
         try {
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
@@ -78,6 +81,37 @@ public class METARSourceDAOImp implements METARSourceDAO {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void insertAirport(Airport airport) {
+
+        // insert airports into souce tables
+
+//        String sql = "";
+        String sql = "insert into airport (ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX) VALUES " +
+                "(?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement stm = DatabaseHelper.getInstance().getConnection().prepareStatement(sql);
+
+            stm.setString(1, airport.getAirport().getICAOCode());
+            stm.setString(2, airport.getLatitude().toDBString());
+            stm.setString(3,airport.getLongitude().toDBString());
+            stm.setString(4, airport.getCountryName().getCountryName());
+            stm.setString(5,airport.getAirportName());
+            stm.setInt(6,airport.getAltitude().getAltitude());
+            stm.setString(7, airport.getWmoIndex().getWMOIndex());
+
+            stm.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//         insert weather records with a reference to their respective airports
+
+        for (WeatherRecord record : airport.getWeatherRecords()) {
+            insertWeatherRecord(record);
         }
     }
 }
