@@ -31,9 +31,13 @@ public class RemoveDuplicate {
 
         String key;
         for (IGCJoinWeather item : list) {
-            key = item.getDataPoint().getLatitude().getGridIndex() + ":" + item.getDataPoint().getLongitude().getGridIndex();
-
-            map.put(key, item);
+            try {
+                key = item.getDataPoint().getLatitude().getGridIndex() + ":" + item.getDataPoint().getLongitude().getGridIndex();
+                map.put(key, item);
+            } catch (InvalidCoordinatesException e) {
+                System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
+                e.printStackTrace();
+            }
         }
 
         List<IGCJoinWeather> result = new ArrayList<>();
@@ -51,9 +55,13 @@ public class RemoveDuplicate {
 
         String key;
         for (DataPoint item : dataPoints) {
-            key = item.getLatitude().getGridIndex() + ":" + item.getLongitude().getGridIndex();
-
-            map.put(key, item);
+            try {
+                key = item.getLatitude().getGridIndex() + ":" + item.getLongitude().getGridIndex();
+                map.put(key, item);
+            } catch (InvalidCoordinatesException e) {
+                System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
+                e.printStackTrace();
+            }
         }
 
         List<DataPoint> result = new ArrayList<>();
@@ -64,20 +72,14 @@ public class RemoveDuplicate {
         return result;
 
     }
-    public static List<LocationPoint> getUniqueLocationPointsIndexe(List<LocationPoint> points)
+    public static List<LocationPoint> getUniqueLocationPointsIndexes(List<LocationPoint> points)
     {
         List<LocationPoint> uniqueList = new ArrayList<>();
         for (LocationPoint point: points)
-        { try {
-            if(!uniqueList.contains(point))
-            {
+        {
+                if(!uniqueList.contains(point)) {
                     uniqueList.add(point);
-            }
-            }
-                catch(InvalidCoordinatesException e)
-            {
-                System.out.println("hey hey remove me in Class RemoveDuplicate, when ETL is fixed");
-            }
+                }
         }
         return uniqueList;
     }

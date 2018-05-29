@@ -86,16 +86,16 @@ create table D_MEMBER(
   Member_ID int,
   MemberNo number(6,0),
   Initials char(04),
-  Name varchar(50),
-  Address varchar(50),
+  Name varchar2(50),
+  Address varchar2(50),
   ZIPCode number(4,0),
   DateBorn date,
   DateJoined date,
   DateLeft date,
   OwnsPlaneReg char(3),
   Sex char(1),
-  Club varchar(50),
-  Status varchar(255),
+  Club varchar2(50),
+  Status varchar2(255),
   valid_from date,
   valid_to date,
   primary key (Member_ID)
@@ -113,11 +113,11 @@ END;
 /
 CREATE TABLE D_date(
   id_date int,
-  day varchar2(2),
-  month varchar2(2),
-  year varchar2(4),
-  day_of_week varchar2(1),
-  quarter varchar2(1),
+  day varchar22(2),
+  month varchar22(2),
+  year varchar22(4),
+  day_of_week varchar22(1),
+  quarter varchar22(1),
   unique(day, month, year)
   );
 
@@ -165,9 +165,9 @@ END;
 /
 create table d_time(
   id_time int,
-  hour varchar(2),
-  minute varchar(2),
-  second varchar(2)
+  hour varchar2(2),
+  minute varchar2(2),
+  second varchar2(2)
 );
 
 create index time_index on d_time (hour,minute,second);

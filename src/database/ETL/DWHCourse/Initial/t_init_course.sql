@@ -29,4 +29,4 @@ END;
 /
 CREATE TABLE fixed_status_member As (SELECT * FROM deltaMember where 1 = 0);
 ALTER TABLE fixed_status_member drop (statusstudent, statuspilot, statusFullCat, statusAsCat);
-alter table fixed_status_member add (status varchar(255));
+alter table fixed_status_member add (status varchar2(255));

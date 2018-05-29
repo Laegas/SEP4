@@ -30,13 +30,18 @@ public class CountThermalsAnalysis {
         // some output data structure
         OutputData outputData = new OutputData();
 
-        analyse(flights, outputData);
+        try {
+            analyse(flights, outputData);
+        } catch (InvalidCoordinatesException e) {
+            System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
+            e.printStackTrace();
+        }
 
         GenerateJson.getInstance().generateJson(outputData);
         GenerateJSSettings.getInstance().generateSettings(outputData);
     }
 
-    public static void analyse(List<Flight> flights, OutputData outputData) {
+    public static void analyse(List<Flight> flights, OutputData outputData) throws InvalidCoordinatesException {
 
         ThermalFinder thermalFinder = new ThermalFinderImp();
         for (Flight flight : flights) {
@@ -49,11 +54,16 @@ public class CountThermalsAnalysis {
                 }
             }
             // add thermalIndexSet to output structure
-            List<LocationPoint> uniquePoints = RemoveDuplicate.getUniqueLocationPointsIndexe(thermalIndexes);
+            List<LocationPoint> uniquePoints = RemoveDuplicate.getUniqueLocationPointsIndexes(thermalIndexes);
 
             for (LocationPoint locationPoint : uniquePoints) {
-                outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
-                // all thermals have been put into output data object
+                try {
+                    outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
+                    // all thermals have been put into output data object
+                } catch (InvalidCoordinatesException e) {
+                    System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
+                    e.printStackTrace();
+                }
             }
 
             // get all unique location points from a flight and register them in output data object
@@ -61,13 +71,9 @@ public class CountThermalsAnalysis {
             for (DataPoint dataPoint : flight.getDatalog()) {
                 allFromFlight.add(new LocationPoint(dataPoint.getLatitude(), dataPoint.getLongitude()));
             }
-            List<LocationPoint> uniqueLocationPoints = RemoveDuplicate.getUniqueLocationPointsIndexe(allFromFlight);
+            List<LocationPoint> uniqueLocationPoints = RemoveDuplicate.getUniqueLocationPointsIndexes(allFromFlight);
             for (LocationPoint locationPoint : uniqueLocationPoints) {
-                try {
-                    outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredFlight();
-                } catch (InvalidCoordinatesException e) {
-                    e.printStackTrace();
-                }
+                outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredFlight();
                 // registered all the visited grids for this flight
             }
 

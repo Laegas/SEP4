@@ -43,14 +43,12 @@ public class Minute implements Comparable<Minute>{
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-
-        Minute minute1 = (Minute) object;
-
-        return minute == minute1.minute;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if(!(obj instanceof Minute))
+            return false;
+        Minute o = (Minute)obj;
+        return o.minute == (this.minute);
     }
-
 
 }

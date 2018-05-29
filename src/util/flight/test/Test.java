@@ -1,9 +1,9 @@
 package util.flight.test;
 
 import database.DAO.DaoManager;
+import model.geography.InvalidCoordinatesException;
 import model.igc.Flight;
 import util.flight.FlightSplitter;
-import util.flight.FlightSplitterImp;
 
 import java.util.List;
 
@@ -12,11 +12,14 @@ import java.util.List;
  */
 public class Test {
     public static void main(String[] args) {
-        FlightSplitter splitter = new FlightSplitterImp();
+        FlightSplitter splitter = new FlightSplitter();
         List<Flight> flights = DaoManager.IGC_DIMENSIONAL_DAO.getAllFlights();
         for (Flight flight : flights) {
-            System.out.println(splitter.splitFlight(flight).size());
-
+            try {
+                System.out.println(splitter.splitFlight(flight).size());
+            } catch (InvalidCoordinatesException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

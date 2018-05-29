@@ -1,7 +1,7 @@
 -------- finding new flights------
 
 -- CREATE TABLE toHandleLaterFlights AS (SELECT * FROM TAFLIGHTSVEJLE);
--- ALTER TABLE toHandleLaterFlights ADD (clubName VARCHAR(100));
+-- ALTER TABLE toHandleLaterFlights ADD (clubName varchar2(100));
 
 -- CREATE TABLE lastExtractedFlights (lastDate date);
 -- INSERT INTO LASTEXTRACTEDFLIGHTS (lastDate) VALUES (CURRENT_DATE);
