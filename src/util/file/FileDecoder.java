@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import model.geography.CountryName;
 import model.igc.Flight;
 import model.igc.DataPoint;
 import model.geography.Latitude;
 import model.geography.Longitude;
 import model.igc.Glider;
 import model.time.*;
+import model.weather.Airport;
+import model.weather.ICAOAirportCode;
 import model.weather.WeatherRecord;
 import util.weatherUtil.MetarReader;
 import util.weatherUtil.METARException;
@@ -30,26 +33,49 @@ public class FileDecoder {
 		}
 	}
 
-	public WeatherRecord[] readMETARFile() {
+	public Airport readMETARFile() {
 
 		List<WeatherRecord> weatherRecords = new ArrayList<>();
-
+		int count = 0;
+		Airport airport = new Airport();
 		while (sc.hasNextLine()) {
 			String l = sc.nextLine();
-			if(l.startsWith("1") || l.startsWith("2")) {
+
+			if(count==5)
+			{
+				System.out.println(l);
+				airport.setAirport(new ICAOAirportCode(l.substring(2,6)));
+				String[] info = l.split("\\(");
+				airport.setAirportName(info[0].substring(7,info[0].length()-1).trim());
+				//airport.setCountryName(new CountryName());
+			}
+			if(count==6)
+			{
+				System.out.println(l);
+			}
+			if(count==7)
+			{
+				System.out.println(l);
+			}
+			if(l.startsWith("# Latitude"))
+			{
+
+			}
+			else if(l.startsWith("1") || l.startsWith("2")) {
 				try {
 					weatherRecords.add(MetarReader.decodeMetar(l));
 				} catch (METARException e) {
 					// ignore
 				}
 			}
+			count++;
 		}
 
 		WeatherRecord[] w = new WeatherRecord[weatherRecords.size()];
 		for(int i = 0; i < w.length; i++)
 			w[i] = weatherRecords.get(i);
-
-		return w;
+		airport.setWeatherRecords((WeatherRecord[]) weatherRecords.toArray());
+		return airport;
 	}
 	
 	public Flight readIGCFile()

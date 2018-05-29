@@ -61,19 +61,23 @@
                             color = "rgba(0, 255, 0, " + alphaChannel + ")";
                             break;
                         case 3:
-                            if(feature.getProperty("l3t") == 0)
+                            if(feature.getProperty("l3t") == 0) {
                                 visible = false;
+                                counter++;
+                            }
                             color = "rgba(0, 0, 255, " + alphaChannel + ")";
                             break;
                         default:
                             color = "rgba(255, 255, 0, " + alphaChannel + ")";
                     }
+                    console.log(counter);
                     return {
                         fillColor: color,
                         strokeWeight: 0,
                         visible: visible
                     };
                 });
+
             };
 
             document.restyle(-1, 0);

@@ -63,7 +63,9 @@ public class MetarReader {
             if(split[7+padding].indexOf('M') > 0)
                 p = 1;
             weatherRecord.setDewPoint(new DegreeCelcius(Double.parseDouble(split[7+padding].substring(3+p,5+p))));
-        } else {
+        }
+
+        else {
             throw new METARException("Not a METAR record");
         }
         return weatherRecord;

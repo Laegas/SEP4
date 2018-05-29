@@ -106,12 +106,8 @@ public class Time implements Comparable<Time>{
         return new Time(nr_of_sec);
     }
 
-    public static void main(String[] args) {
-        Time t1 = new Time(15, 40, 12);
-        Time t2 = new Time(10, 20, 10);
-
-        System.out.println(t1.timeBetween(t2));
-        System.out.println(t2.timeBetween(t1));
+    public String getDatabaseFormat() {
+        return this.hour.getHour()+":"+this.minute.getMinute()+":"+this.second.getSecond();
     }
 
     @Override
