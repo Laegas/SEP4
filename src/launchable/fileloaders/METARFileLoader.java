@@ -27,7 +27,6 @@ public class METARFileLoader {
             preprocessor = new METARTXTFilePreprocessor(file.getAbsolutePath());
             preprocessor.preProcess();
             System.out.println("finished preprocessing file #" + counter + " " + file.getName());
-
             fileDecoder = new FileDecoder(file.getAbsolutePath());
             airport = fileDecoder.readMETARFile();
             WeatherRecord[] records = airport.getWeatherRecords();
