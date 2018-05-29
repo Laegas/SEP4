@@ -23,7 +23,6 @@ public class METARSourceDAOImp implements METARSourceDAO {
         try {
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
             int windSpeed = record.getWind().getWindSpeed().getKnots();
-            // todo windDirection is set to zero when windDirection is variable #notveryawsome
             int windDirection = 0;
             try {
                 windDirection = record.getWind().getWindDirection().getDegree().getDegree();
@@ -87,7 +86,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
     @Override
     public void insertAirport(Airport airport) {
 
-        // insert airports into souce tables
+        // insert airports into source tables
 
 //        String sql = "";
         String sql = "insert into airport (ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX) VALUES " +
