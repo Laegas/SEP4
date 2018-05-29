@@ -43,7 +43,7 @@ public class GenerateJSSettings {
         lines.add(displayPropertiesString.toString());
         lines.add("var minimumAlpha = " + MINIMUM_ALPHA + ";");
         lines.add("var displayStringFormat = \"" + DISPLAY_STRING_FORMAT + "\";");
-
+        lines.add("var visibilityFactor = \"" + VISIBILITY_FACTOR + "\";");
 
         try {
             Path file = Paths.get("src/visualization/javaFxMaps/settings.js");

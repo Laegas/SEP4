@@ -7,6 +7,13 @@ public class Hour implements Comparable<Hour>{
         setHour(hour);
     }
 
+    @Override
+    public String toString() {
+        return "Hour{" +
+                "hour=" + hour +
+                '}';
+    }
+
     public void setHour(int hour)
     {
         if(hour<0 || hour>23)

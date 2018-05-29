@@ -23,6 +23,13 @@ public class Second {
         return second;
     }
 
+    @Override
+    public String toString() {
+        return "Second{" +
+                "second=" + second +
+                '}';
+    }
+
     public double getSecondAsDecimal()//returns a decimal of a minute of the amount of seconds
     {
         return second/60;

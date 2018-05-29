@@ -15,8 +15,6 @@ public class IGCFileLoader {
 
     private static final File dirWithIGCLogFiles = new File(FileConfig.IGC_DIRECTORY_PATH);
 
-
-
     public static void main(String[] args) {
 
         File[] IGC_files = dirWithIGCLogFiles.listFiles();

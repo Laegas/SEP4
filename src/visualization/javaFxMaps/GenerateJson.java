@@ -6,6 +6,7 @@ import model.geography.Longitude;
 import model.outputData.FeatureProperties;
 import model.outputData.OutputData;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -33,10 +34,7 @@ public class GenerateJson {
         return instance;
     }
     
-    public void generateJson(OutputData data) {
-
-
-
+    public void generateJson(OutputData data) throws JSONException {
         FeatureProperties[][] grid = data.getFeatureProperties();
 
         DecimalFormat df = new DecimalFormat("#.######", new DecimalFormatSymbols(Locale.US));
@@ -44,77 +42,31 @@ public class GenerateJson {
         lines.add("var json = [");
         FeatureProperties[][] chunkGrid = new FeatureProperties[HEIGHT / CHUNKS][WIDTH / CHUNKS];
 
-        for(int chunkColumn = 0; chunkColumn < CHUNKS; chunkColumn++) {
-            for(int chunkRow = 0; chunkRow < CHUNKS; chunkRow++) {
-                for(int i = 0; i < chunkGrid.length; i++) {
-                    for(int j = 0; j < chunkGrid[0].length; j++) {
+        for (int chunkColumn = 0; chunkColumn < CHUNKS; chunkColumn++) {
+            for (int chunkRow = 0; chunkRow < CHUNKS; chunkRow++) {
+                for (int i = 0; i < chunkGrid.length; i++) {
+                    for (int j = 0; j < chunkGrid[0].length; j++) {
                         chunkGrid[i][j] = grid[i + chunkColumn * HEIGHT / CHUNKS][j + chunkRow * WIDTH / CHUNKS];
                     }
                 }
 
                 JSONArray features = new JSONArray();
 
-                for(int i = 0; i < chunkGrid.length; i++) {
-                    for(int j = 0; j < chunkGrid[0].length; j++) {
-                        if(chunkGrid[i][j].isMeaningful()) {
+                for (int i = 0; i < chunkGrid.length; i++) {
+                    for (int j = 0; j < chunkGrid[0].length; j++) {
+                        if (IS_MEANINGFUL(chunkGrid[i][j])) {
                             String[] propertyValues = PROPERTY_VALUES(chunkGrid[i][j]);
                             JSONObject properties = new JSONObject();
-                            for(int propertyIndex = 0; propertyIndex < PROPERTIES.length; propertyIndex++) {
+                            for (int propertyIndex = 0; propertyIndex < PROPERTIES.length; propertyIndex++) {
                                 properties.put(PROPERTIES[propertyIndex], propertyValues[propertyIndex]);
                             }
-                            features.put(new JSONObject()
-                                .put("type", "Feature")
-                                .put("properties", properties)
-                                .put("geometry", new JSONObject()
-                                    .put("type", "Polygon")
-                                    .put("coordinates", new JSONArray()
-                                        .put(new JSONArray()
-                                            .put(new JSONArray()
-                                                .put(Double.parseDouble(df.format(Longitude
-                                                    .convertToLongitudeDouble(j +
-                                                        WIDTH / CHUNKS * chunkRow))))
-                                                .put(Double.parseDouble(df.format(Latitude
-                                                    .convertToLatitudeDouble(i +
-                                                        HEIGHT / CHUNKS * chunkColumn)))))
-                                            .put(new JSONArray()
-                                                .put(Double.parseDouble(df.format(Longitude
-                                                    .convertToLongitudeDouble(j+1 +
-                                                        WIDTH / CHUNKS * chunkRow))))
-                                                .put(Double.parseDouble(df.format(Latitude
-                                                    .convertToLatitudeDouble(i +
-                                                        HEIGHT / CHUNKS * chunkColumn)))))
-                                            .put(new JSONArray()
-                                                .put(Double.parseDouble(df.format(Longitude
-                                                    .convertToLongitudeDouble(j+1 +
-                                                        WIDTH / CHUNKS * chunkRow))))
-                                                .put(Double.parseDouble(df.format(Latitude
-                                                    .convertToLatitudeDouble(i+1 +
-                                                        HEIGHT / CHUNKS * chunkColumn)))))
-                                            .put(new JSONArray()
-                                                .put(Double.parseDouble(df.format(Longitude
-                                                    .convertToLongitudeDouble(j +
-                                                        WIDTH / CHUNKS * chunkRow))))
-                                                .put(Double.parseDouble(df.format(Latitude
-                                                    .convertToLatitudeDouble(i+1 +
-                                                        HEIGHT / CHUNKS * chunkColumn)))))
-                                            .put(new JSONArray()
-                                                .put(Double.parseDouble(df.format(Longitude
-                                                    .convertToLongitudeDouble(j +
-                                                        WIDTH / CHUNKS * chunkRow))))
-                                                .put(Double.parseDouble(df.format(Latitude
-                                                    .convertToLatitudeDouble(i +
-                                                        HEIGHT / CHUNKS * chunkColumn)))))
-                                        )
-                                    )
-                                )
-                            );
+                            features.put(new JSONObject().put("type", "Feature").put("properties", properties).put("geometry", new JSONObject().put("type", "Polygon").put("coordinates", new JSONArray().put(new JSONArray().put(new JSONArray().put(Double.parseDouble(df.format(Longitude.convertToLongitudeDouble(j + WIDTH / CHUNKS * chunkRow)))).put(Double.parseDouble(df.format(Latitude.convertToLatitudeDouble(i + HEIGHT / CHUNKS * chunkColumn))))).put(new JSONArray().put(Double.parseDouble(df.format(Longitude.convertToLongitudeDouble(j + 1 + WIDTH / CHUNKS * chunkRow)))).put(Double.parseDouble(df.format(Latitude.convertToLatitudeDouble(i + HEIGHT / CHUNKS * chunkColumn))))).put(new JSONArray().put(Double.parseDouble(df.format(Longitude.convertToLongitudeDouble(j + 1 + WIDTH / CHUNKS * chunkRow)))).put(Double.parseDouble(df.format(Latitude.convertToLatitudeDouble(i + 1 + HEIGHT / CHUNKS * chunkColumn))))).put(new JSONArray().put(Double.parseDouble(df.format(Longitude.convertToLongitudeDouble(j + WIDTH / CHUNKS * chunkRow)))).put(Double.parseDouble(df.format(Latitude.convertToLatitudeDouble(i + 1 + HEIGHT / CHUNKS * chunkColumn))))).put(new JSONArray().put(Double.parseDouble(df.format(Longitude.convertToLongitudeDouble(j + WIDTH / CHUNKS * chunkRow)))).put(Double.parseDouble(df.format(Latitude.convertToLatitudeDouble(i + HEIGHT / CHUNKS * chunkColumn)))))))));
+
                         }
                     }
                 }
 
-                JSONObject json = new JSONObject()
-                        .put("type", "FeatureCollection")
-                        .put("features", features);
+                JSONObject json = new JSONObject().put("type", "FeatureCollection").put("features", features);
 
                 lines.add(json.toString() + ",");
             }

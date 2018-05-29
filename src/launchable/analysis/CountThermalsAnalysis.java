@@ -26,11 +26,19 @@ public class CountThermalsAnalysis {
         IGCDimensionalDao igcDAO = DaoManager.IGC_DIMENSIONAL_DAO;
         List<Flight> flights = igcDAO.getAllFlights();
         System.out.println("number of flights " + flights.size());
-        ThermalFinder thermalFinder = new ThermalFinderImp();
 
         // some output data structure
         OutputData outputData = new OutputData();
 
+        analyse(flights, outputData);
+
+        GenerateJson.getInstance().generateJson(outputData);
+        GenerateJSSettings.getInstance().generateSettings(outputData);
+    }
+
+    public static void analyse(List<Flight> flights, OutputData outputData) {
+
+        ThermalFinder thermalFinder = new ThermalFinderImp();
         for (Flight flight : flights) {
 
             List<LocationPoint> thermalIndexes = new ArrayList<>();
@@ -41,10 +49,10 @@ public class CountThermalsAnalysis {
                 }
             }
             // add thermalIndexSet to output structure
-                List<LocationPoint> uniquePoints  = RemoveDuplicate.getUniqueLocationPointsIndexe(thermalIndexes);
+            List<LocationPoint> uniquePoints = RemoveDuplicate.getUniqueLocationPointsIndexe(thermalIndexes);
 
             for (LocationPoint locationPoint : uniquePoints) {
-                outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(),locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
+                outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
                 // all thermals have been put into output data object
             }
 
@@ -64,9 +72,6 @@ public class CountThermalsAnalysis {
             }
 
         }
-
-        GenerateJson.getInstance().generateJson(outputData);
-        GenerateJSSettings.getInstance().generateSettings(outputData);
 
     }
 }

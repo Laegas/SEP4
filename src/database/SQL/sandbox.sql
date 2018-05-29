@@ -16,4 +16,15 @@ select * from f_weather_record;
 
 select w_date,w_time,wind_direction,wind_speed,WIND_DIRECTION_FROM,WIND_DIRECTION_TO,temperature,dew_point,airport_code from f_weather_record where w_date = TO_DATE(?/?/?, 'dd/mm/yyyy');
 
-select count(*) from F_WEATHER_RECORD where W_DATE = to_date('11/05/2018', 'DD/MM/YYYY');
+select count(*), AIRPORT_CODE, W_DATE from F_WEATHER_RECORD  group BY AIRPORT_CODE, W_DATE ORDER BY count(*),W_DATE;
+
+select W_DATE from F_WEATHER_RECORD;
+
+SELECT DISTINCT START_DATE from D_FLIGHT;
+select DISTINCT  W_DATE from F_WEATHER_RECORD;
+
+delete from F_IGC_LOG where LAT_NORTH = 0000000;
+COMMIT ;
+
+
+
