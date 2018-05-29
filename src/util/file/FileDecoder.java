@@ -13,10 +13,7 @@ import model.geography.Latitude;
 import model.geography.Longitude;
 import model.igc.Glider;
 import model.time.*;
-import model.weather.Airport;
-import model.weather.ICAOAirportCode;
-import model.weather.WMOIndex;
-import model.weather.WeatherRecord;
+import model.weather.*;
 import util.weatherUtil.MetarReader;
 import util.weatherUtil.METARException;
 
@@ -42,26 +39,25 @@ public class FileDecoder {
 		while (sc.hasNextLine()) {
 			String l = sc.nextLine();
 
-			if(count==5)
+			if(count==5)//info with ICAO code, airport full name and country name
 			{
-				System.out.println(l);
 				airport.setAirport(new ICAOAirportCode(l.substring(2,6)));
 				String[] info = l.split("\\(");
 				airport.setAirportName(info[0].substring(7,info[0].length()-1).trim());
 				airport.setCountryName(new CountryName(info[1].substring(0,info[1].length()-1)));
 			}
-			if(count==6)
+			else if(count==6)//info with WMO index
 			{
 				String wmo = l.split(":")[1].trim();
 				airport.setWmoIndex(new WMOIndex(wmo));
 			}
-			if(count==7)
-			{
-				System.out.println(l);
-			}
-			if(l.startsWith("# Latitude"))
+			else if(count==7)//info with latitude, longitude and altitude
 			{
 
+                String[] info = l.split("\\.");
+                airport.setLatitude(new Latitude(Integer.parseInt(info[0].substring(11,13)),Integer.parseInt(info[0].substring(14,16)),0));
+                airport.setLongitude(new Longitude(Integer.parseInt(info[1].substring(11,14)),Integer.parseInt(info[1].substring(15,17)),0));
+                airport.setAltitude(new Altitude(Integer.parseInt(info[2].substring(10,11))));
 			}
 			else if(l.startsWith("1") || l.startsWith("2")) {
 				try {
@@ -76,7 +72,7 @@ public class FileDecoder {
 		WeatherRecord[] w = new WeatherRecord[weatherRecords.size()];
 		for(int i = 0; i < w.length; i++)
 			w[i] = weatherRecords.get(i);
-		airport.setWeatherRecords((WeatherRecord[]) weatherRecords.toArray());
+		airport.setWeatherRecords(w);
 		return airport;
 	}
 	
