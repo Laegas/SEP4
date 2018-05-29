@@ -45,3 +45,5 @@ select * from F_WEATHER_RECORD;
 
 select * from F_WEATHER_RECORD;
 select * from F_IGC_LOG;
+
+select min(TEMPERATURE), max(TEMPERATURE) from F_WEATHER_RECORD
