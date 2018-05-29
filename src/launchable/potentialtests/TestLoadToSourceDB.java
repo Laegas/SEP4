@@ -1,4 +1,4 @@
-package test;
+package launchable.potentialtests;
 
 import config.FileConfig;
 import database.DAO.DaoManager;

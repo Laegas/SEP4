@@ -17,8 +17,9 @@ public class DataPoint implements Comparable<DataPoint>{
 
 	private int glider_id;
 	private int flight_id;
+	private int time_id;
 
-	public DataPoint(Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude, int glider_id, int flight_id) {
+	public DataPoint(Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude, int glider_id, int flight_id, int time_id) {
 		this.time = time;
 		this.longitude = longitude;
 		this.latitude = latitude;
@@ -27,7 +28,10 @@ public class DataPoint implements Comparable<DataPoint>{
 		this.GPSAltitude = GPSAltitude;
 		this.glider_id = glider_id;
 		this.flight_id = flight_id;
+		this.time_id = time_id;
 	}
+
+
 
 	public int getGlider_id() {
 		return glider_id;
@@ -37,6 +41,10 @@ public class DataPoint implements Comparable<DataPoint>{
 		return flight_id;
 	}
 
+	public int getTime_id() {
+		return time_id;
+	}
+
 	public DataPoint(Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude) {
 		this.time=time;
 		this.longitude=longitude;
@@ -44,6 +52,7 @@ public class DataPoint implements Comparable<DataPoint>{
 		this.satelliteCoverage=satelliteCoverage;
 		this.pressureAltitude=pressureAltitude;
 		this.GPSAltitude=GPSAltitude;
+		this.time_id = time_id;
 
 	}
 
