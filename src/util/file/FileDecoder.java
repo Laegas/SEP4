@@ -53,7 +53,6 @@ public class FileDecoder {
 			}
 			else if(count==7)//info with latitude, longitude and altitude
 			{
-
                 String[] info = l.split("\\.");
                 airport.setLatitude(new Latitude(Integer.parseInt(info[0].substring(11,13)),Integer.parseInt(info[0].substring(14,16)),0));
                 airport.setLongitude(new Longitude(Integer.parseInt(info[1].substring(11,14)),Integer.parseInt(info[1].substring(15,17)),0));
