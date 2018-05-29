@@ -8,6 +8,25 @@ BEGIN
 END;
 /
 BEGIN
+  EXECUTE IMMEDIATE 'drop table airport CASCADE CONSTRAINTS purge';
+  EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -942 THEN
+    RAISE;
+  END IF;
+END;
+/
+BEGIN
+  EXECUTE IMMEDIATE 'drop sequence airport_id';
+EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -2289 THEN
+    RAISE;
+  END IF;
+END;
+/
+
+BEGIN
   EXECUTE IMMEDIATE 'drop sequence weather_record_id';
 EXCEPTION
   WHEN OTHERS THEN
@@ -16,16 +35,35 @@ EXCEPTION
   END IF;
 END;
 /
+create sequence airport_id
+  start with 1
+  increment by 1
+  cache 100
+  nomaxvalue;
+
 create sequence weather_record_id
   start with 1
   increment by 1
   cache 100
   nomaxvalue;
 
-create table weather_source
+
+create table airport
 (
-  w_id int,
-  ICAO_airport_code varchar(4) references airport_source(ICAO_Airport_Code),
+  id int primary key,
+  ICAO_airport_Code varchar(4),
+   latitude varchar(7),
+   longitude varchar(8),
+   countryName varchar(100),
+   airportName varchar(100),
+   altitude int
+);
+
+create table weather_record
+(
+  id int primary key,
+  ICAO_airport_code varchar(4),
+  airport_id int references airport(aiport_id),
   wind_direction int,
   wind_speed int,
   wind_direction_from int,
@@ -37,17 +75,6 @@ create table weather_source
   minute int
 );
 
-create table airport_source(
-  ICAO_Airport_Code varchar(4) primary key,
-  altitude int,
-  airport_longitude varchar(8),
-  airport_latitude varchar(7),
-  airport_name varchar(50),
-  country_name varchar(100),
-  WMO_Index varchar(5),
-  id_valid_from int references D_DATE(ID_DATE),
-  id_valid_to int references D_DATE(ID_DATE)
-);
 
-COMMIT;
+
 -- select count (*) from weather_record;

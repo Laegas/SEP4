@@ -12,7 +12,7 @@ public class Date {
         this.year = new Year(year);
     }
     public Date(java.sql.Date date) {
-        this(date.getDay(), date.getMonth(), date.getYear());
+        this(date.getDate()  , date.getMonth() + 1, date.getYear() + 1900);
     }
 
     public Date(Day day, Month month, Year year)

@@ -3,6 +3,7 @@ package launchable.fileloaders;
 import config.FileConfig;
 import database.DAO.DaoManager;
 import database.DAO.METARSourceDAO;
+import model.weather.Airport;
 import util.file.FileDecoder;
 import model.weather.WeatherRecord;
 import util.file.METARTXTFilePreprocessor;
@@ -18,7 +19,7 @@ public class METARFileLoader {
 
         FileDecoder fileDecoder;
         METARTXTFilePreprocessor preprocessor;
-        WeatherRecord[] weatherRecords;
+        Airport airport;
         METARSourceDAO METARDAO = DaoManager.METAR_SOURCE_DAO;
 
         int counter = 1;
@@ -26,10 +27,10 @@ public class METARFileLoader {
             preprocessor = new METARTXTFilePreprocessor(file.getAbsolutePath());
             preprocessor.preProcess();
             System.out.println("finished preprocessing file #" + counter + " " + file.getName());
-
             fileDecoder = new FileDecoder(file.getAbsolutePath());
-            weatherRecords = fileDecoder.readMETARFile();
-            for(WeatherRecord r : weatherRecords)
+            airport = fileDecoder.readMETARFile();
+            WeatherRecord[] records = airport.getWeatherRecords();
+            for(WeatherRecord r : records)
                 METARDAO.insertWeatherRecord(r);
             System.out.println("finished loading file #" + counter++);
         }

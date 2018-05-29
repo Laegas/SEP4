@@ -22,6 +22,12 @@ public class Time implements Comparable<Time>{
         this.minute= new Minute(minute);
         this.second= new Second(second);
     }
+    public Time(int seconds)
+    {
+        setHour(new Hour(seconds/3600));
+        setMinute(new Minute(seconds%3600/60));
+        setSecond(new Second(seconds%60));
+    }
 
     public Minute getMinute() {
         return minute;
@@ -46,10 +52,9 @@ public class Time implements Comparable<Time>{
     public void setSecond(Second second) {
         this.second = second;
     }
-    
-    public String toString()
-    {
-        return hour.getHour()+":"+minute.getMinute()+":"+second.getSecond();
+
+    public int getTotalSeconds() {
+        return hour.getHour() * 3600 + minute.getMinute() * 60 + second.getSecond();
     }
 
     @Override
@@ -90,5 +95,28 @@ public class Time implements Comparable<Time>{
     }
 
 
+    public Time timeBetween(Time other) {
+        int res_hour = this.getHour().getHour() - other.getHour().getHour();
+        int res_min = this.getMinute().getMinute() - other.getMinute().getMinute();
+        int res_sec = this.getSecond().getSecond() - other.getSecond().getSecond();
+
+        int nr_of_sec = res_hour * 60 * 60 + res_min * 60 + res_sec;
+        nr_of_sec = Math.abs(nr_of_sec);
+
+        return new Time(nr_of_sec);
+    }
+
+    public String getDatabaseFormat() {
+        return this.hour.getHour()+":"+this.minute.getMinute()+":"+this.second.getSecond();
+    }
+
+    @Override
+    public String toString() {
+        return "Time{" +
+                "hour=" + hour +
+                ", minute=" + minute +
+                ", second=" + second +
+                '}';
+    }
 }
 

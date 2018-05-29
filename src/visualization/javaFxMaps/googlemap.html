@@ -33,35 +33,54 @@
                 document.map.data.addGeoJson(json[i]);
             }
 
-            document.restyle = function restyle(selector) {
+            document.restyle = function restyle(selector, visibilityThreshold) {
+                var counter = 0;
                 document.map.data.setStyle(function(feature) {
-                    var alpha, alphaChannel, color;
-                    switch (selector) {
-                        case 0:
-                            alpha = feature.getProperty(alphaProperty);
-                            alphaChannel = (minimumAlpha + (alpha * (1 - minimumAlpha)) / max_flights);
-                            if (alphaChannel > 1)
-                                alphaChannel = 1;
-                            color = "rgba(255, 0, 0, " + alphaChannel + ")";
-                            return {
-                                fillColor: color,
-                                strokeWeight: 0
-                            };
-                        case 1:
-                            alpha = feature.getProperty(alphaProperty);
-                            alphaChannel = (minimumAlpha + (alpha * (1 - minimumAlpha)) / max_flights);
-                            if (alphaChannel > 1)
-                                alphaChannel = 1;
-                            color = "rgba(0, 255, 0, " + alphaChannel + ")";
-                            return {
-                                fillColor: color,
-                                strokeWeight: 0
-                            };
+                    var formula = visibilityFactor;
+                    for(var i = 0; i < displayProperties.length; i++) {
+                        var index = formula.indexOf(displayProperties[i]);
+                        if(index >=0 )
+                            formula = formula.substring(0, index) + feature.getProperty(displayProperties[i]) +
+                                formula.substring(index +
+                                displayProperties[i].length, formula.length);
                     }
+                    var alpha = feature.getProperty(alphaProperty);
+                    var alphaChannel = (minimumAlpha + (alpha * (1 - minimumAlpha)) / max_flights);
+                    if (alphaChannel > 1)
+                        alphaChannel = 1;
+                    var color, visible = (eval(formula) >= visibilityThreshold);
+                    switch (selector) {
+                        case 1:
+                            if(feature.getProperty("l1t") == 0)
+                                visible = false;
+                            color = "rgba(255, 0, 0, " + alphaChannel + ")";
+                            break;
+                        case 2:
+                            if(feature.getProperty("l2t") == 0)
+                                visible = false;
+                            color = "rgba(0, 255, 0, " + alphaChannel + ")";
+                            break;
+                        case 3:
+                            if(feature.getProperty("l3t") == 0) {
+                                visible = false;
+                                counter++;
+                            }
+                            color = "rgba(0, 0, 255, " + alphaChannel + ")";
+                            break;
+                        default:
+                            color = "rgba(255, 255, 0, " + alphaChannel + ")";
+                    }
+                    console.log(counter);
+                    return {
+                        fillColor: color,
+                        strokeWeight: 0,
+                        visible: visible
+                    };
                 });
+
             };
 
-            document.restyle(0);
+            document.restyle(-1, 0);
 
             document.map.data.addListener('mouseover', function(event) {
                 document.getElementById('info').className = "";
@@ -80,16 +99,6 @@
             document.map.data.addListener('mouseout', function(event) {
                 document.getElementById('info').className = "transparent";
             });
-
-            document.zoomIn = function zoomIn() {
-                var zoomLevel = document.map.getZoom();
-                if (zoomLevel <= 20) document.map.setZoom(zoomLevel + 1);
-            };
-
-            document.zoomOut = function zoomOut() {
-                var zoomLevel = document.map.getZoom();
-                if (zoomLevel > 0) document.map.setZoom(zoomLevel - 1);
-            };
 
             document.setMapTypeRoad = function setMapTypeRoad() {
                 document.map.setMapTypeId(google.maps.MapTypeId.ROADMAP);

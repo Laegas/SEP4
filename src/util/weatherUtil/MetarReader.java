@@ -20,7 +20,7 @@ public class MetarReader {
                 e.printStackTrace();
             }
 
-            System.out.println(split[0]);
+//            System.out.println(split[0]);
             weatherRecord.setYear(new Year(Integer.parseInt(split[0].substring(0, 4))));
             weatherRecord.setMonth(new Month(Integer.parseInt(split[0].substring(4, 6))));
             weatherRecord.setDay(new Day(Integer.parseInt(split[0].substring(6,8))));
@@ -63,7 +63,9 @@ public class MetarReader {
             if(split[7+padding].indexOf('M') > 0)
                 p = 1;
             weatherRecord.setDewPoint(new DegreeCelcius(Double.parseDouble(split[7+padding].substring(3+p,5+p))));
-        } else {
+        }
+
+        else {
             throw new METARException("Not a METAR record");
         }
         return weatherRecord;

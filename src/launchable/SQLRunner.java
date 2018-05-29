@@ -10,8 +10,8 @@ public class SQLRunner {
 
     public static void main(String[] args) {
 //        runAllDDL();
-//        runETL();
-          runAfterETL();
+        runETL();
+        runAfterETL();
     }
 
     public static void runAllDDL() {
@@ -35,16 +35,17 @@ public class SQLRunner {
     }
 
     public static void runETL() {
+        //running ETL for IGC
+        executeSql(SQLRunnerConfig.IGC_E.getAbsolutePath());
+        executeSql(SQLRunnerConfig.IGC_T.getAbsolutePath());
+        executeSql(SQLRunnerConfig.IGC_L.getAbsolutePath());
 
         //running etl for weather
         executeSql(SQLRunnerConfig.WEATHER_E.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_T.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_L.getAbsolutePath());
 
-        //running ETL for IGC
-        executeSql(SQLRunnerConfig.IGC_E.getAbsolutePath());
-        executeSql(SQLRunnerConfig.IGC_T.getAbsolutePath());
-        executeSql(SQLRunnerConfig.IGC_L.getAbsolutePath());
+
 
 
     }
@@ -58,8 +59,8 @@ public class SQLRunner {
     private static void executeSql(String sqlFilePath) {
         try {
             String line;
-            Process p = Runtime.getRuntime().exec("cmd.exe /c echo exit | sqlplus -S " + DatabaseConfig.USERNAME + "/"
-                    + DatabaseConfig.PASSWORD + "@" + DatabaseConfig.SID + " @" + sqlFilePath);
+            Process p = Runtime.getRuntime().exec("cmd.exe /c echo exit | sqlplus -S " + DatabaseConfig.INSTANCE.getUSERNAME() + "/"
+                    + DatabaseConfig.INSTANCE.getPASSWORD() + "@" + DatabaseConfig.INSTANCE.getSID() + " @" + sqlFilePath);
 
 
 //            Uncomment below to see output from sql file

@@ -5,6 +5,7 @@ import model.weather.WeatherRecord;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
 
 public class METARSourceDAOImp implements METARSourceDAO {
@@ -18,7 +19,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
     public void insertWeatherRecord(WeatherRecord record) {
         try {
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
-            int windSpeed = record.getWind().getWindSpeed().getKonts();
+            int windSpeed = record.getWind().getWindSpeed().getKnots();
             // todo windDirection is set to zero when windDirection is variable #notveryawsome
             int windDirection = 0;
             try {
@@ -49,14 +50,28 @@ public class METARSourceDAOImp implements METARSourceDAO {
              stmt.setInt(2,windSpeed);
              stmt.setInt(3,windDirection);
              stmt.setInt(4,windDirectionFrom);
-             stmt.setInt(5,windDirectionTo);
-             stmt.setDouble(6,temperature);
-             stmt.setDouble(7,dewPoint);
+            stmt.setInt(5, windDirectionTo);
+                stmt.setDouble(6, temperature);
+                stmt.setDouble(7, dewPoint);
+
+
+//            stmt.setDouble(6,19.8);
+//            stmt.setDouble(7,25.3);
              stmt.setString(8,date.toString());
              stmt.setInt(9, minute);
-             stmt.setInt(10,hour);
-             stmt.execute();
-             stmt.close();
+            stmt.setInt(10, hour);
+            try {
+
+                stmt.execute();
+            } catch (SQLDataException e) {
+                e.printStackTrace();
+                System.out.println(temperature + ", " + dewPoint);
+            }finally {
+
+                stmt.close();
+            }
+
+
              conn.commit();
              } catch (SQLException e) {
             System.out.println(e.getMessage());

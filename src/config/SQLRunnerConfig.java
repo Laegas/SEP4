@@ -20,7 +20,7 @@ public class SQLRunnerConfig {
     public static final File IGC_AFTER_ETL = new File("src/database/ETL/IGC/runAfterETL/sql.sql");
 
     public static final File DIMENSIONAL_MODEL_DDL = new File("src/database/SQL/dimensional_igc_model_ddl.sql");
-    public static final File DIMENSIONAL_WEATHER_DDL = new File("src/database/SQL/weather_source_table_ddl.sql");
+    public static final File DIMENSIONAL_WEATHER_DDL = new File("src/database/SQL/dimensional_model_weather_ddl.sql");
 
     public static final File WEATHER_SOURCE_TABLE_DDL = new File("src/database/SQL/weather_source_table_ddl.sql");
     public static final File WEATHER_E_INIT = new File("src/database/ETL/weather/initial/e_init_weather.sql");
