@@ -9,16 +9,15 @@ import java.io.InputStreamReader;
 public class SQLRunner {
 
     public static void main(String[] args) {
-     //   runAllDDL();
+//        runAllDDL();
         runETL();
-//        runAfterETL();
+        runAfterETL();
     }
 
     public static void runAllDDL() {
-        // rebuilding dimentional model
-        System.out.println(SQLRunnerConfig.DIMENSIONAL_MODEL_DDL.getAbsoluteFile());
-        executeSql(SQLRunnerConfig.DIMENSIONAL_WEATHER_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.DIMENSIONAL_MODEL_DDL.getAbsolutePath());
+        executeSql(SQLRunnerConfig.DIMENSIONAL_WEATHER_DDL.getAbsolutePath());
+        executeSql(SQLRunnerConfig.DIMENSIONAL_COURSE_DDL.getAbsolutePath());
 
         //running DDL for source table
         executeSql(SQLRunnerConfig.WEATHER_SOURCE_TABLE_DDL.getAbsolutePath());
@@ -27,6 +26,7 @@ public class SQLRunner {
         //running ETL init sql
         executeSql(SQLRunnerConfig.WEATHER_E_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_T_INIT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.WEATHER_L_INIT.getAbsolutePath());
 
         executeSql(SQLRunnerConfig.IGC_E_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_T_INIT.getAbsolutePath());
@@ -39,20 +39,14 @@ public class SQLRunner {
         executeSql(SQLRunnerConfig.IGC_T.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_L.getAbsolutePath());
 
-        //running etl for weather
+        //running ETL for weather
         executeSql(SQLRunnerConfig.WEATHER_E.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_T.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_L.getAbsolutePath());
-
-
-
-
     }
 
     public static void runAfterETL() {
-
         executeSql(SQLRunnerConfig.IGC_AFTER_ETL.getAbsolutePath());
-
     }
 
     private static void executeSql(String sqlFilePath) {
@@ -60,7 +54,6 @@ public class SQLRunner {
             String line;
             Process p = Runtime.getRuntime().exec("cmd.exe /c echo exit | sqlplus -S " + DatabaseConfig.INSTANCE.getUSERNAME() + "/"
                     + DatabaseConfig.INSTANCE.getPASSWORD() + "@" + DatabaseConfig.INSTANCE.getSID() + " @" + sqlFilePath);
-
 
 //            Uncomment below to see output from sql file
             BufferedReader bri = new BufferedReader
