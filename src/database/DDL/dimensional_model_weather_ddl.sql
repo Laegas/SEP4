@@ -17,8 +17,8 @@ CREATE table D_AIRPORT(
   airport_latitude varchar(7),
   airport_name varchar(50),
   WMO_Index varchar(5),
-  id_valid_from int references D_DATE(ID_DATE),
-  id_valid_to int references D_DATE(ID_DATE)
+  valid_from date,
+  valid_to date
 );
 CREATE table F_WEATHER_RECORD(
   surr_key_airport int references D_Airport(surr_key_airport),

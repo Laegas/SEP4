@@ -24,3 +24,4 @@ INSERT INTO TOHANDLELATERFLIGHTS
 
 
 UPDATE lastDateOfFlightExtraction set lastDate = CURRENT_DATE;
+

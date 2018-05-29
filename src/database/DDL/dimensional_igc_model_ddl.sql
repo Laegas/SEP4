@@ -18,7 +18,7 @@ CREATE TABLE D_date(
   unique(day, month, year)
 );
 
-create index date_index on d_date (day,month,year);
+--create index date_index on d_date (day,month,year);
 create index date_day_index on d_date (day);
 create index date_month_index on d_date (month);
 create index date_year_index on d_date (year);
@@ -134,9 +134,8 @@ CREATE table F_IGC_LOG(
   press_altitude INT,
   gps_altitude INT,
   gps_ok char(1),
+  closest_airport INT,
   PRIMARY KEY (surr_key_flight, id_time)
 );
 
 COMMIT;
-
-select * from d_flight;

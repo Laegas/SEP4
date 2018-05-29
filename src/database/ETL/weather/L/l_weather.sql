@@ -1,4 +1,3 @@
-select * from TRANSFORM_WEATHER_HOUR_MINUTE_TO_TIME;
 
 insert into D_AIRPORT(
     SURR_KEY_AIRPORT,
@@ -18,9 +17,17 @@ insert into D_AIRPORT(
     AIRPORT_LATITUDE,
     AIRPORT_NAME,
     WMO_INDEX,
-    1, --placeholders for the moment, until fix valid to and from and keep operation carried out on data
-    0
-    from FULLY_EXTRACTED_AIRPORT);
+    trunc(sysdate, 'DAY') as valid_from,
+    to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') as valid_to
+    from FULLY_EXTRACTED_AIRPORT
+    where operation = 'INS'
+    );
+
+    update D_AIRPORT set
+      valid_to = (trunc(sysdate-1,'DAY'))
+    where valid_to = to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND
+          ICAO_AIRPORT_CODE in (select ICAO_AIRPORT_CODE from FULLY_EXTRACTED_AIRPORT where OPERATION_CODE = 'DEL')
+    ;
 
 insert into F_WEATHER_RECORD (
     SURR_KEY_AIRPORT,

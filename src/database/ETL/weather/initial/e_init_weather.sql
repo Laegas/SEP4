@@ -1,6 +1,7 @@
 BEGIN
   EXECUTE IMMEDIATE 'drop table fully_extracted_weather CASCADE CONSTRAINTS purge';
   EXECUTE IMMEDIATE 'drop table FULLY_EXTRACTED_AIRPORT CASCADE CONSTRAINTS purge';
+  EXECUTE IMMEDIATE 'drop table AIRPORTS_YESTERDAY CASCADE CONSTRAINTS purge';
   EXCEPTION
   WHEN OTHERS THEN
   IF SQLCODE != -942 THEN
@@ -18,7 +19,7 @@ create table FULLY_EXTRACTED_AIRPORT as
       airportName,
       altitude,
       wmo_index
-  from AIRPORT
+  from AIRPORT where 1=0
   );
 alter table FULLY_EXTRACTED_AIRPORT
   add operation_code varchar2(3);
@@ -36,7 +37,9 @@ create table FULLY_EXTRACTED_WEATHER as
   the_date,
   HOUR,
   MINUTE
-from WEATHER_RECORD)
+from WEATHER_RECORD where 1=0)
 ;
+
+CREATE TABLE AIRPORTS_YESTERDAY as (SELECT * FROM AIRPORT where 1 = 0);
 
 COMMIT;

@@ -33,7 +33,7 @@ update d_member set
 where valid_to = to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND
       MEMBERNO in (select memberno from MEMBER_TO_LOAD where operation = 'CHG')
 ;
-select * from member_to_load;
+
 --- loads into the dimension member ---
 insert INTO d_member(MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJOINED, DATELEFT, OWNSPLANEREG, SEX, CLUB, STATUS,  MEMBER_ID,valid_from,valid_to)
   (SELECT

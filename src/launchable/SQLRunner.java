@@ -8,22 +8,32 @@ import java.io.InputStreamReader;
 
 public class SQLRunner {
 
+    private static int counter = 0;
+    private static StringBuilder onlyErrors = new StringBuilder(), wholeMessage = new StringBuilder();
+
     public static void main(String[] args) {
 //        runAllDDL();
         runETL();
         runAfterETL();
+        showOutput(true);
+    }
+
+    public static void showOutput(boolean showWholeMessage) {
+        if(showWholeMessage) System.out.println(wholeMessage.toString());
+        if(counter > 0) System.out.println("***** " + counter + " ERRORS *****\n" + onlyErrors.toString());
     }
 
     public static void runAllDDL() {
+        // DDL - Dimensional
         executeSql(SQLRunnerConfig.DIMENSIONAL_MODEL_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.DIMENSIONAL_WEATHER_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.DIMENSIONAL_COURSE_DDL.getAbsolutePath());
 
-        //running DDL for source table
+        // DDL - source tables
         executeSql(SQLRunnerConfig.WEATHER_SOURCE_TABLE_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_SOURCE_TABLE_DDL.getAbsolutePath());
 
-        //running ETL init sql
+        // ETL - init
         executeSql(SQLRunnerConfig.WEATHER_E_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_T_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_L_INIT.getAbsolutePath());
@@ -31,18 +41,30 @@ public class SQLRunner {
         executeSql(SQLRunnerConfig.IGC_E_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_T_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_L_INIT.getAbsolutePath());
+
+        executeSql(SQLRunnerConfig.COURSE_E_INIT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_T_INIT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_L_INIT.getAbsolutePath());
     }
 
     public static void runETL() {
-        //running ETL for IGC
+        // ELT - IGC
         executeSql(SQLRunnerConfig.IGC_E.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_T.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_L.getAbsolutePath());
 
-        //running ETL for weather
+        // ETL - weather
         executeSql(SQLRunnerConfig.WEATHER_E.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_T.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_L.getAbsolutePath());
+
+        // ETL - DWH Course
+        executeSql(SQLRunnerConfig.COURSE_E_MEMBER.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_E_FLIGHT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_T_MEMBER.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_T_FLIGHT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_L_MEMBER.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_L_FLIGHT.getAbsolutePath());
     }
 
     public static void runAfterETL() {
@@ -51,6 +73,7 @@ public class SQLRunner {
 
     private static void executeSql(String sqlFilePath) {
         try {
+            boolean readNextErrorLine = false;
             String line;
             Process p = Runtime.getRuntime().exec("cmd.exe /c echo exit | sqlplus -S " + DatabaseConfig.INSTANCE.getUSERNAME() + "/"
                     + DatabaseConfig.INSTANCE.getPASSWORD() + "@" + DatabaseConfig.INSTANCE.getSID() + " @" + sqlFilePath);
@@ -61,15 +84,24 @@ public class SQLRunner {
             BufferedReader bre = new BufferedReader
                     (new InputStreamReader(p.getErrorStream()));
             while ((line = bri.readLine()) != null) {
-                System.out.println(line);
+                wholeMessage.append(line);
+                wholeMessage.append("\n");
+                if(line.matches("(.*)ERROR(.*)") || readNextErrorLine) {
+                    onlyErrors.append(line);
+                    if(!readNextErrorLine) {
+                        onlyErrors.append(" ");
+                        onlyErrors.append(sqlFilePath);
+                        counter++;
+                    }
+                    readNextErrorLine = !readNextErrorLine;
+                    onlyErrors.append("\n");
+                }
             }
             bri.close();
             while ((line = bre.readLine()) != null) {
                 System.out.println(line);
             }
             bre.close();
-
-
 
             p.waitFor();
         }
