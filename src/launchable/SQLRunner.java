@@ -9,21 +9,22 @@ import java.io.InputStreamReader;
 public class SQLRunner {
 
     public static void main(String[] args) {
-//        runAllDDL();
-        runETL();
-        runAfterETL();
+        runAllDDL();
+//        runETL();
+//        runAfterETL();
     }
 
     public static void runAllDDL() {
+        // DDL - Dimensional
         executeSql(SQLRunnerConfig.DIMENSIONAL_MODEL_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.DIMENSIONAL_WEATHER_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.DIMENSIONAL_COURSE_DDL.getAbsolutePath());
 
-        //running DDL for source table
+        // DDL - source tables
         executeSql(SQLRunnerConfig.WEATHER_SOURCE_TABLE_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_SOURCE_TABLE_DDL.getAbsolutePath());
 
-        //running ETL init sql
+        // ETL - init
         executeSql(SQLRunnerConfig.WEATHER_E_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_T_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_L_INIT.getAbsolutePath());
@@ -31,18 +32,30 @@ public class SQLRunner {
         executeSql(SQLRunnerConfig.IGC_E_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_T_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_L_INIT.getAbsolutePath());
+
+        executeSql(SQLRunnerConfig.COURSE_E_INIT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_T_INIT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_L_INIT.getAbsolutePath());
     }
 
     public static void runETL() {
-        //running ETL for IGC
+        // ELT - IGC
         executeSql(SQLRunnerConfig.IGC_E.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_T.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_L.getAbsolutePath());
 
-        //running ETL for weather
+        // ETL - weather
         executeSql(SQLRunnerConfig.WEATHER_E.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_T.getAbsolutePath());
         executeSql(SQLRunnerConfig.WEATHER_L.getAbsolutePath());
+
+        // ETL - DWH Course
+        executeSql(SQLRunnerConfig.COURSE_E_MEMBER.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_E_FLIGHT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_T_MEMBER.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_T_FLIGHT.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_L_MEMBER.getAbsolutePath());
+        executeSql(SQLRunnerConfig.COURSE_L_FLIGHT.getAbsolutePath());
     }
 
     public static void runAfterETL() {
@@ -68,8 +81,6 @@ public class SQLRunner {
                 System.out.println(line);
             }
             bre.close();
-
-
 
             p.waitFor();
         }

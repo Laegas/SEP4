@@ -16,7 +16,8 @@ public class SQLRunnerConfig {
     public static final File COURSE_E_FLIGHT = new File("src/database/ETL/DWHCourse/E/e_flight.sql");
     public static final File COURSE_T_MEMBER = new File("src/database/ETL/DWHCourse/T/t_member.sql");
     public static final File COURSE_T_FLIGHT = new File("src/database/ETL/DWHCourse/T/t_flight.sql");
-    public static final File COURSE_L_FLIGHT = new File("src/database/ETL/DWHCourse/T/t_flight.sql");
+    public static final File COURSE_L_MEMBER = new File("src/database/ETL/DWHCourse/L/l_member.sql");
+    public static final File COURSE_L_FLIGHT = new File("src/database/ETL/DWHCourse/L/t_flight.sql");
 
     // ETL IGC
     public static final File IGC_E_INIT = new File("src/database/ETL/IGC/initial/e_init_igc.sql");
