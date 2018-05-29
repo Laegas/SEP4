@@ -17,20 +17,20 @@ insert into FULLY_EXTRACTED_WEATHER (
   )
   (
   SELECT
-        W_ID,
-        ICAO_AIRPORT_CODE,
-        WIND_DIRECTION,
-        WIND_SPEED,
-        WIND_DIRECTION_FROM,
-        WIND_DIRECTION_TO,
-        TEMPERATURE,
-        DEW_POINT,
-        THE_DATE,
-        HOUR,
-        MINUTE
+    id,
+    ICAO_airport_code,
+    wind_direction,
+    wind_speed,
+    wind_direction_from,
+    wind_direction_to,
+    temperature,
+    dew_point,
+    the_date,
+    hour,
+    minute
    FROM WEATHER_RECORD
-      WHERE W_ID NOT IN (SELECT SURR_KEY_WEATHER
-                            FROM F_WEATHER_RECORD) --extract only new ones
+      WHERE id NOT IN (SELECT WEATHER_ID
+                            FROM FULLY_EXTRACTED_WEATHER) --extract only new ones
   );
 
 COMMIT ;

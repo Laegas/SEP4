@@ -62,7 +62,10 @@ END;
 /
 --insert values for date not found
 INSERT INTO D_DATE (id_date, day, month, year, day_of_week, quarter) VALUES (-1, 'NA', 'NA','NAN', 'N', 'N');
+--insert values for end of time date
+INSERT INTO D_DATE (id_date, day, month, year, day_of_week, quarter) VALUES (0, 31,12,9999,'7','4');
 
+--dimension time creation and insert
 create table d_time(
   id_time int primary key,
   hour varchar(2),
@@ -181,16 +184,25 @@ create table B_FLIGHT_MEMBER (
   primary key(id_group, ID_MEMBER)
 );
 
+--nonexistent - using for insert from thermal side instead of member side.
+insert into D_MEMBER(
+  Member_ID
+) VALUES (-1);
+insert into B_FLIGHT_MEMBER(
+  ID_GROUP, ID_MEMBER, weight
+) VALUES (-1, -1, -1);
+
 -----F_Duration was previously F_Flight-----
 create table F_Duration(
-  surr_key_flight int references D_FLIGHT(SURR_KEY_FLIGHT),
-  id_group int references B_FLIGHT_MEMBER(ID_GROUP),
-  id_member int references B_FLIGHT_MEMBER(ID_MEMBER),
+  surr_key_flight int references D_FLIGHT(surr_key_flight),
+  id_group int,
+  id_member int,
   id_launch_time int references D_TIME(ID_TIME),
   id_launch_date int references D_DATE(ID_DATE),
   id_land_time int references D_TIME(ID_TIME),
   id_land_date int references D_DATE(ID_DATE),
   duration int,
+  FOREIGN KEY  (id_group, id_member) REFERENCES B_FLIGHT_MEMBER (id_group, id_member),
   primary key(surr_key_flight, id_group, id_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
 );
 

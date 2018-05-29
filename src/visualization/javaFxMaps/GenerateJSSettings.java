@@ -31,12 +31,12 @@ public class GenerateJSSettings {
         lines.add("var zoom = " + ZOOM + ";");
         lines.add("var max_flights = " + grid.getMaxTotalRegisteredFlightCount() + ";");
         lines.add("var alphaProperty = \"" + ALPHA_PROPERTY + "\";");
-        StringBuilder displayPropertiesString = new StringBuilder("var displayProperties = [");
-        for(int i = 0; i < DISPLAY_PROPERTIES.length; i++) {
+        StringBuilder displayPropertiesString = new StringBuilder("var properties = [");
+        for(int i = 0; i < PROPERTIES.length; i++) {
             displayPropertiesString.append("\"");
-            displayPropertiesString.append(DISPLAY_PROPERTIES[i]);
+            displayPropertiesString.append(PROPERTIES[i]);
             displayPropertiesString.append("\"");
-            if(i < DISPLAY_PROPERTIES.length - 1)
+            if(i < PROPERTIES.length - 1)
                 displayPropertiesString.append(", ");
         }
         displayPropertiesString.append("];");
