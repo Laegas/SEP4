@@ -100,4 +100,11 @@ public class Airport {
         return longitude;
     }
 
+    @Override
+    public String toString() {
+        String t ="";
+        t+=airport.getICAOCode()+", "+airportName+" ("+countryName.getCountryName()+")\nWMO index: "+wmoIndex.getWMOIndex()+"\n"+"Latitude "+latitude.getDegree()+"-"
+                +latitude.getMinute()+"N. Longitude "+longitude.getDegree()+"-"+longitude.getMinute()+"E. Altitude "+altitude.getAltitude()+" m.";
+        return t;
+    }
 }

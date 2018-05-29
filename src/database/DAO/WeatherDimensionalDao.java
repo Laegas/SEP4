@@ -4,6 +4,7 @@ import model.geography.Latitude;
 import model.geography.Longitude;
 import model.time.Date;
 import model.time.Time;
+import model.weather.Airport;
 import model.weather.ICAOAirportCode;
 import model.weather.WeatherRecord;
 
@@ -18,7 +19,10 @@ public interface WeatherDimensionalDao {
      * @param date
      * @return
      */
-    public List<WeatherRecord> getWeatherRecord(Date date, ICAOAirportCode airportCode);
+    List<WeatherRecord> getWeatherRecord(Date date, ICAOAirportCode airportCode);
 //      implement when we store airport codes and locations in database
 //    public WeatherRecord getWeatherRecord(Date date, Time time, Longitude longitude, Latitude latitude);
+    Airport getAirportByDateAndICAOCode(ICAOAirportCode code, Date date);
+    List<Airport> getAirportsByDate(Date date);
+
 }

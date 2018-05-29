@@ -52,12 +52,15 @@ public class VisualizationConfig {
         return values;
     }
 
-    // additional config for Google Maps
+    // ********************* additional config for Google Maps *************************
     public static final int ZOOM = 7;
     public static final double MINIMUM_ALPHA = 0.3;
     public static final String ALPHA_PROPERTY = PROPERTIES[1];
     public static final String VISIBILITY_FACTOR = PROPERTIES[1] + "/" + PROPERTIES[0];
-    public static final String DISPLAY_STRING_FORMAT = "T:@1 / F:@2; @3, @4, @5"; // @1 through to @9 represents
-    // DISPLAY_PROPERTIES
+    public static final String[] DISPLAY_STRING_FORMAT = new String[] // @1 through to @9 represents PROPERTIES
+            {"T:@2 / F:@1",
+             "L1T:@4 / L1F:@3",
+             "L2T:@6 / L2F:@5",
+             "L3T:@7 / L3F:@6",};
 
 }
