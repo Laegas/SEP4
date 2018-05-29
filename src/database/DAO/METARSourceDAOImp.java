@@ -19,7 +19,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
     }
 
     @Override
-    public void insertWeatherRecord(WeatherRecord record, ICAOAirportCode airportCode) {
+    public void insertWeatherRecord(WeatherRecord record) {
         try {
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
             int windSpeed = record.getWind().getWindSpeed().getKnots();
@@ -90,8 +90,8 @@ public class METARSourceDAOImp implements METARSourceDAO {
         // insert airports into souce tables
 
 //        String sql = "";
-        String sql = "insert into airport (ID, ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX) VALUES " +
-                "(airport_id.nextval,?,?,?,?,?,?,?)";
+        String sql = "insert into airport (ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX) VALUES " +
+                "(?,?,?,?,?,?,?)";
         try {
             PreparedStatement stm = DatabaseHelper.getInstance().getConnection().prepareStatement(sql);
 
@@ -110,5 +110,8 @@ public class METARSourceDAOImp implements METARSourceDAO {
         }
 //         insert weather records with a reference to their respective airports
 
+        for (WeatherRecord record : airport.getWeatherRecords()) {
+            insertWeatherRecord(record);
+        }
     }
 }
