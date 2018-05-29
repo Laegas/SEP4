@@ -59,8 +59,8 @@ public class SQLRunner {
     private static void executeSql(String sqlFilePath) {
         try {
             String line;
-            Process p = Runtime.getRuntime().exec("cmd.exe /c echo exit | sqlplus -S " + DatabaseConfig.USERNAME + "/"
-                    + DatabaseConfig.PASSWORD + "@" + DatabaseConfig.SID + " @" + sqlFilePath);
+            Process p = Runtime.getRuntime().exec("cmd.exe /c echo exit | sqlplus -S " + DatabaseConfig.INSTANCE.getUSERNAME() + "/"
+                    + DatabaseConfig.INSTANCE.getPASSWORD() + "@" + DatabaseConfig.INSTANCE.getSID() + " @" + sqlFilePath);
 
 
 //            Uncomment below to see output from sql file

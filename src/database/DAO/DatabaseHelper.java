@@ -13,8 +13,8 @@ class DatabaseHelper {
     {
         try {
             connection = DriverManager.getConnection(
-                    DatabaseConfig.CONNECTION_STRING,
-                    DatabaseConfig.USERNAME, DatabaseConfig.PASSWORD);
+                    DatabaseConfig.INSTANCE.getCONNECTION_STRING(),
+                    DatabaseConfig.INSTANCE.getUSERNAME(), DatabaseConfig.INSTANCE.getPASSWORD());
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
