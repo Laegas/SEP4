@@ -36,13 +36,15 @@ insert into D_FLIGHT (
 --insert the flight surr key and it's starting date into the F_Duration table (linking DWHs)
 insert into F_DURATION (
     SURR_KEY_FLIGHT,
-    ID_GROUP_FLIGHT_MEMBER,
+    ID_GROUP,
+    ID_MEMBER,
     ID_LAUNCH_TIME,
     ID_LAUNCH_DATE,
     ID_LAND_TIME,
     ID_LAND_DATE,
     DURATION
 ) (select SURR_KEY_FLIGHT,
+    -1,
     -1,
     -1,
     (select id_date from d_date where
@@ -71,9 +73,9 @@ insert into F_IGC_LOG (
     IGC_ID,
     FLIGHT_ID,
    (select id_time from d_time where
-     d_time.hour = extract(hour from TIME_OF_LOG) AND
-     d_time.minute= extract(minute from TIME_OF_LOG) AND
-     d_time.second = extract(second from TIME_OF_LOG)),
+     d_time.hour = to_char(TIME_OF_LOG, 'HH') AND
+     d_time.minute = to_char(TIME_OF_LOG, 'MI') AND
+     d_time.second = to_char(TIME_OF_LOG, 'SS')),
     LATITUDE,
     LONGITUDE,
     PRESSURE_ALTITUDE,

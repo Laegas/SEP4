@@ -39,9 +39,9 @@ insert into F_WEATHER_RECORD (
        d_date.month= extract(month from THE_DATE) AND
        d_date.day = extract(day from THE_DATE)),
    (select id_time from d_time where
-     d_time.hour = extract(hour from TIME) AND
-     d_time.minute= extract(minute from TIME) AND
-     d_time.second = extract(second from TIME)),
+     d_time.hour = to_char(TIME, 'HH') AND
+     d_time.minute = to_char(TIME, 'MI') AND
+     d_time.second = to_char(TIME, 'SS')),
     WIND_DIRECTION,
     WIND_DIRECTION_FROM,
     WIND_DIRECTION_TO,
