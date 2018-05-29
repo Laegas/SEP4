@@ -25,7 +25,8 @@ public class IGCSourceDao implements IGCDataDAO {
     {
         try {
             String date = logger.getDate().toString();
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Data_Logger (id, glider_RegNo, flight_Date) "
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Data_Logger_Source (id, glider_RegNo, " +
+                    "flight_Date) "
                     + "VALUES (data_Logger_ID.nextval, ?, to_Date(?, \'yy/mm/dd\'))");
             try {
                 stmt.setString(1, logger.getGlider().getGlider_no());

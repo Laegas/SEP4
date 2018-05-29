@@ -11,7 +11,6 @@ END;
 create table FULLY_EXTRACTED_AIRPORT as
   (
     select
-      id,
       ICAO_airport_Code,
       latitude,
       longitude,
@@ -24,7 +23,7 @@ create table FULLY_EXTRACTED_AIRPORT as
 
 create table FULLY_EXTRACTED_WEATHER as
   (select
-  W_ID as weather_id,
+  id as weather_id,
   ICAO_airport_code,
   wind_direction,
   wind_speed,

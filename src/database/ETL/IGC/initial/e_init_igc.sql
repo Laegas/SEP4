@@ -24,7 +24,7 @@ create table fully_extracted_igc as
   log.FLIGHT_DATE,
   log.GLIDER_REGNO
 from IGC_SOURCE_DATA igc
-join data_logger log ON
+join Data_Logger_Source log ON
   igc.FLIGht_ID = log.ID
   where 1 = 0)
 ;
