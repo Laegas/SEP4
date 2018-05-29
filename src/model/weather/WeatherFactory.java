@@ -4,6 +4,7 @@ import database.DAO.DaoManager;
 import database.DAO.WeatherDimensionalDao;
 import model.geography.Latitude;
 import model.geography.Longitude;
+import model.igc.DataPoint;
 import model.time.Date;
 import model.time.Time;
 
@@ -47,6 +48,11 @@ public class WeatherFactory {
         return getWeather(date, time, airport_code);
 
     }
+
+    public ICAOAirportCode getClosestAirort(DataPoint dataPoint) {
+        return null;
+    }
+
 
     public WeatherRecord getWeather(Date date, Time time, ICAOAirportCode airportCode) {
         // input airport code not currently used

@@ -103,4 +103,8 @@ public class Longitude {
 		return String.format("%03d", getDegree()) + String.format("%02d", getMinute()) + String.format("%03d", (int) (getSecond() * 1000));
 
 	}
+
+	public double getSignedDegreeFormat() {
+		return getDegree() + getMinute()/60 + getSecond()/60;
+	}
 }

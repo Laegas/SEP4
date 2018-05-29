@@ -2,7 +2,7 @@
 var latitude = 56.0;
 var longitude = 9.5;
 var zoom = 7;
-var max_flights = 14;
+var max_flights = 53;
 var alphaProperty = "t";
 var properties = ["f", "t", "l1f", "l1t", "l2f", "l2t", "l3f", "l3t"];
 var minimumAlpha = 0.3;
