@@ -17,7 +17,7 @@ END;
 
 create table D_GLIDER (
   surr_key_glider int PRIMARY KEY,
-  glider_id varchar2(10)
+  glider_id varchar22(10)
 );
 
 create table D_FLIGHT(

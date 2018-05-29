@@ -62,7 +62,7 @@ create table airport
 create table weather_record
 (
   id int primary key,
-  ICAO_airport_code varchar(4),
+  ICAO_airport_code varchar2(4),
   airport_id int references airport(aiport_id),
   wind_direction int,
   wind_speed int,
@@ -74,7 +74,6 @@ create table weather_record
   hour int,
   minute int
 );
-
 
 
 -- select count (*) from weather_record;

@@ -30,8 +30,7 @@ public class LocationPoint {
 
         LocationPoint other = (LocationPoint) obj;
 
-        return (this.latitude.getGridIndex() == other.getLatitude().getGridIndex() &&
-                this.longitude.getGridIndex() == other.getLongitude().getGridIndex());
-
+        return (this.latitude.equals(other.getLatitude()) &&
+                this.longitude.equals(other.getLongitude()));
     }
 }
