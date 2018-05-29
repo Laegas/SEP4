@@ -49,8 +49,8 @@ public class METARSourceDAOImp implements METARSourceDAO {
                     " " + windDirectionTo + " " + temperature + " " + dewPoint + " " + date.toString() + " " + hour +
                     " " + minute);*/
              stmt.setString(1, ICAO_airport_code);
-             stmt.setInt(2,windSpeed);
-             stmt.setInt(3,windDirection);
+             stmt.setInt(2,windDirection);
+             stmt.setInt(3,windSpeed);
              stmt.setInt(4,windDirectionFrom);
             stmt.setInt(5, windDirectionTo);
                 stmt.setDouble(6, temperature);

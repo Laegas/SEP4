@@ -9,9 +9,9 @@ import java.io.InputStreamReader;
 public class SQLRunner {
 
     public static void main(String[] args) {
-//        runAllDDL();
-        runETL();
-        runAfterETL();
+        runAllDDL();
+//        runETL();
+//        runAfterETL();
     }
 
     public static void runAllDDL() {
