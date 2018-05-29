@@ -57,8 +57,6 @@ public class VisualizationConfig {
     public static final double MINIMUM_ALPHA = 0.3;
     public static final String ALPHA_PROPERTY = PROPERTIES[1];
     public static final String VISIBILITY_FACTOR = PROPERTIES[1] + "/" + PROPERTIES[0];
-    public static final String[] DISPLAY_PROPERTIES = new String[]{PROPERTIES[1], PROPERTIES[0], PROPERTIES[3],
-            PROPERTIES[5], PROPERTIES[7]};
     public static final String DISPLAY_STRING_FORMAT = "T:@1 / F:@2; @3, @4, @5"; // @1 through to @9 represents
     // DISPLAY_PROPERTIES
 
