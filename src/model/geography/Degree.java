@@ -19,4 +19,12 @@ public class Degree {
         }
         this.degree = degree;
     }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if(!(obj instanceof Degree))
+            return false;
+        Degree o = (Degree)obj;
+        return o.degree == (this.degree);
+    }
 }

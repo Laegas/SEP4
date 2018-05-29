@@ -15,6 +15,7 @@ import model.igc.Glider;
 import model.time.*;
 import model.weather.Airport;
 import model.weather.ICAOAirportCode;
+import model.weather.WMOIndex;
 import model.weather.WeatherRecord;
 import util.weatherUtil.MetarReader;
 import util.weatherUtil.METARException;
@@ -47,11 +48,12 @@ public class FileDecoder {
 				airport.setAirport(new ICAOAirportCode(l.substring(2,6)));
 				String[] info = l.split("\\(");
 				airport.setAirportName(info[0].substring(7,info[0].length()-1).trim());
-				//airport.setCountryName(new CountryName());
+				airport.setCountryName(new CountryName(info[1].substring(0,info[1].length()-1)));
 			}
 			if(count==6)
 			{
-				System.out.println(l);
+				String wmo = l.split(":")[1].trim();
+				airport.setWmoIndex(new WMOIndex(wmo));
 			}
 			if(count==7)
 			{

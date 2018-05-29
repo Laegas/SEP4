@@ -1,7 +1,6 @@
 package model.geography;
 
 import model.time.Minute;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.text.DecimalFormat;
 
@@ -82,7 +81,7 @@ public class Latitude {
 		return LATITUDE_END - ((double)y / HEIGHT) * (LATITUDE_END - LATITUDE_START);
 	}
 
-	public int getGridIndex() {
+	public int getGridIndex() throws InvalidCoordinatesException {
 		int index = 0;
 		index += (getDegree() - (int)(LATITUDE_START)) * (int)(HEIGHT / (LATITUDE_END - LATITUDE_START));
 		index += (getMinute() - (int)(LATITUDE_START % 1 * 60)) * (int)(HEIGHT / (LATITUDE_END - LATITUDE_START) / 60);
@@ -91,5 +90,15 @@ public class Latitude {
 			throw new InvalidCoordinatesException("Latitude is " + getDegree() + "°" + getMinute() + "'" + getSecond
 					() + "'' and expected between " + LATITUDE_START + " and " + LATITUDE_END);
 		return index;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if(!(obj instanceof Latitude))
+			return false;
+		Latitude o = (Latitude)obj;
+		return o.degree.equals(this.degree) &&
+			   o.minute.equals(this.minute) &&
+			   o.second.equals(this.second);
 	}
 }

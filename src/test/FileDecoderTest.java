@@ -42,7 +42,7 @@ public class FileDecoderTest {
     public void readMETARTestFileWithExpectedValues()
     {
         FileDecoder fd = new FileDecoder(FileConfig.TEST_PATH+"/testMETARExpected.txt");
-        WeatherRecord[] recordArray = fd.readMETARFile();
+        WeatherRecord[] recordArray = fd.readMETARFile().getWeatherRecords();
         assertEquals(13,recordArray.length);
         assertEquals(2018,recordArray[0].getYear().getYear());
         assertEquals(5,recordArray[0].getMonth().getMonthNumber());
@@ -66,7 +66,7 @@ public class FileDecoderTest {
     public void readMETARTestFileWithCorruptedValues()
     {
         FileDecoder fd = new FileDecoder(FileConfig.TEST_PATH+"/testMETARCorrupted.txt");
-        WeatherRecord[] recordArray = fd.readMETARFile();
+        WeatherRecord[] recordArray = fd.readMETARFile().getWeatherRecords();
         assertEquals(0,recordArray.length);
 //        nothing is supposed to happen other than a METAR Exception was caught in the FileDecoder method decode readMETARFile()
 //        no lines have been successfully decoded.

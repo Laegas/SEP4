@@ -36,7 +36,7 @@ create sequence IGC_Source_Data_ID
 create table Data_Logger_Source
 (
     id int primary key,
-    glider_RegNo varchar(10),
+    glider_RegNo varchar22(10),
     flight_Date date
 );
 
@@ -44,8 +44,8 @@ create table IGC_Source_Data
 (
    id int primary key,
    time_Of_Log timestamp,
-   latitude varchar(7),
-   longitude varchar(8),
+   latitude varchar2(7),
+   longitude varchar2(8),
    satellite_Coverage char(1),
    pressure_Altitude int,
    GPS_Altitude int,

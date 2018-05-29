@@ -12,7 +12,7 @@ END;
 /
 
 CREATE TABLE toHandleLaterFlights AS (SELECT * FROM TAFLIGHTSVEJLE);
-ALTER TABLE toHandleLaterFlights ADD (clubName VARCHAR(100));
+ALTER TABLE toHandleLaterFlights ADD (clubName varchar2(100));
 CREATE TABLE lastDateOfFlightExtraction (lastDate date);
 INSERT INTO lastDateOfFlightExtraction (lastDate) VALUES (to_date('0001-01-01', 'YYYY-MM-DD'));
 
