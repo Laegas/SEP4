@@ -7,8 +7,8 @@ insert into D_AIRPORT(
     AIRPORT_LATITUDE,
     AIRPORT_NAME,
     WMO_INDEX,
-    ID_VALID_FROM,
-    ID_VALID_TO
+    VALID_FROM,
+    VALID_TO
 ) (select
     AIRPORT_ID.nextval,
     ICAO_AIRPORT_CODE,
@@ -26,7 +26,15 @@ insert into D_AIRPORT(
     update D_AIRPORT set
       valid_to = (trunc(sysdate-1,'DAY'))
     where valid_to = to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND
-          ICAO_AIRPORT_CODE in (select ICAO_AIRPORT_CODE from FULLY_EXTRACTED_AIRPORT where OPERATION_CODE = 'DEL')
+          ICAO_AIRPORT_CODE in (select ICAO_AIRPORT_CODE from FULLY_EXTRACTED_AIRPORT
+          where OPERATION_CODE = 'DEL')
+    ;
+
+    update D_AIRPORT set
+      valid_to = (trunc(sysdate-1,'DAY'))
+    where valid_to = to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND
+          ICAO_AIRPORT_CODE in (select ICAO_AIRPORT_CODE from FULLY_EXTRACTED_AIRPORT
+          where OPERATION_CODE = 'CHG')
     ;
 
 insert into F_WEATHER_RECORD (
