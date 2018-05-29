@@ -94,6 +94,7 @@ public class Latitude {
 	}
 
 	public String toDBString() {
-		return null;
+		return String.format("%02d", getDegree()) + String.format("%02d", getMinute()) + String.format("%03d", (int) (getSecond() * 1000));
+
 	}
 }
