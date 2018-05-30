@@ -16,7 +16,7 @@ insert into FULLY_EXTRACTED_WEATHER (
   (
       SELECT
         id,
-        ICAO_airport_code,
+        ICAO_AIRPORT_CODE,
         wind_direction,
         wind_speed,
         wind_direction_from,

@@ -51,14 +51,12 @@ insert into F_DURATION (
     ID_LAND_TIME,
     ID_LAND_DATE,
     DURATION
-) (select SURR_KEY_FLIGHT,
+) (select
+    SURR_KEY_FLIGHT,
     -1,
     -1,
     -1,
-    (select id_date from d_date where
-      d_date.year = extract(year from START_DATE) AND
-      d_date.month= extract(month from START_DATE) AND
-      d_date.day = extract(day from START_DATE)),
+    ID_START_DATE,
     -1,
     -1,
     -1

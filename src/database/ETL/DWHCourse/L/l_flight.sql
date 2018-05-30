@@ -38,7 +38,7 @@ update flights_to_load_with_surr_key a set id_launchtime = (
     d_time.second = to_char(a.LAUNCHTIME, 'SS')
 );
 
-update flights_to_load_with_surr_key a set a.id_LANDTIME = (
+update flights_to_load_with_surr_key a set id_LANDTIME = (
   select id_time from d_time where
     d_time.hour = to_char(a.LANDINGTIME, 'HH') AND
     d_time.minute = to_char(a.LANDINGTIME, 'MI') AND
@@ -70,22 +70,18 @@ update flights_to_load_with_surr_key a set a.id_LANDDATE = (
 declare
   tmp_id_member int;
 begin
-
   for c in (SELECT
               pilot1init, pilot2init, pilot1_Non_UNIQUE_INITIALS, pilot2_Non_UNIQUE_INITIALS,
               id_launchtime , id_landtime , id_landdate, surr_key_flight
             from flights_to_load_with_surr_key) loop
-
     if(c.pilot1_non_unique_initials <> 'T')
     then
       tmp_id_member := 0;
     else
       select (SELECT member_id from d_member where INITIALS = c.pilot1init offset 0 rows fetch next 1 rows only) into tmp_id_member from dual;
     end if;
-
     if(c.pilot2init = '    ')
     then
-
       insert into B_FLIGHT_MEMBER (ID_GROUP, ID_MEMBER, weight) VALUES (
         SEQ_ID_B_FLIGHT_MEMBER.nextVAl, tmp_id_member  , 1.0);
     else
@@ -106,18 +102,16 @@ begin
       insert into B_FLIGHT_MEMBER (ID_GROUP, ID_MEMBER, weight) VALUES (
         SEQ_ID_B_FLIGHT_MEMBER.currval, tmp_id_member  , 0.5);
     end if;
-
     --inserting flight facts
-    insert into f_duration(  id_group_flight_member , SURR_KEY_FLIGHT, id_launch_time , id_land_time , id_land_date , duration) VALUES (
+    insert into f_duration(  id_group, ID_MEMBER, SURR_KEY_FLIGHT, id_launch_time , id_land_time , id_land_date , duration) VALUES (
       SEQ_ID_B_FLIGHT_MEMBER.currval,
+      tmp_id_member,
       c.surr_key_flight,
       c.id_launchtime,
       c.id_landtime,
       c.id_landdate,
       120
     );
-
-  
   end loop;
 end;
 /
