@@ -1,21 +1,49 @@
 package model;
 
+import org.bridj.ann.Runtime;
+
 /**
  * Created by kenneth on 24/05/2018.
  */
 public class RegisteredFlightAndThermalCount {
     private int numberOfRegisteredFlights;
     private int numberOfRegisteredThermal;
+    private Integer optionalParamater;
+    private String optionalParameterName;
 
-    public RegisteredFlightAndThermalCount() {
+    /**
+     * null if dont want to use optional paramater
+     * @param optionalParamaterName
+     */
+    public RegisteredFlightAndThermalCount(String optionalParamaterName) {
         this.numberOfRegisteredFlights = 0;
         this.numberOfRegisteredThermal = 0;
+        if (optionalParamaterName != null) {
+            this.optionalParamater = 0;
+            this.optionalParameterName = optionalParamaterName;
+        }
+    }
+    public boolean usesOptionalParamater() {
+        return this.optionalParameterName != null;
+    }
+
+    public void setOptionalParamater(int value) {
+        if (!usesOptionalParamater()) {
+            throw new RuntimeException("this object does not use the optional paramater");
+        }
+        this.optionalParamater = value;
+    }
+
+    public int getOptionalParamater() {
+        if (!usesOptionalParamater()) {
+            throw new RuntimeException("this object does not use the optional paramater");
+        }
+        return this.optionalParamater;
     }
 
     public int getNumberOfRegisteredFlights() {
         return numberOfRegisteredFlights;
     }
-
     public int getNumberOfRegisteredThermal() {
         return numberOfRegisteredThermal;
     }

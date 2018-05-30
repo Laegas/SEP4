@@ -2,9 +2,6 @@
 output.txt
 output.xlsx
 
-# config ignore
-
-
 # Eclipse
 .classpath
 .project

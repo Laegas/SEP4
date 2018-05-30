@@ -9,6 +9,8 @@ import model.igc.Glider;
 import model.time.Date;
 import model.time.Time;
 import model.weather.Airport;
+import model.weather.WeatherFactory;
+import util.geography.GeoCaluclator;
 
 import javax.xml.transform.Result;
 import java.sql.Connection;
@@ -146,19 +148,51 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
         }
     }
 
+    public void setClosestAirportsForAllIGC() {
+        List<Airport> airports = DaoManager.WEATHER_DIMENSIONAL_DAO.getAirportsByDate(new Date(1, 1, 1));
+        List<Flight> flights = DaoManager.IGC_DIMENSIONAL_DAO.getAllFlights();
 
-    @Override
-    public void setClosestAirport(DataPoint dataPoint, Airport airport) {
 
-        Integer airport_surr_key = airportSurrKeyByICAOCache.get(airport.getAirport());
-        if (airport_surr_key != null) {
-
+        Map<Airport, Integer> surrKeyByAirport = new HashMap<>();
+        for (Airport item : airports) {
+            surrKeyByAirport.put(item, airportSurrKeyByICAOCache.get(item.getAirport()));
         }
 
+        for (Flight flight : flights) {
 
-        String sql = "update F_IGC_LOG set closest_airport = ? WHERE SURR_KEY_FLIGHT = ";
+            double shortestDistance = Double.MAX_VALUE;
+            Airport resultPointer = null;
+            double tempDist = 0;
+
+            for (DataPoint dataPoint : flight.getDatalog()) {
+//                find the closest airport and set it
+                for (Airport airport : airports) {
+                    tempDist = GeoCaluclator.getGeoDistance(dataPoint.getLatitude(),dataPoint.getLongitude(), airport.getLatitude(), airport.getLongitude());
+                    if (tempDist < shortestDistance) {
+                        resultPointer = airport;
+                    }
+                }
+                setClosestAirport(dataPoint,surrKeyByAirport.get(resultPointer));
+            }
+
+        }
+    }
+
+
+    @Override
+    public void setClosestAirport(DataPoint dataPoint, int surr_key_airport) {
+
+
+        String sql = "update F_IGC_LOG set closest_airport = ? WHERE SURR_KEY_FLIGHT = ? AND id_time = ?";
         try {
             PreparedStatement stm = DatabaseHelper.getInstance().getConnection().prepareStatement(sql);
+
+            stm.setInt(1,surr_key_airport);
+            stm.setInt(2, dataPoint.getFlight_id());
+            stm.setInt(3, dataPoint.getTime_id());
+
+            stm.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -10,6 +10,7 @@ import model.igc.ThermalDataPointGroup;
 import model.outputData.OutputData;
 import model.weather.WeatherFactory;
 import model.weather.WeatherRecord;
+import org.bridj.ann.Runtime;
 import util.igc.RemoveDuplicate;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
@@ -18,6 +19,7 @@ import visualization.javaFxMaps.GenerateJson;
 import model.geography.Longitude;
 import model.geography.Latitude;
 
+import javax.management.RuntimeErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,13 +97,14 @@ public class AnalysisOfThermalsWithWeatherData {
                 tempTenperature = item.getWeatherRecord().getTemperature().getTemperature();
                 int latIndex = item.getDataPoint().getLatitude().getGridIndex();
                 int longIndex = item.getDataPoint().getLongitude().getGridIndex();
-                if (tempTenperature >= 0 && tempTenperature < 10) {
-                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenZeroAndTenDegree().incrementRegisteredThermal();
-                } else if (tempTenperature >= 10 && tempTenperature < 20) {
-                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenTenAndTwentyDegree().incrementRegisteredThermal();
-                } else if (tempTenperature >= 20 && tempTenperature < 30) {
-                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenTwentyAndThirtyDegree().incrementRegisteredThermal();
-                }
+//                if (tempTenperature >= 0 && tempTenperature < 10) {
+//                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenZeroAndTenDegree().incrementRegisteredThermal();
+//                } else if (tempTenperature >= 10 && tempTenperature < 20) {
+//                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenTenAndTwentyDegree().incrementRegisteredThermal();
+//                } else if (tempTenperature >= 20 && tempTenperature < 30) {
+//                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenTwentyAndThirtyDegree().incrementRegisteredThermal();
+//                }
+                throw new RuntimeException("insert kenneth");
             }
 
             //find unique data points from data in flights
@@ -120,13 +123,14 @@ public class AnalysisOfThermalsWithWeatherData {
                 int latIndex = item.getDataPoint().getLatitude().getGridIndex();
                 int longIndex = item.getDataPoint().getLongitude().getGridIndex();
 
-                if (tempTemperature >= 0 && tempTemperature < 10) {
-                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenZeroAndTenDegree().incrementRegisteredFlight();
-                } else if (tempTemperature >= 10 && tempTemperature < 20) {
-                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenTenAndTwentyDegree().incrementRegisteredFlight();
-                } else if (tempTemperature >= 20 && tempTemperature < 30) {
-                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenTwentyAndThirtyDegree().incrementRegisteredFlight();
-                }
+//                if (tempTemperature >= 0 && tempTemperature < 10) {
+//                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenZeroAndTenDegree().incrementRegisteredFlight();
+//                } else if (tempTemperature >= 10 && tempTemperature < 20) {
+//                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenTenAndTwentyDegree().incrementRegisteredFlight();
+//                } else if (tempTemperature >= 20 && tempTemperature < 30) {
+//                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenTwentyAndThirtyDegree().incrementRegisteredFlight();
+//                }
+                throw new RuntimeException("insert kenneth");
             }
 
 
