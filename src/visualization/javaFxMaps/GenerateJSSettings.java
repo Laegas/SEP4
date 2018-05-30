@@ -31,16 +31,30 @@ public class GenerateJSSettings {
         lines.add("var zoom = " + ZOOM + ";");
         lines.add("var max_flights = " + grid.getMaxTotalRegisteredFlightCount() + ";");
         lines.add("var alphaProperty = \"" + ALPHA_PROPERTY + "\";");
-        StringBuilder displayPropertiesString = new StringBuilder("var properties = [");
+
+        StringBuilder propertiesString = new StringBuilder("var properties = [");
         for(int i = 0; i < PROPERTIES.length; i++) {
-            displayPropertiesString.append("\"");
-            displayPropertiesString.append(PROPERTIES[i]);
-            displayPropertiesString.append("\"");
+            propertiesString.append("\"");
+            propertiesString.append(PROPERTIES[i]);
+            propertiesString.append("\"");
             if(i < PROPERTIES.length - 1)
-                displayPropertiesString.append(", ");
+                propertiesString.append(", ");
         }
-        displayPropertiesString.append("];");
-        lines.add(displayPropertiesString.toString());
+        propertiesString.append("];");
+        lines.add(propertiesString.toString());
+
+        StringBuilder displayStrings = new StringBuilder("var displayStrings = [");
+        for(int i = 0; i < DISPLAY_STRING_FORMAT.length; i++) {
+            displayStrings.append("\"");
+            displayStrings.append(PROPERTIES[i]);
+            displayStrings.append("\"");
+            if(i < PROPERTIES.length - 1)
+                propertiesString.append(", ");
+        }
+        propertiesString.append("];");
+        lines.add(propertiesString.toString());
+
+
         lines.add("var minimumAlpha = " + MINIMUM_ALPHA + ";");
         lines.add("var displayStringFormat = \"" + DISPLAY_STRING_FORMAT + "\";");
         lines.add("var visibilityFactor = \"" + VISIBILITY_FACTOR + "\";");

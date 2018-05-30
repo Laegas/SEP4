@@ -53,14 +53,17 @@ public class VisualizationConfig {
     }
 
     // ********************* additional config for Google Maps *************************
+    // level of zoom for Google Maps. 7 for centered Denmark shows whole Denmark.
     public static final int ZOOM = 7;
+    // sets minimum opacity for alpha channel of rgba
     public static final double MINIMUM_ALPHA = 0.3;
+    // property on which opacity is based
     public static final String ALPHA_PROPERTY = PROPERTIES[1];
     public static final String VISIBILITY_FACTOR = PROPERTIES[1] + "/" + PROPERTIES[0];
     public static final String[] DISPLAY_STRING_FORMAT = new String[] // @1 through to @9 represents PROPERTIES
             {"T:@2 / F:@1",
              "L1T:@4 / L1F:@3",
              "L2T:@6 / L2F:@5",
-             "L3T:@7 / L3F:@6",};
+             "L3T:@8 / L3F:@7",};
 
 }
