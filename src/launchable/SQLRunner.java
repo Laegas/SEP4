@@ -2,6 +2,8 @@ package launchable;
 
 import config.DatabaseConfig;
 import config.SQLRunnerConfig;
+import launchable.fileloaders.IGCFileLoader;
+import launchable.fileloaders.METARFileLoader;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,10 +24,14 @@ public class SQLRunner {
 
     public static void main(String[] args) {
         SQLRunner runner = new SQLRunner();
+
+
       runner.runAllDDL();
-        runner.runETL();
-        runner.runAfterETL();
-        runner.showOutput();
+        METARFileLoader.main(new String[1]);
+        IGCFileLoader.main(new String[1]);
+      runner.runETL();
+      runner.runAfterETL();
+      runner.showOutput();
     }
 
     private void showErrors() {

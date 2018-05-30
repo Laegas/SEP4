@@ -26,23 +26,23 @@ public class SingleFlightOutputData {
     public void setFeaturePropertiesTotalThermalToOne(int latIndex,int longIndex) {
         featureProperties[latIndex][longIndex].getTotal().setNumberOfRegisteredThermal(1);
     }
-    public void setFeaturePropertiesBetweenZeroAndTenFlightToOne(int latIndex, int longIndex) {
-        featureProperties[latIndex][longIndex].getBetweenZeroAndTenDegree().setNumberOfRegisteredFlights(1);
-    }
-    public void setFeaturePropertiesBetweenZeroAndTenThermalToOne(int latIndex,int longIndex) {
-        featureProperties[latIndex][longIndex].getBetweenZeroAndTenDegree().setNumberOfRegisteredThermal(1);
-    }
-    public void setFeaturePropertiesBetweenTenAndTwentyFlightToOne(int latIndex, int longIndex) {
-        featureProperties[latIndex][longIndex].getBetweenTenAndTwentyDegree().setNumberOfRegisteredFlights(1);
-    }
-    public void setFeaturePropertiesBetweenTenAndTwentyThermalToOne(int latIndex,int longIndex) {
-        featureProperties[latIndex][longIndex].getBetweenTenAndTwentyDegree().setNumberOfRegisteredThermal(1);
-    }
+//    public void setFeaturePropertiesBetweenZeroAndTenFlightToOne(int latIndex, int longIndex) {
+//        featureProperties[latIndex][longIndex].getBetweenZeroAndTenDegree().setNumberOfRegisteredFlights(1);
+//    }
+//    public void setFeaturePropertiesBetweenZeroAndTenThermalToOne(int latIndex,int longIndex) {
+//        featureProperties[latIndex][longIndex].getBetweenZeroAndTenDegree().setNumberOfRegisteredThermal(1);
+//    }
+//    public void setFeaturePropertiesBetweenTenAndTwentyFlightToOne(int latIndex, int longIndex) {
+//        featureProperties[latIndex][longIndex].getBetweenTenAndTwentyDegree().setNumberOfRegisteredFlights(1);
+//    }
+//    public void setFeaturePropertiesBetweenTenAndTwentyThermalToOne(int latIndex,int longIndex) {
+//        featureProperties[latIndex][longIndex].getBetweenTenAndTwentyDegree().setNumberOfRegisteredThermal(1);
+//    }
     public void setFeaturePropertiesBetweenTwentyAndThirtyFlightToOne(int latIndex, int longIndex) {
         featureProperties[latIndex][longIndex].getTotal().setNumberOfRegisteredFlights(1);
     }
-    public void setFeaturePropertiesBetweenTwentyAndThrityThermalToOne(int latIndex,int longIndex) {
-        featureProperties[latIndex][longIndex].getBetweenTwentyAndThirtyDegree().setNumberOfRegisteredThermal(1);
-    }
+//    public void setFeaturePropertiesBetweenTwentyAndThrityThermalToOne(int latIndex,int longIndex) {
+//        featureProperties[latIndex][longIndex].getBetweenTwentyAndThirtyDegree().setNumberOfRegisteredThermal(1);
+//    }
 
 }

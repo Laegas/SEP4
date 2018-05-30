@@ -34,10 +34,10 @@ public class FeatureProperties {
 
     public FeatureProperties() {
         this.total = new RegisteredFlightAndThermalCount(null);
-        this.windDirHundredEightyToTwoHundredSeventy = new RegisteredFlightAndThermalCount();
-        this.windDirNintyToHundredEighty new RegisteredFlightAndThermalCount();
-        this.windDirZeroToNinty = new RegisteredFlightAndThermalCount();
-        this.windDirTwoHundredSeventyToThreeHundredSizty = new RegisteredFlightAndThermalCount();
+        this.windDirHundredEightyToTwoHundredSeventy = new RegisteredFlightAndThermalCount("wind speed");
+        this.windDirNintyToHundredEighty = new RegisteredFlightAndThermalCount("wind speed");
+        this.windDirZeroToNinty = new RegisteredFlightAndThermalCount("wind speed");
+        this.windDirTwoHundredSeventyToThreeHundredSizty = new RegisteredFlightAndThermalCount("wind speed");
 //        this.betweenZeroAndTenDegree = new RegisteredFlightAndThermalCount();
 //        this.betweenTenAndTwentyDegree = new RegisteredFlightAndThermalCount();
 //        this.betweenTwentyAndThirtyDegree = new RegisteredFlightAndThermalCount();
