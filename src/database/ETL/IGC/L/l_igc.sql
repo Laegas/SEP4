@@ -24,14 +24,22 @@ insert into D_GLIDER (
 -- inserting new flights into d_flights
 insert into D_FLIGHT (
     SURR_KEY_FLIGHT,
-    START_DATE,
-    GLIDER_SURR_KEY
-) (select flight_id,
-    flight_date from
-    (select distinct flight_id,
-    FLIGHT_DATE from TRANSFORM_IGC_EMPTY_GLIDER_REGNO
-    where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT))
-);
+    ID_START_DATE,
+    SURR_KEY_GLIDER
+) (select distinct t.flight_id,
+       (select id_date from d_date where
+         d_date.year = extract(year from t.FLIGHT_DATE) AND
+         d_date.month= extract(month from t.FLIGHT_DATE) AND
+         d_date.day = extract(day from t.FLIGHT_DATE)),
+      g.SURR_KEY_GLIDER
+    from TRANSFORM_IGC_EMPTY_GLIDER_REGNO t
+      join D_GLIDER g
+      on (t.GLIDER_REGNO = g.GLIDER_ID)
+    where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT)
+          AND g.VALID_FROM<=sysdate AND g.VALID_TO>sysdate
+)
+;
+-- todo join get surr_key_glider
 
 --insert the flight surr key and it's starting date into the F_Duration table (linking DWHs)
 insert into F_DURATION (
@@ -85,12 +93,5 @@ insert into F_IGC_LOG (
     where igc_id not IN (select SURR_KEY_LOG from F_IGC_LOG)
 );
 
-SELECT * from D_GLIDER;
-SELECT * FROM D_FLIGHT;
-SELECT FLIGHT_ID, count(*) FROM IGC_SOURCE_DATA gROUP BY FLIGHT_ID;
-SELECT * FROM DATA_LOGGER;
-SELECT count(*) from D_FLIGHT;
-select count(*) from D_GLIDER;
-SELECT count(*) from F_IGC_LOG;
 COMMIT ;
 

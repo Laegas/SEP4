@@ -53,8 +53,9 @@ public class ThermalFinderTest {
         List<DataPoint> points = new ArrayList<>();
         for(int i = 0;i<60;i++)
         {
-            points.add(new DataPoint(new Time(1,1,i),new Longitude(1,1,1),//only the time and altitudes matters here
-                    new Latitude(1,1,1),'A', 10+(i*4), 10+(i*6), i, i));
+            throw new RuntimeException("uncomment an fix 'I changed the constructor' - kenneth");
+//            points.add(new DataPoint(new Time(1,1,i),new Longitude(1,1,1),//only the time and altitudes matters here
+//                    new Latitude(1,1,1),'A', 10+(i*4), 10+(i*6), i, i));
         }
         Flight flight = new Flight(new Date(1,1,1),points,new Glider(101,"UNIQUE_NO"),1);
         ThermalFinder finder = new ThermalFinderImp();
@@ -67,8 +68,9 @@ public class ThermalFinderTest {
 
         for(int i = 0;i<60;i++)
         {
-            points.add(new DataPoint(new Time(1,1,i),new Longitude(1,1,1),//only the time and altitudes matters here
-                    new Latitude(1,1,1),'A', 10-(i*4), 10-(i*6), i, i));
+            throw new RuntimeException("uncomment an fix 'I changed the constructor' - kenneth");
+//            points.add(new DataPoint(new Time(1,1,i),new Longitude(1,1,1),//only the time and altitudes matters here
+//                    new Latitude(1,1,1),'A', 10-(i*4), 10-(i*6), i, i));
         }
         flight = new Flight(new Date(1,1,1),points,new Glider(101,"UNIQUE_NO"),1);
         group = finder.findThermalsUsingPressureAltitude(flight);
@@ -85,13 +87,15 @@ public class ThermalFinderTest {
         {
             for(int j = 0;j<50;j++)
             {
-                points.add(new DataPoint(new Time(count++),new Longitude(1,1,1),//only the time and altitudes matters here
-                        new Latitude(1,1,1),'A', i+(count*6), i+(count*6), i, i));
+                throw new RuntimeException("uncomment an fix 'I changed the constructor' - kenneth");
+//                points.add(new DataPoint(new Time(count++),new Longitude(1,1,1),//only the time and altitudes matters here
+//                        new Latitude(1,1,1),'A', i+(count*6), i+(count*6), i, i));
             }
             for(int j =0;j<30;j++)
             {
-                points.add(new DataPoint(new Time(count++),new Longitude(1,1,1),//only the time and altitudes matters here
-                        new Latitude(1,1,1),'A', count, count, i, i));
+                throw new RuntimeException("uncomment an fix 'I changed the constructor' - kenneth");
+//                points.add(new DataPoint(new Time(count++),new Longitude(1,1,1),//only the time and altitudes matters here
+//                        new Latitude(1,1,1),'A', count, count, i, i));
             }
         }
         flight = new Flight(new Date(1,1,1),points,new Glider(101,"UNIQUE_NO"),1);

@@ -8,6 +8,7 @@ import model.igc.Flight;
 import model.igc.Glider;
 import model.time.Date;
 import model.time.Time;
+import model.weather.Airport;
 
 import javax.xml.transform.Result;
 import java.sql.Connection;
@@ -15,7 +16,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kenneth on 18/05/2018.
@@ -24,6 +27,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
     private boolean debug = false;
     private Connection connection;
+
+    Map<String, Integer> airportSurrKeyByICAOCache = new HashMap<>();
 
     IGCDimensionalDaoImp() {
         this.connection = DatabaseHelper.getInstance().getConnection();
@@ -85,7 +90,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
         List<DataPoint> result = new ArrayList<>();
 
-        String sql = "SELECT surr_key_log, surr_key_flight, surr_key_glider, time, lat_north, long_east, press_altitude, gps_altitude, gps_ok FROM F_IGC_LOG where SURR_KEY_FLIGHT = ?";
+        String sql = "SELECT surr_key_log, surr_key_flight, surr_key_glider, time, lat_north, long_east, press_altitude, gps_altitude, gps_ok, id_time FROM F_IGC_LOG where SURR_KEY_FLIGHT = ?";
         PreparedStatement stmt;
         try {
             stmt = connection.prepareStatement(sql);
@@ -100,6 +105,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
             int flight_id;
             int glider_id;
             char satelliteCoverage;
+            int tempId_time;
             while (resultSet.next()) {
 
                 tmpTime = new Time(resultSet.getTime("time"));
@@ -113,7 +119,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                 flight_id = resultSet.getInt("surr_key_flight");
                 glider_id = resultSet.getInt("surr_key_glider");
                 satelliteCoverage = resultSet.getString("gps_ok").charAt(0);
-                tmpDataPoint = new DataPoint(tmpTime, tmpLongitude, tmpLatitude, satelliteCoverage, pressureAltitude, gpsAltitude, glider_id, flight_id);
+                tempId_time = resultSet.getInt("id_time");
+                tmpDataPoint = new DataPoint(tmpTime, tmpLongitude, tmpLatitude, satelliteCoverage, pressureAltitude, gpsAltitude, glider_id, flight_id, tempId_time);
                 result.add(tmpDataPoint);
             }
 
@@ -137,5 +144,27 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
         if (debug) {
             System.out.println(string);
         }
+    }
+
+
+    @Override
+    public void setClosestAirport(DataPoint dataPoint, Airport airport) {
+
+        Integer airport_surr_key = airportSurrKeyByICAOCache.get(airport.getAirport());
+        if (airport_surr_key != null) {
+
+        }
+
+
+        String sql = "update F_IGC_LOG set closest_airport = ? WHERE SURR_KEY_FLIGHT = ";
+        try {
+            PreparedStatement stm = DatabaseHelper.getInstance().getConnection().prepareStatement(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
     }
 }
