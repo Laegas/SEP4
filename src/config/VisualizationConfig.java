@@ -1,7 +1,10 @@
 package config;
 
 import model.outputData.FeatureProperties;
+import model.outputData.OutputData;
 import org.json.JSONException;
+import visualization.javaFxMaps.Color;
+import visualization.javaFxMaps.LayerWrapper;
 
 public class VisualizationConfig {
 
@@ -35,35 +38,28 @@ public class VisualizationConfig {
     }
 
     // naming convention for properties: f = flights; t = total; l@ = layer number
-    public static final String[] PROPERTIES = new String[]{"f", "t", "l1f", "l1t", "l2f", "l2t", "l3f", "l3t"};
+    public static final String[] PROPERTIES = new String[]{"f", "t"};
     public static String[] PROPERTY_VALUES(FeatureProperties feature) throws JSONException {
         String[] values = new String[PROPERTIES.length];
         values[0] = feature.getTotal().getNumberOfRegisteredFlights() + "";
         values[1] = feature.getTotal().getNumberOfRegisteredThermal() + "";
-        values[2] = feature.getBetweenZeroAndTenDegree().getNumberOfRegisteredFlights() + "";
-        values[3] = feature.getBetweenZeroAndTenDegree().getNumberOfRegisteredThermal() + "";
-        values[4] = feature.getBetweenTenAndTwentyDegree().getNumberOfRegisteredFlights() + "";
-        values[5] = feature.getBetweenTenAndTwentyDegree().getNumberOfRegisteredThermal() + "";
-        values[6] = feature.getBetweenTwentyAndThirtyDegree().getNumberOfRegisteredFlights() + "";
-        values[7] = feature.getBetweenTwentyAndThirtyDegree().getNumberOfRegisteredThermal() + "";
         for(String value : values)
             if(value == null || value.equals(""))
                 throw new JSONException("Not all properties are initialized");
         return values;
     }
 
-    // ********************* additional config for Google Maps *************************
+    // ********************* additional global config for Google Maps ******************
     // level of zoom for Google Maps. 7 for centered Denmark shows whole Denmark.
     public static final int ZOOM = 7;
-    // sets minimum opacity for alpha channel of rgba
-    public static final double MINIMUM_ALPHA = 0.3;
-    // property on which opacity is based
-    public static final String ALPHA_PROPERTY = PROPERTIES[1];
-    public static final String VISIBILITY_FACTOR = PROPERTIES[1] + "/" + PROPERTIES[0];
-    public static final String[] DISPLAY_STRING_FORMAT = new String[] // @1 through to @9 represents PROPERTIES
-            {"T:@2 / F:@1",
-             "L1T:@4 / L1F:@3",
-             "L2T:@6 / L2F:@5",
-             "L3T:@8 / L3F:@7",};
 
+    // ********************* additional layer config for Google Maps *******************
+    public static LayerWrapper[] LAYERS(OutputData grid) {
+        return new LayerWrapper[]{
+                new LayerWrapper(0.3, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(), PROPERTIES[1] + "/" +
+                        PROPERTIES[0], "T:@2 / F:@1", new Color(255, 0, 0), new Color(255, 0 ,0)),
+                new LayerWrapper(0.3, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(), PROPERTIES[1] + "/" +
+                        PROPERTIES[0], "T:@2 / F:@1", new Color(255, 0, 0), new Color(255, 0 ,0))
+        };
+    }
 }
