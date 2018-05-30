@@ -22,7 +22,7 @@ public class SQLRunner {
 
     public static void main(String[] args) {
         SQLRunner runner = new SQLRunner();
-//      runner.runAllDDL();
+      runner.runAllDDL();
         runner.runETL();
         runner.runAfterETL();
         runner.showOutput();
