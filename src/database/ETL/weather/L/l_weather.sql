@@ -7,6 +7,7 @@ insert into D_AIRPORT(
     AIRPORT_LATITUDE,
     AIRPORT_NAME,
     WMO_INDEX,
+    COUNTRY_NAME,
     VALID_FROM,
     VALID_TO
 ) (select
@@ -17,6 +18,7 @@ insert into D_AIRPORT(
     LATITUDE,
     AIRPORTNAME,
     WMO_INDEX,
+    COUNTRYNAME,
     trunc(sysdate, 'DAY') as valid_from,
     to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') as valid_to
     from FULLY_EXTRACTED_AIRPORT
@@ -41,6 +43,7 @@ insert into F_WEATHER_RECORD (
     SURR_KEY_AIRPORT,
     ID_DATE,
     ID_TIME,
+    ICAO_AIRPORT_CODE,
     WIND_DIRECTION,
     WIND_DIRECTION_FROM,
     WIND_DIRECTION_TO,
@@ -57,13 +60,13 @@ insert into F_WEATHER_RECORD (
      d_time.hour = to_char(TIME, 'HH') AND
      d_time.minute = to_char(TIME, 'MI') AND
      d_time.second = to_char(TIME, 'SS')),
+    ICAO_AIRPORT_CODE,
     WIND_DIRECTION,
     WIND_DIRECTION_FROM,
     WIND_DIRECTION_TO,
     WIND_SPEED,
     TEMPERATURE,
-    DEW_POINT,
-    ICAO_AIRPORT_CODE
+    DEW_POINT
   from TRANSFORM_WEATHER_HOUR_MINUTE_TO_TIME t
 );
 

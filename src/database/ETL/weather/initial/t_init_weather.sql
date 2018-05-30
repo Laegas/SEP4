@@ -19,7 +19,7 @@ create table transform_weather_hour_minute_to_time as
      TEMPERATURE,
      DEW_POINT,
      THE_DATE
-from FULLY_EXTRACTED_WEATHER)
+from FULLY_EXTRACTED_WEATHER where 1 = 0)
 ;
 
 alter table transform_weather_hour_minute_to_time
