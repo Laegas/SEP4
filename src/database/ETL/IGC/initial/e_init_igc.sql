@@ -30,4 +30,6 @@ join Data_Logger_Source log ON
   where 1 = 0)
 ;
 
+CREATE TABLE IGC_YESTERDAY as (SELECT * FROM IGC_SOURCE_DATA where 1 = 0);
+
 COMMIT;

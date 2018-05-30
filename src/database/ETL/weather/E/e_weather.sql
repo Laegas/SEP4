@@ -27,8 +27,8 @@ insert into FULLY_EXTRACTED_WEATHER (
         hour,
         minute
        FROM WEATHER_RECORD
-          WHERE id NOT IN (SELECT WEATHER_ID
-                                FROM FULLY_EXTRACTED_WEATHER) --extract only new ones
+          WHERE id NOT IN (SELECT WEATHER_ID FROM FULLY_EXTRACTED_WEATHER) --extract only new ones
+        AND THE_DATE > (select lastdate FROM last_Date_Of_Weather_Extraction)
   );
 
 insert into FULLY_EXTRACTED_AIRPORT(
