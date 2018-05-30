@@ -11,6 +11,7 @@ public class OutputData implements Iterable<FeatureProperties>{
 
     FeatureProperties[][] featureProperties;
 
+
     /**
      * returns a vlaue 2/3 ed of the max value
      * @return
