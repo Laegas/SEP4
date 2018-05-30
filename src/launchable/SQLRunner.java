@@ -8,22 +8,38 @@ import java.io.InputStreamReader;
 
 public class SQLRunner {
 
-    private static int counter = 0;
+    private static int errorCounter = 0;
     private static StringBuilder onlyErrors = new StringBuilder(), wholeMessage = new StringBuilder();
+    private boolean quiet;
+
+    public SQLRunner() {
+        quiet = false;
+    }
+
+    public void setQuiet(boolean quiet) {
+        this.quiet = quiet;
+    }
 
     public static void main(String[] args) {
-//        runAllDDL();
-        runETL();
-        runAfterETL();
-        showOutput(true);
+        SQLRunner runner = new SQLRunner();
+//      runner.runAllDDL();
+        runner.runETL();
+        runner.runAfterETL();
+        runner.showOutput();
     }
 
-    public static void showOutput(boolean showWholeMessage) {
-        if(showWholeMessage) System.out.println(wholeMessage.toString());
-        if(counter > 0) System.out.println("***** " + counter + " ERRORS *****\n" + onlyErrors.toString());
+    private void showErrors() {
+        if(errorCounter == 0) System.out.println("***** SUCCESS *****");
+        else System.out.println("***** " + errorCounter + " ERRORS *****\n" + onlyErrors.toString());
     }
 
-    public static void runAllDDL() {
+    public void showOutput() {
+        System.out.println(wholeMessage.toString());
+        showErrors();
+    }
+
+    public void runAllDDL() {
+        if(!quiet) System.out.println("Running all DDL");
         // DDL - Dimensional
         executeSql(SQLRunnerConfig.DIMENSIONAL_MODEL_DDL.getAbsolutePath());
         executeSql(SQLRunnerConfig.DIMENSIONAL_WEATHER_DDL.getAbsolutePath());
@@ -45,9 +61,12 @@ public class SQLRunner {
         executeSql(SQLRunnerConfig.COURSE_E_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.COURSE_T_INIT.getAbsolutePath());
         executeSql(SQLRunnerConfig.COURSE_L_INIT.getAbsolutePath());
+
+        if(!quiet) showErrors();
     }
 
-    public static void runETL() {
+    public void runETL() {
+        if(!quiet) System.out.println("Running ETL");
         // ELT - IGC
         executeSql(SQLRunnerConfig.IGC_E.getAbsolutePath());
         executeSql(SQLRunnerConfig.IGC_T.getAbsolutePath());
@@ -65,13 +84,19 @@ public class SQLRunner {
         executeSql(SQLRunnerConfig.COURSE_T_FLIGHT.getAbsolutePath());
         executeSql(SQLRunnerConfig.COURSE_L_MEMBER.getAbsolutePath());
         executeSql(SQLRunnerConfig.COURSE_L_FLIGHT.getAbsolutePath());
+
+        if(!quiet) showErrors();
     }
 
-    public static void runAfterETL() {
+    public void runAfterETL() {
+        if(!quiet) System.out.println("Running After ETL");
+        // After ETL
         executeSql(SQLRunnerConfig.IGC_AFTER_ETL.getAbsolutePath());
+
+        if(!quiet) showErrors();
     }
 
-    private static void executeSql(String sqlFilePath) {
+    private void executeSql(String sqlFilePath) {
         try {
             boolean readNextErrorLine = false;
             String line;
@@ -91,7 +116,7 @@ public class SQLRunner {
                     if(!readNextErrorLine) {
                         onlyErrors.append(" ");
                         onlyErrors.append(sqlFilePath);
-                        counter++;
+                        errorCounter++;
                     }
                     readNextErrorLine = !readNextErrorLine;
                     onlyErrors.append("\n");
