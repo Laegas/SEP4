@@ -18,11 +18,6 @@ import java.util.List;
  */
 public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
 
-    public static void main(String[] args) {
-        WeatherDimensionalDao dao = new WeatherDimensionalDaoImp();
-        List<WeatherRecord> weatherRecords = dao.getWeatherRecord(new Date(11, 5, 2018), new ICAOAirportCode("EKAH"));
-        System.out.println(weatherRecords.size());
-    }
     @Override
     public List<WeatherRecord> getWeatherRecord(Date date, ICAOAirportCode airportCode) {
         Connection conn = DatabaseHelper.getInstance().getConnection();

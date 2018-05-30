@@ -26,16 +26,19 @@ insert into D_FLIGHT (
     SURR_KEY_FLIGHT,
     ID_START_DATE,
     SURR_KEY_GLIDER
-) (select flight_id,
-    flight_date from
-    (select distinct flight_id,
+) (select distinct t.flight_id,
        (select id_date from d_date where
-         d_date.year = extract(year from FLIGHT_DATE) AND
-         d_date.month= extract(month from FLIGHT_DATE) AND
-         d_date.day = extract(day from FLIGHT_DATE))
-    from TRANSFORM_IGC_EMPTY_GLIDER_REGNO
-    where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT))
-);
+         d_date.year = extract(year from t.FLIGHT_DATE) AND
+         d_date.month= extract(month from t.FLIGHT_DATE) AND
+         d_date.day = extract(day from t.FLIGHT_DATE)),
+      g.SURR_KEY_GLIDER
+    from TRANSFORM_IGC_EMPTY_GLIDER_REGNO t
+      join D_GLIDER g
+      on (t.GLIDER_REGNO = g.GLIDER_ID)
+    where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT)
+          AND g.VALID_FROM<=sysdate AND g.VALID_TO>sysdate
+)
+;
 -- todo join get surr_key_glider
 
 --insert the flight surr key and it's starting date into the F_Duration table (linking DWHs)
@@ -48,14 +51,12 @@ insert into F_DURATION (
     ID_LAND_TIME,
     ID_LAND_DATE,
     DURATION
-) (select SURR_KEY_FLIGHT,
+) (select
+    SURR_KEY_FLIGHT,
     -1,
     -1,
     -1,
-    (select id_date from d_date where
-      d_date.year = extract(year from START_DATE) AND
-      d_date.month= extract(month from START_DATE) AND
-      d_date.day = extract(day from START_DATE)),
+    ID_START_DATE,
     -1,
     -1,
     -1

@@ -115,8 +115,8 @@ END;
 create table D_GLIDER (
   surr_key_glider int PRIMARY KEY,
   glider_id varchar2(10),
-  id_valid_from int references D_DATE(ID_DATE),
-  id_valid_to int references D_DATE(ID_DATE)
+  valid_from date,
+  valid_to date
 );
 
 create table D_FLIGHT(

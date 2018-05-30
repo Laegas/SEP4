@@ -16,7 +16,7 @@ insert into FULLY_EXTRACTED_WEATHER (
   (
       SELECT
         id,
-        ICAO_airport_code,
+        ICAO_AIRPORT_CODE,
         wind_direction,
         wind_speed,
         wind_direction_from,
@@ -126,5 +126,3 @@ insert into FULLY_EXTRACTED_AIRPORT(
         (SELECT ICAO_AIRPORT_CODE from FULLY_EXTRACTED_AIRPORT where OPERATION_CODE = 'INS')
 );
 COMMIT ;
-
-select * from FULLY_EXTRACTED_AIRPORT;

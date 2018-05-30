@@ -1,4 +1,4 @@
-package test;
+package launchable.potentialtests;
 
 import model.igc.DataPoint;
 import model.igc.Flight;
