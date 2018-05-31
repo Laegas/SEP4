@@ -13,6 +13,5 @@ public interface IGCDimensionalDao {
 
     public List<Flight> getAllFlights();
 
-    public void setClosestAirport(DataPoint dataPoint, int surr_key_airport);
-
+    public void setClosestAirportsForAllIGC();
 }

@@ -53,6 +53,13 @@ public class WeatherFactory {
 
     }
 
+    /**
+     * it is prefered to use the closesAirpor reference from igc in the database
+     * @param latitude
+     * @param longitude
+     * @return
+     */
+    @Deprecated
     private ICAOAirportCode getClosestAirort(Latitude latitude, Longitude longitude) {
 
         List<Airport> airports = DaoManager.WEATHER_DIMENSIONAL_DAO.getAirportsByDate(new Date(1, 1,1));
@@ -78,10 +85,8 @@ public class WeatherFactory {
 
 
     private WeatherRecord getWeather(Date date, Time time, ICAOAirportCode airportCode) {
-        // input airport code not currently used
         //EKAH is the airport code for Aarhus CURRENT DEFAULT
         ICAOAirportCode icao_in_use = airportCode;
-
 
         // cache system for weather data maped by a string representing the date
         List<WeatherRecord> weatherRecords = localWeatherRecordByDateAndICAOCache.get(getLocalCacheString(date, airportCode));
@@ -89,10 +94,6 @@ public class WeatherFactory {
             weatherRecords = this.weatherDimensionalDao.getWeatherRecord(date, icao_in_use);
             localWeatherRecordByDateAndICAOCache.put(getLocalCacheString(date, airportCode), weatherRecords);
         }
-
-
-//        System.out.println(time);
-//        System.out.println(date);
 
         WeatherRecord result = findClosestWeatherRecordUsingTime(weatherRecords, time);
 
@@ -120,6 +121,7 @@ public class WeatherFactory {
     }
 
     private static String getLocalCacheString(Date date , ICAOAirportCode airportCode) {
-        return (date.getDay().getDayOfMonth() + ":" + date.getMonth().getMonthNumber() + ":" + date.getYear().getYear()) + ":" + airportCode.getICAOCode();
+        return (date.getDay().getDayOfMonth() + ":" + date.getMonth().getMonthNumber() +
+                ":" + date.getYear().getYear()) + ":" + airportCode.getICAOCode();
     }
 }

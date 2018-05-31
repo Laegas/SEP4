@@ -153,6 +153,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
         List<Flight> flights = DaoManager.IGC_DIMENSIONAL_DAO.getAllFlights();
 
 
+
+
         Map<Airport, Integer> surrKeyByAirport = new HashMap<>();
         for (Airport item : airports) {
             surrKeyByAirport.put(item, airportSurrKeyByICAOCache.get(item.getAirport()));

@@ -79,6 +79,11 @@ public class AnalysisOfThermalsWithWeatherData {
             List<IGCJoinWeather> thermalIgcJoinWeathers = new ArrayList<>();
             WeatherRecord tmpWeatherRecord;
 
+            if (1 == 1) {
+
+                throw new RuntimeException("make kenneth make them unique before joining with the weather");
+            }
+
             // looping through every thermal group
             for (ThermalDataPointGroup grp : dataGroup) {
                 List<DataPoint> dataPoints = grp.getGroup();
