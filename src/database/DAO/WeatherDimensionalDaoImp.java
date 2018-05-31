@@ -21,7 +21,7 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
     @Override
     public List<WeatherRecord> getWeatherRecord(Date date, ICAOAirportCode airportCode) {
         Connection conn = DatabaseHelper.getInstance().getConnection();
-        String sql = "select w_date,w_time,wind_direction,wind_speed,WIND_DIRECTION_FROM,WIND_DIRECTION_TO,temperature,dew_point,airport_code from F_WEATHER_RECORD where W_DATE = TO_DATE( ?, 'DD/MM/YYYY') AND AIRPORT_CODE = ?";
+        String sql = "select w.id_date,w.id_time,w.wind_direction,w.wind_speed,w.WIND_DIRECTION_FROM,w.WIND_DIRECTION_TO,w.temperature,w.dew_point,w.ICAO_airport_code from F_WEATHER_RECORD w join D_DATE d on (d.ID_DATE = w.ID_DATE) where d.DAY=? AND d.MONTH=? AND d.YEAR=? AND w.ICAO_AIRPORT_CODE = ?";
 
 
 //        String sql = "select count(*) from F_WEATHER_RECORD where W_DATE = to_date('11/05/2018', 'DD/MM/YYYY')";
@@ -29,16 +29,14 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
         try {
             PreparedStatement stm = conn.prepareStatement(sql);
             // build the argument
-            String argument = "";
-            argument += String.format("%02d", date.getDay().getDayOfMonth());
-            argument += "/";
-            argument += String.format("%02d", date.getMonth().getMonthNumber());
-            argument += "/";
-            argument += String.format("%04d", date.getYear().getYear());
-            argument += "";
+            String year = date.getYear().getYear()+"";
+            String month = date.getMonth().getMonthNumber()+"";
+            String day = date.getDay().getDayOfMonth()+"";
 
-            stm.setString(1, argument);
-            stm.setString(2,airportCode.getICAOCode());
+            stm.setString(1, day);
+            stm.setString(2,month);
+            stm.setString(3,year);
+            stm.setString(4,airportCode.getICAOCode());
             ResultSet rs = stm.executeQuery();
 
             List<WeatherRecord> records = new ArrayList<>();
@@ -54,20 +52,22 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
             WindDirection tmpWindDirectionTo;
             VaryingWindDirection tmpVaryingWindDirection;
             while (rs.next()) {
-                tmpDate = new Date(rs.getDate("w_date"));
+                int dateKey = rs.getInt("id_date");
+                TimeDimensionalDAO timeDao = new TimeDimensionalDAOImp();
+
+                tmpDate = timeDao.getDateByID(dateKey);
                 tmpWindDirection = new WindDirection(new Degree(rs.getInt("wind_direction")));
                 tmpWindSpeed = new WindSpeed(rs.getInt("wind_speed"));
                 tmpTemperature = new DegreeCelcius(rs.getDouble("temperature"));
                 tempDewPoint = new DegreeCelcius(rs.getDouble("dew_point"));
-                temp_airportCode = new ICAOAirportCode(rs.getString("airport_code"));
+                temp_airportCode = new ICAOAirportCode(rs.getString("icao_airport_code"));
                 tmpWindDirectionFrom = new WindDirection(new Degree(rs.getInt("wind_direction_from")));
                 tmpWindDirectionTo = new WindDirection(new Degree(rs.getInt("wind_direction_to")));
 
                 tmpVaryingWindDirection = new VaryingWindDirection(tmpWindDirectionFrom.getDegree(), tmpWindDirectionTo.getDegree());
                 tmpWind = new Wind(tmpWindDirection, tmpWindSpeed);
 
-                java.sql.Time sqlTime = rs.getTime("w_time");
-                tmpTime = new Time(new Hour(sqlTime.getHours()), new Minute(sqlTime.getMinutes()), new Second(0));
+                tmpTime  = timeDao.getTimeByID(rs.getInt("ID_TIME"));
 
                 records.add(new WeatherRecord(temp_airportCode,tmpWind,tmpVaryingWindDirection,tmpTemperature,tempDewPoint,tmpDate.getDay(),tmpDate.getMonth(),tmpDate.getYear(),tmpTime.getHour(),tmpTime.getMinute() ));
             }
@@ -137,7 +137,7 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
                 airport.setLatitude(new Latitude(Integer.parseInt(latitude.substring(0, 2)), Integer.parseInt(latitude.substring(2, 4)), Integer.parseInt(latitude.substring(4, 7))));
                 String longitude = rs.getString("LONGITUDE");
                 airport.setLongitude(new Longitude(Integer.parseInt(longitude.substring(0, 3)), Integer.parseInt(longitude.substring(3, 5)), Integer.parseInt(longitude.substring(5, 8))));
-                airport.setWeatherRecords((WeatherRecord[]) getWeatherRecord(date,airport_code).toArray());
+                airport.setWeatherRecords( getWeatherRecord(date,airport_code));
                 airports.add(airport);
             }
             stm.close();

@@ -4,6 +4,7 @@ import model.geography.Latitude;
 import model.geography.Longitude;
 
 import model.time.Time;
+import model.weather.ICAOAirportCode;
 
 import javax.xml.crypto.Data;
 
@@ -18,8 +19,9 @@ public class DataPoint implements Comparable<DataPoint>{
 	private int glider_id;
 	private int flight_id;
 	private int time_id;
+	private ICAOAirportCode closest_airport;
 
-	public DataPoint(Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude, int glider_id, int flight_id, int time_id) {
+	public DataPoint(Time time, Longitude longitude, Latitude latitude, char satelliteCoverage, int pressureAltitude, int GPSAltitude, int flight_id, int time_id) {
 		this.time = time;
 		this.longitude = longitude;
 		this.latitude = latitude;
@@ -31,6 +33,14 @@ public class DataPoint implements Comparable<DataPoint>{
 		this.time_id = time_id;
 	}
 
+
+	public char getSatelliteCoverage() {
+		return satelliteCoverage;
+	}
+
+	public ICAOAirportCode getClosest_airport() {
+		return closest_airport;
+	}
 
 
 	public int getGlider_id() {
@@ -56,6 +66,9 @@ public class DataPoint implements Comparable<DataPoint>{
 
 	}
 
+	public void setClosest_airport(ICAOAirportCode closest_airport) {
+		this.closest_airport = closest_airport;
+	}
 
 	public Time getTime() {
 		return time;

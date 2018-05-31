@@ -8,7 +8,7 @@ var zoom = 7;
 // layer settings
 var minimumAlpha = [0.3, 0.3]
 var alphaProperty = ["t", "t"]
-var alphaDividerProperty = [0.0, 0.0]
+var alphaDividerProperty = [5.0, 5.0]
 var visibilityFormula = ["t/f", "t/f"]
 var displayStringFormat = ["T:@2 / F:@1", "T:@2 / F:@1"]
 var fromColor = ["255, 0, 0", "255, 0, 0"]

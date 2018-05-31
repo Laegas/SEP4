@@ -4,6 +4,8 @@ import model.geography.CountryName;
 import model.geography.Latitude;
 import model.geography.Longitude;
 
+import java.util.List;
+
 public class Airport {
     private ICAOAirportCode airport;
     private Latitude latitude;
@@ -67,6 +69,11 @@ public class Airport {
     public void setWeatherRecords(WeatherRecord[] weatherRecords) {
         this.weatherRecords = weatherRecords;
     }
+
+    public void setWeatherRecords(List<WeatherRecord> weatherRecords) {
+        this.setWeatherRecords(weatherRecords.toArray(new WeatherRecord[weatherRecords.size()]));
+    }
+
 
     public WMOIndex getWmoIndex() {
         return wmoIndex;
