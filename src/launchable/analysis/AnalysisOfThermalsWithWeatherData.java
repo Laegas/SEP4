@@ -97,19 +97,29 @@ public class AnalysisOfThermalsWithWeatherData {
 
             //finding unique indexes in thermals for flight and registering
             List<IGCJoinWeather> unique = RemoveDuplicate.getUniqueByGridIndex(thermalIgcJoinWeathers);
-            double tempTenperature;
+            int windDirectionDegree;
+            int latIndex;
+            int longIndex;
             for (IGCJoinWeather item : unique) {
-                tempTenperature = item.getWeatherRecord().getTemperature().getTemperature();
-                int latIndex = item.getDataPoint().getLatitude().getGridIndex();
-                int longIndex = item.getDataPoint().getLongitude().getGridIndex();
-//                if (tempTenperature >= 0 && tempTenperature < 10) {
-//                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenZeroAndTenDegree().incrementRegisteredThermal();
-//                } else if (tempTenperature >= 10 && tempTenperature < 20) {
-//                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenTenAndTwentyDegree().incrementRegisteredThermal();
-//                } else if (tempTenperature >= 20 && tempTenperature < 30) {
-//                    outputData.getFeatureProperties(latIndex,longIndex).getBetweenTwentyAndThirtyDegree().incrementRegisteredThermal();
-//                }
-                throw new RuntimeException("insert kenneth");
+                try {
+                    latIndex = item.getDataPoint().getLatitude().getGridIndex();
+                    longIndex = item.getDataPoint().getLongitude().getGridIndex();
+                    windDirectionDegree = item.getWeatherRecord().getWind().getWindDirection().getDegree().getDegree();
+                    if (windDirectionDegree >= 0 && windDirectionDegree < 90) {
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirZeroToNinty().incrementRegisteredThermal();
+                    }else
+                    if (windDirectionDegree >= 90 && windDirectionDegree < 180) {
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirNintyToHundredEighty().incrementRegisteredThermal();
+                    }else
+                    if (windDirectionDegree >= 180 && windDirectionDegree < 270) {
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirHundredEightyToTwoHundredSeventy().incrementRegisteredThermal();
+                    }else
+                    if (windDirectionDegree >= 270 && windDirectionDegree < 360) {
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirTwoHundredSeventyToThreeHundredSizty().incrementRegisteredThermal();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             //find unique data points from data in flights
@@ -123,19 +133,26 @@ public class AnalysisOfThermalsWithWeatherData {
 
             //add all the unique join with weather as flights
             for (IGCJoinWeather item : joinWeathers) {
-
-                double tempTemperature = item.getWeatherRecord().getTemperature().getTemperature();
-                int latIndex = item.getDataPoint().getLatitude().getGridIndex();
-                int longIndex = item.getDataPoint().getLongitude().getGridIndex();
-
-//                if (tempTemperature >= 0 && tempTemperature < 10) {
-//                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenZeroAndTenDegree().incrementRegisteredFlight();
-//                } else if (tempTemperature >= 10 && tempTemperature < 20) {
-//                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenTenAndTwentyDegree().incrementRegisteredFlight();
-//                } else if (tempTemperature >= 20 && tempTemperature < 30) {
-//                    outputData.getFeatureProperties(latIndex, longIndex).getBetweenTwentyAndThirtyDegree().incrementRegisteredFlight();
-//                }
-                throw new RuntimeException("insert kenneth");
+                try {
+                    latIndex = item.getDataPoint().getLatitude().getGridIndex();
+                    longIndex = item.getDataPoint().getLongitude().getGridIndex();
+                    windDirectionDegree = item.getWeatherRecord().getWind().getWindDirection().getDegree().getDegree();
+                    if (windDirectionDegree >= 0 && windDirectionDegree < 90) {
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirZeroToNinty().incrementRegisteredFlight();
+                    }else
+                    if (windDirectionDegree >= 90 && windDirectionDegree < 180) {
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirNintyToHundredEighty().incrementRegisteredFlight();
+                    }else
+                    if (windDirectionDegree >= 180 && windDirectionDegree < 270) {
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirHundredEightyToTwoHundredSeventy().incrementRegisteredFlight();
+                    }else
+                    if (windDirectionDegree >= 270 && windDirectionDegree < 360) {
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirTwoHundredSeventyToThreeHundredSizty().incrementRegisteredFlight();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//
             }
 
 
