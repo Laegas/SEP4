@@ -79,7 +79,7 @@ public class AnalysisOfThermalsWithWeatherData {
             List<IGCJoinWeather> thermalIgcJoinWeathers = new ArrayList<>();
             WeatherRecord tmpWeatherRecord;
 
-            if (1 == 1) {
+            if (1 == 0) {
 
                 throw new RuntimeException("make kenneth make them unique before joining with the weather");
             }
