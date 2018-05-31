@@ -78,18 +78,21 @@ insert into F_IGC_LOG (
 ) (select
     IGC_ID,
     FLIGHT_ID,
-   (select id_time from d_time where
-     d_time.hour = to_char(TIME_OF_LOG, 'HH') AND
-     d_time.minute = to_char(TIME_OF_LOG, 'MI') AND
-     d_time.second = to_char(TIME_OF_LOG, 'SS')),
+   (select id_time from d_time t where
+     t.hour = to_char(TIME_OF_LOG, 'HH') AND
+     t.minute = to_char(TIME_OF_LOG, 'MI') AND
+     t.second = to_char(TIME_OF_LOG, 'SS')),
     LATITUDE,
     LONGITUDE,
     PRESSURE_ALTITUDE,
     GPS_ALTITUDE,
     SATELLITE_COVERAGE
-  from TRANSFORM_IGC_EMPTY_GLIDER_REGNO
-    where igc_id not IN (select SURR_KEY_LOG from F_IGC_LOG)
-);
+  from TRANSFORM_IGC_EMPTY_GLIDER_REGNO);
 
 COMMIT ;
-
+select * from D_TIME where hour ='02';
+select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO;
+select id_time from d_time t where
+  t.hour = to_char(to_timestamp('2018-05-11 15:20:24.000000', 'HH24:MI:SS') , 'HH') AND
+  t.minute = to_char(to_timestamp('2018-05-11 15:20:24.000000','HH24:MI:SS'), 'MI') AND
+  t.second = to_char(to_timestamp('2018-05-11 15:20:24.000000','HH24:MI:SS'), 'SS');

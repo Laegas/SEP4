@@ -46,4 +46,10 @@ select * from F_WEATHER_RECORD;
 select * from F_WEATHER_RECORD;
 select * from F_IGC_LOG;
 
-select min(TEMPERATURE), max(TEMPERATURE) from F_WEATHER_RECORD
+select min(TEMPERATURE), max(TEMPERATURE) from F_WEATHER_RECORD;
+
+
+select * from user_constraints where constraint_Name ='SYS_C0012669';
+select * from user_constraints where constraint_Name ='SYS_C0012666';
+
+
