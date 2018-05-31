@@ -30,6 +30,8 @@ join Data_Logger_Source log ON
   igc.FLIGht_ID = log.ID
   where 1 = 0)
 ;
+alter table fully_extracted_igc
+  add operation_code varchar2(3);
 
 CREATE TABLE IGC_YESTERDAY as (SELECT * FROM IGC_SOURCE_DATA where 1 = 0);
 
