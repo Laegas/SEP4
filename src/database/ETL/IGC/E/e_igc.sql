@@ -29,10 +29,11 @@ insert into FULLY_EXTRACTED_IGC (
        log.FLIGHT_DATE,
        log.GLIDER_REGNO
    FROM IGC_SOURCE_DATA igc
-     left JOIN Data_Logger_Source log ON
-                            igc.FLIGHt_ID = log.ID
-               WHERE log.ID NOT IN (SELECT SURR_KEY_FLIGHT
-                                    FROM D_FLIGHT) -- this makes sure that we only extract the new ones
+     left JOIN Data_Logger_Source log ON igc.FLIGHt_ID = log.ID
+   WHERE log.ID NOT IN (SELECT SURR_KEY_FLIGHT FROM D_FLIGHT) -- this makes sure that we only extract the new ones
+    AND  log.FLIGHT_DATE > (select lastdate FROM last_Date_Of_IGC_Extraction)
 );
+
+UPDATE last_Date_Of_IGC_Extraction set lastDate = CURRENT_DATE;
 
 COMMIT ;

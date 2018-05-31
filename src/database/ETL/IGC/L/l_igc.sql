@@ -39,7 +39,6 @@ insert into D_FLIGHT (
           AND g.VALID_FROM<=sysdate AND g.VALID_TO>sysdate
 )
 ;
--- todo join get surr_key_glider
 
 --insert the flight surr key and it's starting date into the F_Duration table (linking DWHs)
 insert into F_DURATION (
@@ -66,6 +65,10 @@ insert into F_DURATION (
 
 -- select * from FULLY_EXTRACTED_IGC;
 -- now inserting all new f_igc_log
+create sequence test_id_time_problem
+  start with 1
+  increment by 1;
+
 insert into F_IGC_LOG (
     SURR_KEY_LOG,
     SURR_KEY_FLIGHT,
@@ -78,21 +81,38 @@ insert into F_IGC_LOG (
 ) (select
     IGC_ID,
     FLIGHT_ID,
-   (select id_time from d_time t where
-     t.hour = to_char(TIME_OF_LOG, 'HH') AND
-     t.minute = to_char(TIME_OF_LOG, 'MI') AND
-     t.second = to_char(TIME_OF_LOG, 'SS')),
+   (
+     case when (select id_time
+                from d_time
+                where
+                  hour || minute || second = (extract(hour from t.TIME_OF_LOG))
+                                             || (extract(minute from t.TIME_OF_LOG))
+                                             || (to_char(t.TIME_OF_LOG, 'SS'))) is NULL
+       then test_id_time_problem.nextval
+     else
+       (select id_time
+        from d_time
+        where
+          hour || minute || second = (extract(hour from t.TIME_OF_LOG))
+                                     || (extract(minute from t.TIME_OF_LOG))
+                                     || (to_char(t.TIME_OF_LOG, 'SS')))
+     end
+   ),
     LATITUDE,
     LONGITUDE,
     PRESSURE_ALTITUDE,
     GPS_ALTITUDE,
     SATELLITE_COVERAGE
-  from TRANSFORM_IGC_EMPTY_GLIDER_REGNO);
+  from TRANSFORM_IGC_EMPTY_GLIDER_REGNO t
+);--------cannot insert null
 
+select * from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where TIME_OF_LOG = '';
+select * from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID = 12;
+--finding the Time ID!!!!!!!!!!!!
+select * from d_time where
+  hour||':'||minute||':'||second = (extract(hour from (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID = 50))
+  ||':'||(extract(minute from (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID = 50)))
+  ||':'|| to_char((select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID = 50),'SS'));
+
+select * from TRANSFORM_IGC_EMPTY_GLIDER_REGNO order by TIME_OF_LOG asc;
 COMMIT ;
-select * from D_TIME where hour ='02';
-select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO;
-select id_time from d_time t where
-  t.hour = to_char(to_timestamp('2018-05-11 15:20:24.000000', 'HH24:MI:SS') , 'HH') AND
-  t.minute = to_char(to_timestamp('2018-05-11 15:20:24.000000','HH24:MI:SS'), 'MI') AND
-  t.second = to_char(to_timestamp('2018-05-11 15:20:24.000000','HH24:MI:SS'), 'SS');
