@@ -11,6 +11,7 @@ public class Date {
         this.month = new Month(month);
         this.year = new Year(year);
     }
+    @Deprecated
     public Date(java.sql.Date date) {
         this(date.getDate()  , date.getMonth() + 1, date.getYear() + 1900);
     }

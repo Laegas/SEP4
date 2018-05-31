@@ -45,5 +45,35 @@ select * from F_WEATHER_RECORD;
 
 select * from F_WEATHER_RECORD;
 select * from F_IGC_LOG;
+select * from D_GLIDER;
+select * from D_AIRPORT;
+select * from D_FLIGHT;
 
-select min(TEMPERATURE), max(TEMPERATURE) from F_WEATHER_RECORD
+select min(TEMPERATURE), max(TEMPERATURE) from F_WEATHER_RECORD;
+
+
+select * from user_constraints where constraint_Name ='SYS_C0013150';
+select * from user_constraints where constraint_Name ='SYS_C0013049';
+
+
+select * from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where TIME_OF_LOG = '';
+select * from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID = 12;
+--finding the Time ID!!!!!!!!!!!!
+select * from d_time where
+  hour||':'||minute||':'||second = (extract(hour from (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID = 50))
+                                    ||':'||(extract(minute from (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID = 50)))
+                                    ||':'|| to_char((select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID = 50),'SS'));
+
+select * from TRANSFORM_IGC_EMPTY_GLIDER_REGNO order by TIME_OF_LOG asc;
+
+DELETE from F_IGC_LOG where 1=1;
+
+
+select count(*) from TRANSFORM_WEATHER_HOUR_MINUTE_TO_TIME;
+select count(*) from WEATHER_RECORD group by HOUR, MINUTE,ICAO_AIRPORT_CODE,THE_DATE;
+select count(*)from WEATHER_RECORD;
+SELECT COUNT(*) FROM AIRPORT;
+
+select count(*) from FULLY_EXTRACTED_IGC;
+SELECT COUNT(*) FROM D_AIRPORT GROUP BY ICAO_AIRPORT_CODE;
+SELECT COUNT(*) FROM IGC_SOURCE_DATA;
