@@ -61,12 +61,21 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
             dprint("number of gliders: " + gliders.size());
 
             //getting all flights
-            sql = "SELECT surr_key_flight,START_DATE FROM D_FLIGHT";
+            sql = "SELECT surr_key_flight, ID_START_DATE FROM D_FLIGHT";
+
             stmt = connection.prepareStatement(sql);
             resultSet = stmt.executeQuery();
+            ResultSet resultDate = null;
             Flight tmpFlight;
             while (resultSet.next()) {
-                tmpFlight = new Flight(new Date(resultSet.getDate("start_date")), resultSet.getInt("surr_key_flight"));
+                String sql1 = "SELECT day, month, year from D_DATE where ID_DATE = ?";
+                int sDate = resultSet.getInt("ID_START_DATE");
+                int surrfKey =  resultSet.getInt("surr_key_flight");
+                stmt = connection.prepareStatement(sql1);
+                stmt.setInt(1, sDate);
+                resultDate = stmt.executeQuery();
+                resultDate.next();
+                tmpFlight = new Flight(new Date(Integer.parseInt(resultDate.getString("day")),Integer.parseInt(resultDate.getString("month")), Integer.parseInt(resultDate.getString("year"))),surrfKey);
                 noDataFlights.add(tmpFlight);
             }
             dprint("number of flights: " + noDataFlights.size());

@@ -31,6 +31,7 @@ insert into FULLY_EXTRACTED_WEATHER (
         AND THE_DATE > (select lastdate FROM last_Date_Of_Weather_Extraction)
   );
 
+
 insert into FULLY_EXTRACTED_AIRPORT(
     ICAO_AIRPORT_CODE,
     LATITUDE,
