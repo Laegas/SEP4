@@ -190,8 +190,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
     }
 
 
-    @Override
-    public void setClosestAirport(DataPoint dataPoint, int surr_key_airport) {
+    private void setClosestAirport(DataPoint dataPoint, int surr_key_airport) {
 
 
         String sql = "update F_IGC_LOG set closest_airport = ? WHERE SURR_KEY_FLIGHT = ? AND id_time = ?";
