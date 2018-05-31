@@ -21,10 +21,9 @@ insert into D_AIRPORT(
     trunc(sysdate, 'DAY') as valid_from,
     to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') as valid_to
     from FULLY_EXTRACTED_AIRPORT
-    where OPERATION_CODE = 'INS'
+    where OPERATION_CODE = 'INS' AND  ICAO_AIRPORT_CODE not in (select ICAO_AIRPORT_CODE from D_AIRPORT)
     );
 
-    select * from D_AIRPORT;
     update D_AIRPORT set
       valid_to = (trunc(sysdate-1,'DAY'))
     where valid_to = to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND
@@ -38,7 +37,6 @@ insert into D_AIRPORT(
           ICAO_AIRPORT_CODE in (select ICAO_AIRPORT_CODE from FULLY_EXTRACTED_AIRPORT
           where OPERATION_CODE = 'CHG')
     ;
-
 insert into F_WEATHER_RECORD (
     SURR_KEY_AIRPORT,
     ID_DATE,

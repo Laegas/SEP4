@@ -5,7 +5,7 @@
 
 
 -- select column_name || ', ' from user_tab_cols where table_name like '%FULLY_EXTRACTED_IGC%';
-select * from TRANSFORM_IGC_EMPTY_GLIDER_REGNO;
+
 
 -- insert into dimentions
 -- inserting into D_glider
@@ -20,7 +20,6 @@ insert into D_GLIDER (
           FROM TRANSFORM_IGC_EMPTY_GLIDER_REGNO)
     WHERE GLIDER_REGNO not in (select GLIDER_ID from D_GLIDER)
 );
-
 -- inserting new flights into d_flights
 insert into D_FLIGHT (
     SURR_KEY_FLIGHT,
@@ -28,17 +27,13 @@ insert into D_FLIGHT (
     SURR_KEY_GLIDER
 ) (select distinct t.flight_id,
        (select id_date from d_date where
-         d_date.year = extract(year from t.FLIGHT_DATE) AND
-         d_date.month= extract(month from t.FLIGHT_DATE) AND
-         d_date.day = extract(day from t.FLIGHT_DATE)),
+         year||month||day = extract(year from t.FLIGHT_DATE) || extract(month from t.FLIGHT_DATE) || extract(day from t.FLIGHT_DATE)),
       g.SURR_KEY_GLIDER
     from TRANSFORM_IGC_EMPTY_GLIDER_REGNO t
       join D_GLIDER g
       on (t.GLIDER_REGNO = g.GLIDER_ID)
-    where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT)
-          AND g.VALID_FROM<=sysdate AND g.VALID_TO>sysdate
-)
-;
+    where flight_id not in (select SURR_KEY_FLIGHT from D_FLIGHT)  --     AND g.VALID_FROM<=sysdate AND g.VALID_TO>sysdate
+);
 
 --insert the flight surr key and it's starting date into the F_Duration table (linking DWHs)
 insert into F_DURATION (
@@ -65,6 +60,12 @@ insert into F_DURATION (
 
 -- select * from FULLY_EXTRACTED_IGC;
 -- now inserting all new f_igc_log
+
+DROP INDEX INDEX_TO_D_DATE;
+CREATE INDEX INDEX_TO_D_DATE on  TRANSFORM_IGC_EMPTY_GLIDER_REGNO((to_char(TIME_OF_LOG, 'HH24'))
+  || (to_char(TIME_OF_LOG, 'MI'))
+  || (to_char(TIME_OF_LOG, 'SS')));
+
 insert into F_IGC_LOG (
     SURR_KEY_LOG,
     SURR_KEY_FLIGHT,
@@ -77,10 +78,10 @@ insert into F_IGC_LOG (
 ) (select
     IGC_ID,
     FLIGHT_ID,
-   (select id_time from d_time
-         where hour || minute || second = (to_char(t.TIME_OF_LOG, 'HH24'))
-                                       || (to_char(t.TIME_OF_LOG, 'MI'))
-                                       || (to_char(t.TIME_OF_LOG, 'SS'))),
+ (select id_time from d_time
+  where hour || minute || second = (to_char(t.TIME_OF_LOG, 'HH24'))
+|| (to_char(t.TIME_OF_LOG, 'MI'))
+|| (to_char(t.TIME_OF_LOG, 'SS'))),
     LATITUDE,
     LONGITUDE,
     PRESSURE_ALTITUDE,
@@ -88,4 +89,4 @@ insert into F_IGC_LOG (
     SATELLITE_COVERAGE
   from TRANSFORM_IGC_EMPTY_GLIDER_REGNO t
 );
-COMMIT ;
+COMMIT;
