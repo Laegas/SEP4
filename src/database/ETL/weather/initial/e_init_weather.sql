@@ -2,15 +2,14 @@ BEGIN
   EXECUTE IMMEDIATE 'drop table fully_extracted_weather CASCADE CONSTRAINTS purge';
   EXECUTE IMMEDIATE 'drop table FULLY_EXTRACTED_AIRPORT CASCADE CONSTRAINTS purge';
   EXECUTE IMMEDIATE 'drop table AIRPORTS_YESTERDAY CASCADE CONSTRAINTS purge';
-  EXECUTE IMMEDIATE 'drop table last_Date_Of_Airport_Extraction CASCADE CONSTRAINTS purge';
+  EXECUTE IMMEDIATE 'drop table last_Date_Of_Weather_Extraction CASCADE CONSTRAINTS purge';
   EXCEPTION
   WHEN OTHERS THEN
   IF SQLCODE != -942 THEN
     RAISE;
   END IF;
 END;
-/
-drop table LAST_DATE_OF_AIRPORT_EXTRACTION;
+
 CREATE TABLE last_Date_Of_Weather_Extraction (lastDate date);
 INSERT INTO last_Date_Of_Weather_Extraction (lastDate) VALUES (to_date('0001-01-01', 'YYYY-MM-DD'));
 
