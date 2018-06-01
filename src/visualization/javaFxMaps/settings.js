@@ -12,6 +12,11 @@ var alphaProperty = ["t", "t"];
 var alphaDividerProperty = [0.0, 0.0];
 var visibilityFormula = ["t/f", "t/f"];
 var displayStringFormat = ["T:@2 / F:@1", "T:@2 / F:@1"];
-var fromColor = [[255, 0, 0], [0, 255, 0]];
+var colorProperty = ["0", "0"];
+var colorDividerProperty = ["0", "0"];
+var fromColor = [[255, 0, 0], [255, 0, 0]];
 var toColor = [[255, 0, 0], [255, 0, 0]];
 var properties = ["f", "t"];
+
+// static variables
+var MAXCOLORPROPERTY = "0";
