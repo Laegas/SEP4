@@ -6,6 +6,7 @@ import org.json.JSONException;
 import visualization.javaFxMaps.Color;
 import visualization.javaFxMaps.ColorProperty;
 import visualization.javaFxMaps.LayerWrapper;
+import visualization.javaFxMaps.Property;
 
 public class VisualizationConfig {
 
@@ -39,7 +40,8 @@ public class VisualizationConfig {
     }
 
     // naming convention for properties: f = flights; t = total; l@ = layer number
-    public static final String[] PROPERTIES = new String[]{"f", "t"};
+    public static final Property[] PROPERTIES = new Property[]{new Property("f"), new Property("t")};
+
     public static String[] PROPERTY_VALUES(FeatureProperties feature) throws JSONException {
         String[] values = new String[PROPERTIES.length];
         values[0] = feature.getTotal().getNumberOfRegisteredFlights() + "";
