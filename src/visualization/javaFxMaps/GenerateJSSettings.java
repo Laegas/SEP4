@@ -129,6 +129,10 @@ public class GenerateJSSettings {
         propertiesString.append("];");
         lines.add(propertiesString.toString());
 
+        lines.add("\n// static variables");
+        lines.add("var MAXCOLORPROPERTY = \"" + ColorProperty.MAXCOLOR + "\";");
+
+
         try {
             Path file = Paths.get("src/visualization/javaFxMaps/settings.js");
             Files.write(file, lines, Charset.forName("UTF-8"));

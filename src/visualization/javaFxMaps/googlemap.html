@@ -16,7 +16,7 @@
         function mixColors(from, to, colorWeight) {
             // TODO "to" colors are not currently used
 
-            var i, totalColorWeight = 0, red = 0, green = 0, blue = 0;;
+            var i, totalColorWeight = 0, red = 0, green = 0, blue = 0;
             for(i = 0; i < colorWeight.length; i++) {
                 totalColorWeight += colorWeight[i];
             }
@@ -32,10 +32,9 @@
 
         function initialize() {
             var cDisplayStringFormat = displayStringFormat[0];
-            var latlng = new google.maps.LatLng(latitude, longitude );
             var myOptions = {
                 zoom: zoom,
-                center: latlng,
+                center: new google.maps.LatLng(latitude, longitude ),
                 navigationControl: false,
                 streetViewControl: false,
                 fullscreenControl: false,
@@ -53,7 +52,7 @@
 
             document.restyle = function restyle(layers, visibilityThreshold) {
                 var cLayerIndexes = [], cFormula, cAlphaProperty, cAlphaDividerProperty, cMinimumAlpha,
-                    cFromColor = [], cToColor = [];
+                    cColorProperty = [], cColorDividerProperty = [], cFromColor = [], cToColor = [];
                 for(var i = 0; i < layerName.length; i++) {
                     layers.forEach(function(layer) {
                         if(layerName[i] === layer) {
@@ -74,10 +73,11 @@
                         cToColor.push(toColor[cLayerIndexes[i]]);
                     }
 
-                    // todo individualColorWeights
-                    var individualColorWeights = [0.5,1];
-                    color = "rgb(" + mixColors(cFromColor, cToColor, individualColorWeights) + ")";
-                    console.log(color);
+                    // putting all color properties to array
+                    for(i = 0; i < cLayerIndexes.length; i++) {
+                        cColorProperty.push(colorProperty[cLayerIndexes[i]]);
+                        cColorDividerProperty.push(colorDividerProperty[cLayerIndexes[i]]);
+                    }
 
                     // merging only different display formats
                     cDisplayStringFormat = "";
@@ -111,12 +111,15 @@
 
                     // todo while loop because same property is not going to be replaced more than once now
                     // parsing visibilityFormula
-                    for(var i = 0; i < properties.length; i++) {
+                    for(i = 0; i < properties.length; i++) {
                         var index = cFormula.indexOf(properties[i]);
                         if(index >=0 )
                             cFormula = cFormula.substring(0, index) + feature.getProperty(properties[i]) +
                                 cFormula.substring(index + properties[i].length, cFormula.length);
                     }
+
+                    i = 0;
+                    while
 
                     var visible = (eval(cFormula) >= visibilityThreshold);
                     if(visible) {
@@ -128,7 +131,17 @@
                         if (alphaChannel > 1)
                             alphaChannel = 1;
 
-                        color = "rgba(" + mixColors(cFromColor) + ", " + alphaChannel + ")";
+                        // calculating individual color weights based on properties
+                        var individualColorWeights = [];
+                        for(i = 0; i < cColorProperty.length; i++) {
+                            if(cColorProperty[i] === MAXCOLORPROPERTY || cColorDividerProperty[i] === MAXCOLORPROPERTY) {
+                                individualColorWeights.push(1);
+                            } else {
+                                individualColorWeights.push(feature.getProperty(cColorProperty[i]) / feature.getProperty(cColorDividerProperty[i]))
+                            }
+                        }
+
+                        color = "rgba(" + mixColors(cFromColor, cToColor, individualColorWeights) + ", " + alphaChannel + ")";
                         console.log(color);
                     }
                     return {
@@ -140,6 +153,7 @@
 
             };
 
+            // todo set only one layer as a default
             document.restyle(["All3", "All2", "All"], 0);
 
             document.map.data.addListener('mouseover', function(event) {
