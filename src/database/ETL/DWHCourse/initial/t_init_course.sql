@@ -1,9 +1,6 @@
 -------- INIT FLIGHTS Transform ------
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE fixed_Land_Launch_Time';
-   EXECUTE IMMEDIATE 'DROP TABLE fixed_pilot_info';
-   EXECUTE IMMEDIATE 'DROP TABLE flagged_for_duplicated_initials';
-
+   EXECUTE IMMEDIATE 'DROP TABLE fixed_pilot_info cascade constraints purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
@@ -11,6 +8,25 @@ EXCEPTION
       END IF;
 END;
 /
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE flagged_for_duplicated_initials cascade constraints purge';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE fixed_Land_Launch_Time cascade constraints purge';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
+
 create table fixed_Land_Launch_Time as (select * from toHandleLaterFlights where 1 = 0);
 create table fixed_pilot_info as (select * from toHandleLaterFlights where 1 = 0);
 create table flagged_for_duplicated_initials as (select * from toHandleLaterFlights where 1 = 0);
@@ -19,7 +35,7 @@ alter table flagged_for_duplicated_initials add (pilot1_NON_unique_initials char
 ------------INIT MEMBER Transform-----------
 
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE fixed_status_member';
+   EXECUTE IMMEDIATE 'DROP TABLE fixed_status_member cascade constraints purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN

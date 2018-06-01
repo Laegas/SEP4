@@ -1,8 +1,16 @@
 -------- INIT FLIGHTS Extract --------
 
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE toHandleLaterFlights';
-   EXECUTE IMMEDIATE 'DROP TABLE lastDateOfFlightExtraction';
+   EXECUTE IMMEDIATE 'DROP TABLE lastDateOfFlightExtraction cascade constraints purge';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE toHandleLaterFlights cascade constraints purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
@@ -19,8 +27,7 @@ INSERT INTO lastDateOfFlightExtraction (lastDate) VALUES (to_date('0001-01-01', 
 ------------INIT MEMBER Extract-----------
 
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE deltamember';
-   EXECUTE IMMEDIATE 'DROP TABLE MEMBER_YESTERDAY';
+   EXECUTE IMMEDIATE 'DROP TABLE MEMBER_YESTERDAY cascade constraints purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
@@ -28,7 +35,16 @@ EXCEPTION
       END IF;
 END;
 /
-CREate TABLE deltaMember as (SELECT * FROM taMember where 1 = 0);
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE deltamember cascade constraints purge';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
+Create TABLE deltaMember as (SELECT * FROM taMember where 1 = 0);
 ALTER TABLE deltaMember ADD (operation char(3));
 Create TABLE MEMBER_YESTERDAY as (SELECT * FROM taMember where 1 = 0);
 
