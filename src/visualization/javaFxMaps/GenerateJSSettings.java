@@ -35,15 +35,22 @@ public class GenerateJSSettings {
 
         // iterate layers
         StringBuilder
+                layerNameString = new StringBuilder("var layerName = ["),
                 minimumAlphaString = new StringBuilder("var minimumAlpha = ["),
                 alphaPropertyString = new StringBuilder("var alphaProperty = ["),
                 alphaDividerPropertyString = new StringBuilder("var alphaDividerProperty = ["),
                 visibilityFormulaString = new StringBuilder("var visibilityFormula = ["),
                 displayStringFormatString = new StringBuilder("var displayStringFormat = ["),
+                colorPropertyString = new StringBuilder("var colorProperty = ["),
+                colorDividerPropertyString = new StringBuilder("var colorDividerProperty = ["),
                 fromColorString = new StringBuilder("var fromColor = ["),
                 toColorString = new StringBuilder("var toColor = [");
         int layerCounter = 0;
         for(LayerWrapper layer : layers) {
+            layerNameString.append("\"");
+            layerNameString.append(layer.getLayerName());
+            layerNameString.append("\"");
+
             minimumAlphaString.append(layer.getMinimumAlpha());
 
             alphaPropertyString.append("\"");
@@ -60,36 +67,54 @@ public class GenerateJSSettings {
             displayStringFormatString.append(layer.getDisplayStringFormat());
             displayStringFormatString.append("\"");
 
-            fromColorString.append("\"");
-            fromColorString.append(layer.getFromColor().toJSString());
-            fromColorString.append("\"");
+            colorPropertyString.append("\"");
+            colorPropertyString.append(layer.getColorProperty());
+            colorPropertyString.append("\"");
 
-            toColorString.append("\"");
+            colorDividerPropertyString.append("\"");
+            colorDividerPropertyString.append(layer.getColorDividerProperty());
+            colorDividerPropertyString.append("\"");
+
+            fromColorString.append("[");
+            fromColorString.append(layer.getFromColor().toJSString());
+            fromColorString.append("]");
+
+            toColorString.append("[");
             toColorString.append(layer.getToColor().toJSString());
-            toColorString.append("\"");
+            toColorString.append("]");
 
             if(layerCounter++ < layers.length - 1) {
+                layerNameString.append(", ");
                 minimumAlphaString.append(", ");
                 alphaPropertyString.append(", ");
                 alphaDividerPropertyString.append(", ");
                 visibilityFormulaString.append(", ");
                 displayStringFormatString.append(", ");
+                colorPropertyString.append(", ");
+                colorDividerPropertyString.append(", ");
                 fromColorString.append(", ");
                 toColorString.append(", ");
             }
         }
-        minimumAlphaString.append("]");
-        alphaPropertyString.append("]");
-        alphaDividerPropertyString.append("]");
-        visibilityFormulaString.append("]");
-        displayStringFormatString.append("]");
-        fromColorString.append("]");
-        toColorString.append("]");
+        layerNameString.append("];");
+        minimumAlphaString.append("];");
+        alphaPropertyString.append("];");
+        alphaDividerPropertyString.append("];");
+        visibilityFormulaString.append("];");
+        displayStringFormatString.append("];");
+        colorPropertyString.append("];");
+        colorDividerPropertyString.append("];");
+        fromColorString.append("];");
+        toColorString.append("];");
+
+        lines.add(layerNameString.toString());
         lines.add(minimumAlphaString.toString());
         lines.add(alphaPropertyString.toString());
         lines.add(alphaDividerPropertyString.toString());
         lines.add(visibilityFormulaString.toString());
         lines.add(displayStringFormatString.toString());
+        lines.add(colorPropertyString.toString());
+        lines.add(colorDividerPropertyString.toString());
         lines.add(fromColorString.toString());
         lines.add(toColorString.toString());
 
@@ -103,6 +128,10 @@ public class GenerateJSSettings {
         }
         propertiesString.append("];");
         lines.add(propertiesString.toString());
+
+        lines.add("\n// static variables");
+        lines.add("var MAXCOLORPROPERTY = \"" + ColorProperty.MAXCOLOR + "\";");
+
 
         try {
             Path file = Paths.get("src/visualization/javaFxMaps/settings.js");

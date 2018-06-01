@@ -68,7 +68,7 @@ public class GenerateJson {
 
                 JSONObject json = new JSONObject().put("type", "FeatureCollection").put("features", features);
 
-                lines.add(json.toString() + ",");
+                lines.add(json.toString() + ((chunkColumn == CHUNKS - 1 && chunkRow == CHUNKS - 1)? "" : ","));
             }
         }
         lines.add("];");
