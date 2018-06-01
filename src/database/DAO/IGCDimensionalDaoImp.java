@@ -31,9 +31,10 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
     private boolean debug = false;
     private Connection connection;
 
-    Map<String, Integer> airportSurrKeyByICAOCache = new HashMap<>();
+    Map<String, Integer> airportSurrKeyByICAOCache = new HashMap<>(); // TODO
 
     IGCDimensionalDaoImp() {
+
         this.connection = DatabaseHelper.getInstance().getConnection();
     }
 
@@ -166,14 +167,6 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
         List<Airport> airports = DaoManager.WEATHER_DIMENSIONAL_DAO.getAirportsByDate(new Date(1, 1, 1));
         List<Flight> flights = DaoManager.IGC_DIMENSIONAL_DAO.getAllFlights();
 
-
-
-
-        Map<Airport, Integer> surrKeyByAirport = new HashMap<>();
-        for (Airport item : airports) {
-            surrKeyByAirport.put(item, airportSurrKeyByICAOCache.get(item.getAirport()));
-        }
-
         for (Flight flight : flights) {
 
             double shortestDistance = Double.MAX_VALUE;
@@ -181,14 +174,21 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
             double tempDist = 0;
 
             for (DataPoint dataPoint : flight.getDatalog()) {
-//                find the closest airport and set it
+                shortestDistance = Double.MAX_VALUE;
+                resultPointer = null;
+                //                find the closest airport and set it
                 for (Airport airport : airports) {
                     tempDist = GeoCaluclator.getGeoDistance(dataPoint.getLatitude(),dataPoint.getLongitude(), airport.getLatitude(), airport.getLongitude());
                     if (tempDist < shortestDistance) {
                         resultPointer = airport;
+                        shortestDistance = tempDist;
                     }
                 }
-                setClosestAirport(dataPoint,surrKeyByAirport.get(resultPointer));
+                    Integer tmpSurr = airportSurrKeyByICAOCache.get(resultPointer.getAirport().getICAOCode());
+                    if (tmpSurr == null) {
+                        this.airportSurrKeyByICAOCache = DaoManager.WEATHER_DIMENSIONAL_DAO.airportSurrKeyByICAOCode();
+                    }
+                    setClosestAirport(dataPoint, airportSurrKeyByICAOCache.get(resultPointer.getAirport().getICAOCode()));
             }
 
         }
@@ -198,7 +198,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
     private void setClosestAirport(DataPoint dataPoint, int surr_key_airport) {
 
 
-        String sql = "update F_IGC_LOG set closest_airport = ? WHERE SURR_KEY_FLIGHT = ? AND id_time = ?";
+        String sql = "update F_IGC_LOG set CLOSEST_AIRPORT = ? WHERE SURR_KEY_FLIGHT = ? AND ID_TIME= ?";
         try {
             PreparedStatement stm = DatabaseHelper.getInstance().getConnection().prepareStatement(sql);
 
@@ -206,14 +206,14 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
             stm.setInt(2, dataPoint.getFlight_id());
             stm.setInt(3, dataPoint.getTime_id());
 
-            stm.executeUpdate();
+            int rowsAffected = stm.executeUpdate();
+
+            this.connection.commit();
+            stm.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
-
     }
+
 }

@@ -89,7 +89,7 @@ public class AnalysisOfThermalsWithWeatherData {
                 List<DataPoint> dataPoints = grp.getGroup();
 
                 for (DataPoint point : dataPoints) {
-                    tmpWeatherRecord = weatherFactory.getWeather(flight.getDate(), point.getTime(),point.getLongitude(),point.getLatitude() );
+                    tmpWeatherRecord = weatherFactory.getWeather(flight.getDate(), point.getTime(),point );
                     thermalIgcJoinWeathers.add(new IGCJoinWeather(point, tmpWeatherRecord));
                 }
 
@@ -127,7 +127,7 @@ public class AnalysisOfThermalsWithWeatherData {
             List<IGCJoinWeather> joinWeathers = new ArrayList<>();
             IGCJoinWeather igcJoinWeather;
             for (DataPoint dataPoint : uniqueDataPoints) {
-                igcJoinWeather = new IGCJoinWeather(dataPoint, weatherFactory.getWeather(flight.getDate(), dataPoint.getTime(), dataPoint.getLongitude(), dataPoint.getLatitude()));
+                igcJoinWeather = new IGCJoinWeather(dataPoint, weatherFactory.getWeather(flight.getDate(), dataPoint.getTime(), dataPoint));
                 joinWeathers.add(igcJoinWeather);
             }
 

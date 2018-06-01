@@ -4,13 +4,13 @@ import database.DAO.DaoManager;
 import database.DAO.WeatherDimensionalDao;
 import model.geography.Latitude;
 import model.geography.Longitude;
+import model.igc.DataPoint;
 import model.time.Date;
 import model.time.Time;
+import org.bridj.ann.Runtime;
 import util.geography.GeoCaluclator;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by kenneth on 24/05/2018.
@@ -37,20 +37,12 @@ public class WeatherFactory {
      *
      * @param date
      * @param time
-     * @param longitude
-     * @param latitude
      * @return
      */
-    public WeatherRecord getWeather(Date date, Time time, Longitude longitude, Latitude latitude) {
-        // get using latitude and longitude
-        ICAOAirportCode airport_code = getClosestAirort(latitude, longitude);
-        if (airport_code != null) {
-
-            return getWeather(date, time, airport_code);
-        }
-
-        return null;
-
+    public WeatherRecord getWeather(Date date, Time time, DataPoint dataPoint) {
+        // get weather from the closest airport, if no weather data is available find the next closest
+        Airport airport = DaoManager.WEATHER_DIMENSIONAL_DAO.getAirportByDateAndICAOCode(dataPoint.getClosest_airport(), date);
+        return findClosestWeatherRecordUsingTime(Arrays.asList(airport.getWeatherRecords()), time);
     }
 
     /**
