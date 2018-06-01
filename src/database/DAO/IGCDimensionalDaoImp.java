@@ -1,5 +1,6 @@
 package database.DAO;
 
+import caching.LocalCache;
 import model.geography.Latitude;
 import model.geography.Longitude;
 import model.igc.DataPoint;
@@ -9,6 +10,7 @@ import model.time.Date;
 import model.time.Time;
 import model.weather.Airport;
 import model.weather.ICAOAirportCode;
+import org.apache.tools.ant.taskdefs.Local;
 import util.geography.GeoCaluclator;
 
 import java.sql.Connection;
@@ -27,12 +29,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
     private boolean debug = false;
     private Connection connection;
-    private Map<Integer,String> localCacheAirportICAOCodeBySurrKey;
-    private Map<String, Integer> localCacheAirportSurrKeyByICAOCache;
 
     IGCDimensionalDaoImp() {
-        this.localCacheAirportSurrKeyByICAOCache = new HashMap<>();
-        this.localCacheAirportICAOCodeBySurrKey = new HashMap<>();
         this.connection = DatabaseHelper.getInstance().getConnection();
     }
 
@@ -143,12 +141,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                 String closest_airport = resultSet.getString("closest_airport");
                 if (closest_airport != null) {
                     // use the local cache with the weather dao (get map) !!! TODO
-                    String tmpCode = this.localCacheAirportICAOCodeBySurrKey.get(Integer.parseInt(closest_airport));
-                    if (tmpCode == null) {
-                        this.localCacheAirportICAOCodeBySurrKey = DaoManager.WEATHER_DIMENSIONAL_DAO.airportICAOCodeBySurrKey();
-                        tmpCode = this.localCacheAirportICAOCodeBySurrKey.get(Integer.parseInt(closest_airport));
-                    }
-                    tmpDataPoint.setClosest_airport(new ICAOAirportCode(tmpCode));
+                    ICAOAirportCode tmpCode = tmpCode = LocalCache.INSTANCE.airportICAOCodeBySurrKey(Integer.parseInt(closest_airport));
+                    tmpDataPoint.setClosest_airport(new ICAOAirportCode(tmpCode.getICAOCode()));
                 }
                 result.add(tmpDataPoint);
             }
@@ -202,11 +196,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                         shortestDistance = tempDist;
                     }
                 }
-                    Integer tmpSurr = localCacheAirportSurrKeyByICAOCache.get(resultPointer.getAirport().getICAOCode());
-                    if (tmpSurr == null) {
-                        this.localCacheAirportSurrKeyByICAOCache = DaoManager.WEATHER_DIMENSIONAL_DAO.airportSurrKeyByICAOCode();
-                    }
-                    setClosestAirport(dataPoint, localCacheAirportSurrKeyByICAOCache.get(resultPointer.getAirport().getICAOCode()));
+                int tmpSurr = LocalCache.INSTANCE.airportSurrKeyByICAOCode(resultPointer.getAirport());
+                setClosestAirport(dataPoint, tmpSurr);
             }
 
         }
