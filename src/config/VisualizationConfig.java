@@ -4,6 +4,7 @@ import model.outputData.FeatureProperties;
 import model.outputData.OutputData;
 import org.json.JSONException;
 import visualization.javaFxMaps.Color;
+import visualization.javaFxMaps.ColorProperty;
 import visualization.javaFxMaps.LayerWrapper;
 
 public class VisualizationConfig {
@@ -54,12 +55,15 @@ public class VisualizationConfig {
     public static final int ZOOM = 7;
 
     // ********************* additional layer config for Google Maps *******************
+    public static String[] LAYER_NAMES = new String[]{"All", "All2"};
     public static LayerWrapper[] LAYERS(OutputData grid) {
         return new LayerWrapper[]{
-                new LayerWrapper(0.3, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(), PROPERTIES[1] + "/" +
-                        PROPERTIES[0], "T:@2 / F:@1", new Color(255, 0, 0), new Color(255, 0 ,0)),
-                new LayerWrapper(0.3, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(), PROPERTIES[1] + "/" +
-                        PROPERTIES[0], "T:@2 / F:@1", new Color(255, 0, 0), new Color(255, 0 ,0))
+                new LayerWrapper(LAYER_NAMES[0], 0.3, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(),
+                        PROPERTIES[1] + "/" + PROPERTIES[0], "T:@2 / F:@1",
+                        ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
+                new LayerWrapper(LAYER_NAMES[1], 0.3, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(),
+                        PROPERTIES[1] + "/" + PROPERTIES[0], "T:@2 / F:@1",
+                        ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0))
         };
     }
 }

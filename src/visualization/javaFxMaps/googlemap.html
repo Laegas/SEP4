@@ -13,7 +13,25 @@
     <script type="text/javascript" src="settings.js"></script>
 
     <script>
+        function mixColors(from, to, colorWeight) {
+            // TODO "to" colors are not currently used
+
+            var i, totalColorWeight = 0, red = 0, green = 0, blue = 0;;
+            for(i = 0; i < colorWeight.length; i++) {
+                totalColorWeight += colorWeight[i];
+            }
+
+            for(i = 0; i < from.length; i++) {
+                red += from[i][0] * colorWeight[i] / totalColorWeight;
+                green += from[i][1] * colorWeight[i] / totalColorWeight;
+                blue += from[i][2] * colorWeight[i] / totalColorWeight;
+            }
+
+            return Math.round(red) + ", " + Math.round(green) + ", " + Math.round(blue);
+        }
+
         function initialize() {
+            var cDisplayStringFormat = displayStringFormat[0];
             var latlng = new google.maps.LatLng(latitude, longitude );
             var myOptions = {
                 zoom: zoom,
@@ -33,45 +51,85 @@
                 document.map.data.addGeoJson(json[i]);
             }
 
-            document.restyle = function restyle(selector, visibilityThreshold) {
-                switch(selector) {
-                    case 1: alphaProperty = "l1t"; displayStringFormat = "L1T:@4 / L1F:@3"; break;
-                    case 2: alphaProperty = "l2t"; displayStringFormat = "L2T:@6 / L2F:@5"; break;
-                    case 3: alphaProperty = "l3t"; displayStringFormat = "L3T:@8 / L3F:@7"; break;
-                    default: alphaProperty = "t"; displayStringFormat = "T:@2 / F:@1"; break;
+            document.restyle = function restyle(layers, visibilityThreshold) {
+                var cLayerIndexes = [], cFormula, cAlphaProperty, cAlphaDividerProperty, cMinimumAlpha,
+                    cFromColor = [], cToColor = [];
+                for(var i = 0; i < layerName.length; i++) {
+                    layers.forEach(function(layer) {
+                        if(layerName[i] === layer) {
+                            cLayerIndexes.push(i);
+                        }
+                    });
                 }
-                document.map.data.setStyle(function(feature) {
-                    var formula = visibilityFactor;
-                    for(var i = 0; i < properties.length; i++) {
-                        var index = formula.indexOf(properties[i]);
-                        if(index >=0 )
-                            formula = formula.substring(0, index) + feature.getProperty(properties[i]) +
-                                formula.substring(index +
-                                    properties[i].length, formula.length);
+                if(cLayerIndexes.length > 1) {
+                    // TODO lazy approach now - taking the first option
+                    cFormula = visibilityFormula[cLayerIndexes[0]];
+                    cAlphaProperty = alphaProperty[cLayerIndexes[0]];
+                    cAlphaDividerProperty = alphaDividerProperty[cLayerIndexes[0]];
+                    cMinimumAlpha = minimumAlpha[cLayerIndexes[0]];
+
+                    // putting all colors to array
+                    for(i = 0; i < cLayerIndexes.length; i++) {
+                        cFromColor.push(fromColor[cLayerIndexes[i]]);
+                        cToColor.push(toColor[cLayerIndexes[i]]);
                     }
-                    var alpha = feature.getProperty(alphaProperty);
-                    var alphaChannel = (minimumAlpha + (alpha * (1 - minimumAlpha)) / max_flights);
-                    if (alphaChannel > 1)
-                        alphaChannel = 1;
-                    var color, visible = (eval(formula) >= visibilityThreshold);
-                    switch (selector) {
-                        case 1:
-                            if(feature.getProperty("l1t") == 0)
-                                visible = false;
-                            color = "rgba(0, 255, 0, " + alphaChannel + ")";
-                            break;
-                        case 2:
-                            if(feature.getProperty("l2t") == 0)
-                                visible = false;
-                            color = "rgba(255, 0, 0, " + alphaChannel + ")";
-                            break;
-                        case 3:
-                            if(feature.getProperty("l3t") == 0)
-                                visible = false;
-                            color = "rgba(0, 0, 255, " + alphaChannel + ")";
-                            break;
-                        default:
-                            color = "rgba(255, 255, 0, " + alphaChannel + ")";
+
+                    // todo individualColorWeights
+                    var individualColorWeights = [0.5,1];
+                    color = "rgb(" + mixColors(cFromColor, cToColor, individualColorWeights) + ")";
+                    console.log(color);
+
+                    // merging only different display formats
+                    cDisplayStringFormat = "";
+                    var onlyDifferentFormats = [], onlyDifferentFormatsIndexes = [];
+                    for(i = 0; i < cLayerIndexes.length; i++) {
+                        if(onlyDifferentFormats.indexOf(displayStringFormat[i]) < 0) {
+                            onlyDifferentFormats.push(displayStringFormat[i]);
+                            onlyDifferentFormatsIndexes.push(i);
+                        }
+                    }
+                    var first = true;
+                    onlyDifferentFormatsIndexes.forEach(function (value) {
+                       cDisplayStringFormat += ((first)?"":" | ") + layerName[value] + ": " +
+                           displayStringFormat[value];
+                       first = false;
+                    });
+                } else {
+                    i = cLayerIndexes[0];
+                    cFormula = visibilityFormula[i];
+                    cAlphaProperty = alphaProperty[i];
+                    cAlphaDividerProperty = alphaDividerProperty[i];
+                    cMinimumAlpha = minimumAlpha[i];
+                    cFromColor = fromColor[i];
+                    cToColor = toColor[i];
+                    cDisplayStringFormat = displayStringFormat[i];
+                }
+
+                document.map.data.setStyle(function(feature) {
+                    // local variables
+                    var color;
+
+                    // todo while loop because same property is not going to be replaced more than once now
+                    // parsing visibilityFormula
+                    for(var i = 0; i < properties.length; i++) {
+                        var index = cFormula.indexOf(properties[i]);
+                        if(index >=0 )
+                            cFormula = cFormula.substring(0, index) + feature.getProperty(properties[i]) +
+                                cFormula.substring(index + properties[i].length, cFormula.length);
+                    }
+
+                    var visible = (eval(cFormula) >= visibilityThreshold);
+                    if(visible) {
+                        // evaluate alphaChannel for color
+                        var alpha = feature.getProperty(cAlphaProperty);
+                        if(cAlphaDividerProperty < 1)
+                            cAlphaDividerProperty = 1;
+                        var alphaChannel = (cMinimumAlpha + (alpha * (1 - cMinimumAlpha)) / cAlphaDividerProperty);
+                        if (alphaChannel > 1)
+                            alphaChannel = 1;
+
+                        color = "rgba(" + mixColors(cFromColor) + ", " + alphaChannel + ")";
+                        console.log(color);
                     }
                     return {
                         fillColor: color,
@@ -82,11 +140,12 @@
 
             };
 
-            document.restyle(0, 0);
+            document.restyle(["All3", "All2", "All"], 0);
 
             document.map.data.addListener('mouseover', function(event) {
                 document.getElementById('info').className = "";
-                var displayString = displayStringFormat;
+                // todo while loop because same property is not going to be replaced more than once now
+                var displayString = cDisplayStringFormat;
                 for(var i = 0; i < properties.length; i++)
                 {
                     var index = displayString.indexOf("@" + (i+1));
