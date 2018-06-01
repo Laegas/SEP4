@@ -75,14 +75,15 @@ public class AnalysisOfThermalsWithWeatherData {
             System.out.println("analysing flight #" + analysedCounter++);
 //            getting a list of thermal data point groups from the thermal finder
             List<ThermalDataPointGroup> dataGroup = thermalFinder.findThermalsUsingGPSAltitude(flight);
+
+
+
+
             // data storage for weather data
             List<IGCJoinWeather> thermalIgcJoinWeathers = new ArrayList<>();
             WeatherRecord tmpWeatherRecord;
 
-            if (1 == 0) {
 
-                throw new RuntimeException("make kenneth make them unique before joining with the weather");
-            }
 
             // looping through every thermal group
             for (ThermalDataPointGroup grp : dataGroup) {

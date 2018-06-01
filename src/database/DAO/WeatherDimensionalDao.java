@@ -28,4 +28,6 @@ public interface WeatherDimensionalDao {
 
     Map<String,Integer> airportSurrKeyByICAOCode();
 
+    Map<Integer, String> airportICAOCodeBySurrKey();
+
 }
