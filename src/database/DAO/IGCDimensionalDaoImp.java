@@ -104,7 +104,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
         List<DataPoint> result = new ArrayList<>();
 
-        String sql = "SELECT surr_key_log, surr_key_flight, ID_time, lat_north, long_east, press_altitude, gps_altitude, gps_ok FROM F_IGC_LOG where SURR_KEY_FLIGHT = ?";
+        String sql = "SELECT surr_key_log, surr_key_flight, ID_time, lat_north, long_east, press_altitude, gps_altitude, gps_ok, CLOSEST_AIRPORT FROM F_IGC_LOG where SURR_KEY_FLIGHT = ?";
         PreparedStatement stmt;
         try {
             stmt = connection.prepareStatement(sql);
@@ -133,8 +133,11 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                 gpsAltitude = resultSet.getInt("gps_altitude");
                 flight_id = resultSet.getInt("surr_key_flight");
                 satelliteCoverage = resultSet.getString("gps_ok").charAt(0);
+
                 tempId_time = timeKey;
                 tmpDataPoint = new DataPoint(tmpTime, tmpLongitude, tmpLatitude, satelliteCoverage, pressureAltitude, gpsAltitude, flight_id, tempId_time);
+                if(resultSet.getString("closest_airport")!=null)
+                    tmpDataPoint.setClosest_airport(new ICAOAirportCode(resultSet.getString("closest_airport")));
                 result.add(tmpDataPoint);
             }
 
