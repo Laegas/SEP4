@@ -10,16 +10,12 @@ import model.igc.ThermalDataPointGroup;
 import model.outputData.OutputData;
 import model.weather.WeatherFactory;
 import model.weather.WeatherRecord;
-import org.bridj.ann.Runtime;
 import util.igc.RemoveDuplicate;
 import util.thermal.ThermalFinder;
 import util.thermal.ThermalFinderImp;
 import visualization.javaFxMaps.GenerateJSSettings;
 import visualization.javaFxMaps.GenerateJson;
-import model.geography.Longitude;
-import model.geography.Latitude;
 
-import javax.management.RuntimeErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +23,8 @@ import java.util.List;
  * Created by kenneth on 24/05/2018.
  */
 public class AnalysisOfThermalsWithWeatherData {
+
+    private static final boolean VERBOSE = true;
     public static void main(String[] args) {
 
         OutputData outputData = new OutputData();
@@ -75,32 +73,35 @@ public class AnalysisOfThermalsWithWeatherData {
             System.out.println("analysing flight #" + analysedCounter++);
 //            getting a list of thermal data point groups from the thermal finder
             List<ThermalDataPointGroup> dataGroup = thermalFinder.findThermalsUsingGPSAltitude(flight);
+
             // data storage for weather data
-            List<IGCJoinWeather> thermalIgcJoinWeathers = new ArrayList<>();
             WeatherRecord tmpWeatherRecord;
 
-            if (1 == 0) {
-
-                throw new RuntimeException("make kenneth make them unique before joining with the weather");
-            }
-
             // looping through every thermal group
+            List<DataPoint> uniqueDataPoint = new ArrayList<>();
             for (ThermalDataPointGroup grp : dataGroup) {
                 List<DataPoint> dataPoints = grp.getGroup();
 
-                for (DataPoint point : dataPoints) {
-                    tmpWeatherRecord = weatherFactory.getWeather(flight.getDate(), point.getTime(),point );
-                    thermalIgcJoinWeathers.add(new IGCJoinWeather(point, tmpWeatherRecord));
+                for (DataPoint tmpDataPoint : dataPoints) {
+                    uniqueDataPoint.add(tmpDataPoint);
                 }
-
             }
 
-            //finding unique indexes in thermals for flight and registering
-            List<IGCJoinWeather> unique = RemoveDuplicate.getUniqueByGridIndex(thermalIgcJoinWeathers);
+            uniqueDataPoint = RemoveDuplicate.getUniqueDataPoint(uniqueDataPoint);
+
+
+            List<IGCJoinWeather> thermalIgcJoinWeathers = new ArrayList<>();
+            for (DataPoint point : uniqueDataPoint) {
+                tmpWeatherRecord = weatherFactory.getWeather(flight.getDate(), point.getTime(),point );
+                thermalIgcJoinWeathers.add(new IGCJoinWeather(point, tmpWeatherRecord));
+            }
+            if (VERBOSE)
+                System.out.println("finished joining with weather");
+
             int windDirectionDegree;
             int latIndex;
             int longIndex;
-            for (IGCJoinWeather item : unique) {
+            for (IGCJoinWeather item : thermalIgcJoinWeathers) {
                 try {
                     latIndex = item.getDataPoint().getLatitude().getGridIndex();
                     longIndex = item.getDataPoint().getLongitude().getGridIndex();
@@ -122,14 +123,21 @@ public class AnalysisOfThermalsWithWeatherData {
                 }
             }
 
+            if (VERBOSE) {
+                System.out.println("finished adding thermals to output data");
+            }
             //find unique data points from data in flights
             List<DataPoint> uniqueDataPoints = RemoveDuplicate.getUniqueDataPoint(flight.getDatalog());
             List<IGCJoinWeather> joinWeathers = new ArrayList<>();
             IGCJoinWeather igcJoinWeather;
+            if (VERBOSE)
+                System.out.println("found all the unique grid features");
             for (DataPoint dataPoint : uniqueDataPoints) {
                 igcJoinWeather = new IGCJoinWeather(dataPoint, weatherFactory.getWeather(flight.getDate(), dataPoint.getTime(), dataPoint));
                 joinWeathers.add(igcJoinWeather);
             }
+            if (VERBOSE)
+                System.out.println("finished finding unique flight grid features");
 
             //add all the unique join with weather as flights
             for (IGCJoinWeather item : joinWeathers) {
@@ -154,7 +162,6 @@ public class AnalysisOfThermalsWithWeatherData {
                 }
 //
             }
-
 
         }
     }

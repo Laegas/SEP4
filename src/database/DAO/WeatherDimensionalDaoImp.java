@@ -17,8 +17,15 @@ import java.util.Map;
 
 /**
  * Created by kenneth on 24/05/2018.
+ * this class makes is so that only weather data from the airport with ICAO code EKSN will be used as the two other airports that are referenced by our igc data dont have any weather data.
  */
+
 public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
+
+    private static boolean USING_ONLY_WEATHER_FROM_DEAFULT_AIRPORT = true;
+    private static final ICAOAirportCode DEFAULT_AIRPORT_CODE = new ICAOAirportCode("EKAH");
+
+
 
     @Override
     public List<WeatherRecord> getWeatherRecord(Date date, ICAOAirportCode airportCode) {
@@ -37,8 +44,12 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
 
             stm.setString(1, day);
             stm.setString(2,month);
-            stm.setString(3,year);
-            stm.setString(4,airportCode.getICAOCode());
+            stm.setString(3, year);
+            if (USING_ONLY_WEATHER_FROM_DEAFULT_AIRPORT) {
+                stm.setString(4,DEFAULT_AIRPORT_CODE.getICAOCode());
+            } else {
+                stm.setString(4,airportCode.getICAOCode());
+            }
             ResultSet rs = stm.executeQuery();
 
             List<WeatherRecord> records = new ArrayList<>();
@@ -91,31 +102,45 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
     @Override
     public Airport getAirportByDateAndICAOCode(ICAOAirportCode code, Date date) {
         Connection conn = DatabaseHelper.getInstance().getConnection();
-        Airport airport = null;
+        Airport result = new Airport();
         try{
-            PreparedStatement stm = conn.prepareStatement("SELECT ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX FROM AIRPORT WHERE AIRPORT_CODE = ?");
-            stm.setString(1,code.getICAOCode());
+            PreparedStatement stm = conn.prepareStatement("SELECT ICAO_AIRPORT_CODE, airport_LATITUDE, airport_LONGITUDE, COUNTRY_NAME, AIRPORT_NAME, ALTITUDE, WMO_INDEX FROM d_AIRPORT WHERE ICAO_AIRPORT_CODE = ?");
+            if (USING_ONLY_WEATHER_FROM_DEAFULT_AIRPORT) {
+                stm.setString(1,DEFAULT_AIRPORT_CODE.getICAOCode());
+            } else {
+                stm.setString(1,code.getICAOCode());
+            }
             ResultSet rs = stm.executeQuery();
             while(rs.next())
             {
-                airport.setWmoIndex(new WMOIndex(rs.getString("WMO_INDEX")));
-                airport.setAirportName(rs.getString("AIRPORTNAME"));
-                airport.setAirport(code);
-                airport.setAltitude(new Altitude(rs.getInt("ALTITUDE")));
-                airport.setCountryName(new CountryName(rs.getString("COUNTRYNAME")));
-                String latitude = rs.getString("LATITUDE");
-                airport.setLatitude(new Latitude(Integer.parseInt(latitude.substring(0, 2)), Integer.parseInt(latitude.substring(2, 4)), Integer.parseInt(latitude.substring(4, 7))));
-                String longitude = rs.getString("LONGITUDE");
-                airport.setLongitude(new Longitude(Integer.parseInt(longitude.substring(0, 3)), Integer.parseInt(longitude.substring(3, 5)), Integer.parseInt(longitude.substring(5, 8))));
+                result.setWmoIndex(new WMOIndex(rs.getString("WMO_INDEX")));
+                result.setAirportName(rs.getString("AIRPORT_NAME"));
+                if (USING_ONLY_WEATHER_FROM_DEAFULT_AIRPORT) {
+                    result.setAirport(DEFAULT_AIRPORT_CODE);
+                } else {
+                    result.setAirport(code);
+                }
+                result.setAltitude(new Altitude(rs.getInt("ALTITUDE")));
+                result.setCountryName(new CountryName(rs.getString("COUNTRY_NAME")));
+                String latitude = rs.getString("airport_LATITUDE");
+                result.setLatitude(new Latitude(Integer.parseInt(latitude.substring(0, 2)), Integer.parseInt(latitude.substring(2, 4)), Integer.parseInt(latitude.substring(4, 7))));
+                String longitude = rs.getString("airport_LONGITUDE");
+                result.setLongitude(new Longitude(Integer.parseInt(longitude.substring(0, 3)), Integer.parseInt(longitude.substring(3, 5)), Integer.parseInt(longitude.substring(5, 8))));
             }
             stm.close();
-            airport.setWeatherRecords((WeatherRecord[]) getWeatherRecord(date,code).toArray());
+            List<WeatherRecord> tmpweatherRecords = getWeatherRecord(date, code);
+            if (USING_ONLY_WEATHER_FROM_DEAFULT_AIRPORT) {
+                tmpweatherRecords = getWeatherRecord(date, DEFAULT_AIRPORT_CODE);
+            } else {
+                tmpweatherRecords = getWeatherRecord(date, code);
+            }
+            result.setWeatherRecords(tmpweatherRecords.toArray(new WeatherRecord[tmpweatherRecords.size()]));
         }
         catch(SQLException e)
         {
             e.printStackTrace();
         }
-        return airport;
+        return result;
     }
 
     @Override
@@ -166,6 +191,30 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
             while (rs.next()) {
                 result.put( rs.getString("ICAO_AIRPORT_CODE"), Integer.valueOf(rs.getInt("surr_key_airport")));
             }
+
+            stm.close();
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
+        @Override
+    public Map<Integer, String> airportICAOCodeBySurrKey() {
+        Map< Integer, String> result = new HashMap<>();
+
+        String sql = "select surr_key_airport, ICAO_AIRPORT_CODE from D_AIRPORT";
+
+        try {
+            PreparedStatement stm = DatabaseHelper.getInstance().getConnection().prepareCall(sql);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                result.put(Integer.valueOf(rs.getInt("surr_key_airport")), rs.getString("ICAO_AIRPORT_CODE"));
+            }
+            stm.close();
 
             return result;
         } catch (SQLException e) {

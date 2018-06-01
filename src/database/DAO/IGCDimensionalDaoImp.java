@@ -1,6 +1,6 @@
 package database.DAO;
 
-import com.sun.xml.internal.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
+import caching.LocalCache;
 import model.geography.Latitude;
 import model.geography.Longitude;
 import model.igc.DataPoint;
@@ -10,10 +10,9 @@ import model.time.Date;
 import model.time.Time;
 import model.weather.Airport;
 import model.weather.ICAOAirportCode;
-import model.weather.WeatherFactory;
+import org.apache.tools.ant.taskdefs.Local;
 import util.geography.GeoCaluclator;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,10 +30,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
     private boolean debug = false;
     private Connection connection;
 
-    Map<String, Integer> airportSurrKeyByICAOCache = new HashMap<>(); // TODO
-
     IGCDimensionalDaoImp() {
-
         this.connection = DatabaseHelper.getInstance().getConnection();
     }
 
@@ -46,9 +42,10 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
 
         //getting all gliders
+        PreparedStatement stmt = null;
         try {
             String sql = "select GLIDER_ID, surr_key_glider from d_glider";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt = connection.prepareStatement(sql);
             ResultSet resultSet = stmt.executeQuery();
 
             Glider tmpGlider;
@@ -95,6 +92,12 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                stmt.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return result;
@@ -103,9 +106,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
     private List<DataPoint> getDataPoints(int flightNumber) {
 
         List<DataPoint> result = new ArrayList<>();
-
         String sql = "SELECT surr_key_log, surr_key_flight, ID_time, lat_north, long_east, press_altitude, gps_altitude, gps_ok, CLOSEST_AIRPORT FROM F_IGC_LOG where SURR_KEY_FLIGHT = ?";
-        PreparedStatement stmt;
+        PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setInt(1,flightNumber);
@@ -122,7 +124,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
             int tempId_time;
             while (resultSet.next()) {
                 int timeKey = resultSet.getInt("ID_time");
-                TimeDimensionalDAO timeDao = new TimeDimensionalDAOImp();
+                TimeDimensionalDAO timeDao = DaoManager.TIME_DAO;
                 tmpTime = timeDao.getTimeByID(timeKey);
                 String longitude = resultSet.getString("long_east");
                 dprint(longitude);
@@ -136,14 +138,24 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
                 tempId_time = timeKey;
                 tmpDataPoint = new DataPoint(tmpTime, tmpLongitude, tmpLatitude, satelliteCoverage, pressureAltitude, gpsAltitude, flight_id, tempId_time);
-                if(resultSet.getString("closest_airport")!=null)
-                    tmpDataPoint.setClosest_airport(new ICAOAirportCode(resultSet.getString("closest_airport")));
+                String closest_airport = resultSet.getString("closest_airport");
+                if (closest_airport != null) {
+                    // use the local cache with the weather dao (get map) !!! TODO
+                    ICAOAirportCode tmpCode = tmpCode = LocalCache.INSTANCE.airportICAOCodeBySurrKey(Integer.parseInt(closest_airport));
+                    tmpDataPoint.setClosest_airport(new ICAOAirportCode(tmpCode.getICAOCode()));
+                }
                 result.add(tmpDataPoint);
             }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -184,11 +196,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                         shortestDistance = tempDist;
                     }
                 }
-                    Integer tmpSurr = airportSurrKeyByICAOCache.get(resultPointer.getAirport().getICAOCode());
-                    if (tmpSurr == null) {
-                        this.airportSurrKeyByICAOCache = DaoManager.WEATHER_DIMENSIONAL_DAO.airportSurrKeyByICAOCode();
-                    }
-                    setClosestAirport(dataPoint, airportSurrKeyByICAOCache.get(resultPointer.getAirport().getICAOCode()));
+                int tmpSurr = LocalCache.INSTANCE.airportSurrKeyByICAOCode(resultPointer.getAirport());
+                setClosestAirport(dataPoint, tmpSurr);
             }
 
         }
