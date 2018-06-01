@@ -22,7 +22,7 @@ class DatabaseHelper {
         }
     }
 
-    static DatabaseHelper getInstance() {
+    static synchronized DatabaseHelper getInstance() {
         if(instance == null)
             instance = new DatabaseHelper();
         return instance;
