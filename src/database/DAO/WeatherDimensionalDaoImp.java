@@ -11,7 +11,9 @@ import model.weather.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kenneth on 24/05/2018.
@@ -149,5 +151,28 @@ public class WeatherDimensionalDaoImp implements WeatherDimensionalDao {
         }
         return airports;
 
+    }
+
+    @Override
+    public Map<String, Integer> airportSurrKeyByICAOCode() {
+        Map<String, Integer> result = new HashMap<>();
+
+        String sql = "select surr_key_airport, ICAO_AIRPORT_CODE from D_AIRPORT";
+
+        try {
+            PreparedStatement stm = DatabaseHelper.getInstance().getConnection().prepareCall(sql);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                result.put( rs.getString("ICAO_AIRPORT_CODE"), Integer.valueOf(rs.getInt("surr_key_airport")));
+            }
+
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
     }
 }

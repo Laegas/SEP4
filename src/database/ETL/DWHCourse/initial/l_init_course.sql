@@ -57,6 +57,7 @@ EXCEPTION
 END;
 /
 CREATE TABLE MEMBER_TO_LOAD as (SELECT * FROM fixed_status_member where 1 = 0);
+
 CREATE sequence d_member_id
   start with 1
   increment by 1
