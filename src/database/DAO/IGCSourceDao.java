@@ -6,6 +6,7 @@ import model.igc.DataPoint;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +41,14 @@ public class IGCSourceDao implements IGCDataDAO {
             conn.commit();
             List<DataPoint> points = logger.getDatalog();
             String tsmp = "";
+            int count= 0;
             for (DataPoint point : points) {
-                tsmp = date + " " + point.getTime().getDatabaseFormat();
                 stmt = conn.prepareStatement("INSERT /*+ APPEND */ INTO IGC_Source_Data (id, time_Of_Log, LATITUDE, LONGITUDE," +
                         " satellite_Coverage, pressure_Altitude, GPS_Altitude, flight_ID) " +
-                        "VALUES (IGC_Source_Data_ID.NEXTVAL, to_Timestamp(?, 'YY/MM/DD HH24:MI:SS'), ?, ?, ?, ?, ?," +
+                        "VALUES (IGC_Source_Data_ID.NEXTVAL, ?, ?, ?, ?, ?, ?," +
                         " data_Logger_ID.currval)");
-                stmt.setString(1, tsmp);
+                Timestamp tstmp = new Timestamp(logger.getDate().getYear().getYear(),logger.getDate().getMonth().getMonthNumber(),logger.getDate().getDay().getDayOfMonth(),point.getTime().getHour().getHour(),point.getTime().getMinute().getMinute(),point.getTime().getSecond().getSecond(),0);
+                stmt.setTimestamp(1, tstmp);
                 stmt.setString(2, point.getLatitude().toDatabase());
                 stmt.setString(3, point.getLongitude().toDatabase());
                 stmt.setString(4, point.getSataliteCoverage() + "");
@@ -54,9 +56,10 @@ public class IGCSourceDao implements IGCDataDAO {
                 stmt.setInt(6, point.getGPSAltitude());
                 stmt.execute();
                 stmt.close();
-                conn.commit();
-
             }
+
+            conn.commit();
+            stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

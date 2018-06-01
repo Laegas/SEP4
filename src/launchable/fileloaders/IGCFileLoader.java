@@ -19,26 +19,7 @@ public class IGCFileLoader {
 
     private static final File dirWithIGCLogFiles = new File(FileConfig.IGC_DIRECTORY_PATH);
 
-//    public static void main(String[] args) {
-//
-//        File[] IGC_files = dirWithIGCLogFiles.listFiles();
-//
-//        FileDecoder fileDecoder;
-//        Flight dataLogger;
-//        IGCDataDAO igc_dao = DaoManager.IGC_SOURCE_DAO;
-//
-//        int numberOfFilesToLoad = (int) (FileConfig.LOAD_PERCENTAGE * IGC_files.length);
-//        System.out.println("loading #" + numberOfFilesToLoad + " files");
-//        int counter = 1;
-//
-//        for ( int i = 0; i < numberOfFilesToLoad; i++) {
-//            fileDecoder = new FileDecoder(IGC_files[i].getAbsolutePath());
-//            dataLogger = fileDecoder.readIGCFile();
-//            igc_dao.insertDataLogger(dataLogger);
-//            System.out.println("finished loading file #" + counter++);
-//        }
-//
-//    }
+
     public static void main(String[] args) {
         System.out.println("Setup of file queue.");
         File[] IGC_files = dirWithIGCLogFiles.listFiles();
