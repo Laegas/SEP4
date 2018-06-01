@@ -5,13 +5,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -22,6 +21,9 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import org.controlsfx.control.CheckComboBox;
+
+import static config.VisualizationConfig.LAYER_NAMES;
 
 public class JavaFxMap extends Application {
     private Timeline locationUpdateTimeline;
@@ -59,6 +61,7 @@ public class JavaFxMap extends Application {
                 webEngine.executeScript("document.setMapTypeTerrain()");
             }
         });
+
         // add search
         TextField searchBox = new TextField("95054");
         searchBox.setPromptText("Search");
@@ -73,21 +76,24 @@ public class JavaFxMap extends Application {
             locationUpdateTimeline.play();
         });
 
-        // creating radio buttons
-        final ToggleGroup radioButtonGroup = new ToggleGroup();
-        RadioButton rb1 = new RadioButton("All");
-        rb1.setUserData("All");
-        rb1.setToggleGroup(radioButtonGroup);
-        rb1.setSelected(true);
-        RadioButton rb2 = new RadioButton("0-10");
-        rb2.setToggleGroup(radioButtonGroup);
-        rb2.setUserData("0-10");
-        RadioButton rb3 = new RadioButton("10-20");
-        rb3.setToggleGroup(radioButtonGroup);
-        rb3.setUserData("10-20");
-        RadioButton rb4 = new RadioButton("20-30");
-        rb4.setToggleGroup(radioButtonGroup);
-        rb4.setUserData("20-30");
+        // check combo box experiment
+        // create the data to show in the CheckComboBox
+        final ObservableList<String> strings = FXCollections.observableArrayList();
+        strings.addAll(LAYER_NAMES);
+
+        // Create the CheckComboBox with the data
+        final CheckComboBox<String> checkComboBox = new CheckComboBox<>(strings);
+        checkComboBox.setMaxWidth(130);
+        checkComboBox.setPrefWidth(130);
+        checkComboBox.setMinWidth(130);
+        checkComboBox.getCheckModel().check(0);
+
+        // and listen to the relevant events (e.g. when the selected indices or selected items change).
+        checkComboBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
+            // todo
+            ObservableList<String> selectedStrings = checkComboBox.getCheckModel().getCheckedItems();
+            System.out.println(checkComboBox.getCheckModel().getCheckedItems());
+        });
 
         // create slider
         Slider slider = new Slider();
@@ -123,25 +129,11 @@ public class JavaFxMap extends Application {
         PauseTransition pause = new PauseTransition(Duration.millis(500));
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             pause.setOnFinished((event) -> {
+                // todo check
                 System.out.println("document.restyle(-1, " + (1 - newValue.intValue() / 100.0) + ")");
                 webEngine.executeScript("document.restyle(-1, " + (1 - newValue.intValue() / 100.0) + ")");
             });
             pause.playFromStart();
-        });
-
-        // radio buttons listener
-        radioButtonGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-            public void changed(ObservableValue<? extends Toggle> ov,
-                                Toggle old_toggle, Toggle new_toggle) {
-                int sliderValue = (int)(slider.getValue()), selector = -1;
-                switch(new_toggle.getUserData().toString()) {
-                    case "All": selector = -1; break;
-                    case "0-10": selector = 1; break;
-                    case "10-20": selector = 2; break;
-                    case "20-30": selector = 3; break;
-                }
-                webEngine.executeScript("document.restyle(" + selector + ", " + (100 - sliderValue) + ")");
-            }
         });
 
         // create toolbar
@@ -152,7 +144,7 @@ public class JavaFxMap extends Application {
                 createSpacer(),
                 new Label("Visible:"), slider,
                 createSpacer(),
-                rb1, rb2, rb3, rb4,
+                checkComboBox,
                 createSpacer(),
                 new Label("Location:"), searchBox);
         // create root

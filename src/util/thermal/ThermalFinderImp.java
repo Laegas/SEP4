@@ -13,7 +13,7 @@ import java.util.List;
 public class ThermalFinderImp implements ThermalFinder  {
     private int thermalStart = -1;
     private int thermalEnd = -1;
-    private int scopeSize = 5;
+    private int scopeSize = 30;
     private double altitudeGainPerSecond;
 
     public ThermalFinderImp( double altitudeGainedPerSecond)

@@ -39,11 +39,11 @@ public class Flight {
 		this.flightID.setFlightID(flight_id);
 	}
 
-	public Flight(Date date, int flight_id)
+	public Flight(Date date, int flight_id, Glider glider)
 	{
 		this.date=date;
 		this.flightID = new FlightID(flight_id);
-		this.glider = null;
+		this.glider = glider;
 		this.datapoints = null;
 
 	}

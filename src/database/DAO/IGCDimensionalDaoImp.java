@@ -61,7 +61,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
             dprint("number of gliders: " + gliders.size());
 
             //getting all flights
-            sql = "SELECT surr_key_flight, ID_START_DATE FROM D_FLIGHT";
+            sql = "SELECT surr_key_flight, ID_START_DATE, SURR_KEY_GLIDER FROM D_FLIGHT";
 
             stmt = connection.prepareStatement(sql);
             resultSet = stmt.executeQuery();
@@ -71,11 +71,12 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                 String sql1 = "SELECT day, month, year from D_DATE where ID_DATE = ?";
                 int sDate = resultSet.getInt("ID_START_DATE");
                 int surrfKey =  resultSet.getInt("surr_key_flight");
+                int gliderID = resultSet.getInt("SURR_KEY_GLIDER");
                 stmt = connection.prepareStatement(sql1);
                 stmt.setInt(1, sDate);
                 resultDate = stmt.executeQuery();
                 resultDate.next();
-                tmpFlight = new Flight(new Date(Integer.parseInt(resultDate.getString("day")),Integer.parseInt(resultDate.getString("month")), Integer.parseInt(resultDate.getString("year"))),surrfKey);
+                tmpFlight = new Flight(new Date(Integer.parseInt(resultDate.getString("day")),Integer.parseInt(resultDate.getString("month")), Integer.parseInt(resultDate.getString("year"))),surrfKey,getGliderByID(gliders,gliderID));
                 noDataFlights.add(tmpFlight);
             }
             dprint("number of flights: " + noDataFlights.size());
@@ -84,7 +85,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
             //getting all data for each flight one flight at a time
             for (Flight flight : noDataFlights) {
                 List<DataPoint> dataPoints = getDataPoints(flight.getFlight_id());
-                tmpFlight = new Flight(flight.getDate(),dataPoints, getGliderByID(gliders,dataPoints.get(0).getGlider_id()),flight.getFlight_id());
+                tmpFlight = new Flight(flight.getDate(),dataPoints,flight.getGlider(),flight.getFlight_id());
 
                 result.add(tmpFlight);
             }
@@ -101,7 +102,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
 
         List<DataPoint> result = new ArrayList<>();
 
-        String sql = "SELECT surr_key_log, surr_key_flight, surr_key_glider, time, lat_north, long_east, press_altitude, gps_altitude, gps_ok, id_time FROM F_IGC_LOG where SURR_KEY_FLIGHT = ?";
+        String sql = "SELECT surr_key_log, surr_key_flight, ID_time, lat_north, long_east, press_altitude, gps_altitude, gps_ok FROM F_IGC_LOG where SURR_KEY_FLIGHT = ?";
         PreparedStatement stmt;
         try {
             stmt = connection.prepareStatement(sql);
@@ -118,8 +119,9 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
             char satelliteCoverage;
             int tempId_time;
             while (resultSet.next()) {
-
-                tmpTime = new Time(resultSet.getTime("time"));
+                int timeKey = resultSet.getInt("ID_time");
+                TimeDimensionalDAO timeDao = new TimeDimensionalDAOImp();
+                tmpTime = timeDao.getTimeByID(timeKey);
                 String longitude = resultSet.getString("long_east");
                 dprint(longitude);
                 tmpLongitude = new Longitude(Integer.parseInt(longitude.substring(0, 3)), Integer.parseInt(longitude.substring(3, 5)), Integer.parseInt(longitude.substring(5, 8)));
@@ -128,10 +130,9 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                 pressureAltitude = resultSet.getInt("press_altitude");
                 gpsAltitude = resultSet.getInt("gps_altitude");
                 flight_id = resultSet.getInt("surr_key_flight");
-                glider_id = resultSet.getInt("surr_key_glider");
                 satelliteCoverage = resultSet.getString("gps_ok").charAt(0);
-                tempId_time = resultSet.getInt("id_time");
-                tmpDataPoint = new DataPoint(tmpTime, tmpLongitude, tmpLatitude, satelliteCoverage, pressureAltitude, gpsAltitude, glider_id, flight_id, tempId_time);
+                tempId_time = timeKey;
+                tmpDataPoint = new DataPoint(tmpTime, tmpLongitude, tmpLatitude, satelliteCoverage, pressureAltitude, gpsAltitude, flight_id, tempId_time);
                 result.add(tmpDataPoint);
             }
 
@@ -162,6 +163,8 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
         List<Flight> flights = DaoManager.IGC_DIMENSIONAL_DAO.getAllFlights();
 
 
+
+
         Map<Airport, Integer> surrKeyByAirport = new HashMap<>();
         for (Airport item : airports) {
             surrKeyByAirport.put(item, airportSurrKeyByICAOCache.get(item.getAirport()));
@@ -188,8 +191,7 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
     }
 
 
-    @Override
-    public void setClosestAirport(DataPoint dataPoint, int surr_key_airport) {
+    private void setClosestAirport(DataPoint dataPoint, int surr_key_airport) {
 
 
         String sql = "update F_IGC_LOG set closest_airport = ? WHERE SURR_KEY_FLIGHT = ? AND id_time = ?";

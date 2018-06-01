@@ -1,3 +1,3 @@
 var json = [
-{"features":[],"type":"FeatureCollection"},
+{"features":[],"type":"FeatureCollection"}
 ];
