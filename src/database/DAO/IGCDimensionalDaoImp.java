@@ -136,7 +136,6 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                 result.add(tmpDataPoint);
             }
 
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
