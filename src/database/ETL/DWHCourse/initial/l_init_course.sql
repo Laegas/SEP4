@@ -1,12 +1,20 @@
 -------- INIT FLIGHTS Load ------
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE flights_to_load';
-   EXECUTE IMMEDIATE 'DROP TABLE flights_to_load_with_surr_key';
+   EXECUTE IMMEDIATE 'DROP TABLE flights_to_load_with_surr_key cascade constraints purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
          RAISE;
       END IF;
+END;
+/
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE flights_to_load cascade constraints purge';
+  EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -942 THEN
+    RAISE;
+  END IF;
 END;
 /
 create table flights_to_load as (select * from FLAGGED_FOR_DUPLICATED_INITIALS where 1 = 0);
@@ -31,7 +39,7 @@ alter table flights_to_load_with_surr_key drop (
 
 ------------INIT MEMBER Load-----------
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE MEMBER_TO_LOAD   ';
+   EXECUTE IMMEDIATE 'DROP TABLE MEMBER_TO_LOAD cascade constraints purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
