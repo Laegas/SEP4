@@ -19,7 +19,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
     }
 
     @Override
-    public void insertWeatherRecord(WeatherRecord record) {
+    public synchronized void insertWeatherRecord(WeatherRecord record) {
         try {
             String ICAO_airport_code = record.getAirportCode().getICAOCode();
             int windSpeed = record.getWind().getWindSpeed().getKnots();
@@ -84,7 +84,7 @@ public class METARSourceDAOImp implements METARSourceDAO {
     }
 
     @Override
-    public void insertAirport(Airport airport) {
+    public synchronized void insertAirport(Airport airport) {
 
         // insert airports into source tables
 
