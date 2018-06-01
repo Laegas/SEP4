@@ -110,8 +110,8 @@ public class FileDecoder {
 				char satelliteCoverage = container.toCharArray()[24];
 				int pressureAltitude = Integer.parseInt(container.substring(25,30));
 				int GPSAltitude = Integer.parseInt(container.substring(30,35));
-				
-				points.add(new DataPoint( time, longitude, latitude, satelliteCoverage, pressureAltitude, GPSAltitude));
+				if(satelliteCoverage=='A')
+					points.add(new DataPoint( time, longitude, latitude, satelliteCoverage, pressureAltitude, GPSAltitude));
 			}
 			else if(container.startsWith("HFGIDGLIDERID")) // Glider ID
 			{
