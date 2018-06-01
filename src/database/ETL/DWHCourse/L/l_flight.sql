@@ -9,11 +9,11 @@ insert into flights_to_load_with_surr_key (LAUNCHTIME,LANDINGTIME,PLANEREGISTRAT
                                            PILOT1INIT,PILOT2INIT,CROSSCOUNTRYKM,CLUBNAME,
                                            PILOT1_NON_UNIQUE_INITIALS,PILOT2_NON_UNIQUE_INITIALS,
                                            DURATION )
-  (select LAUNCHTIME,LANDINGTIME,PLANEREGISTRATION,
-     PILOT1INIT,PILOT2INIT,CROSSCOUNTRYKM,CLUBNAME,
-     PILOT1_NON_UNIQUE_INITIALS,PILOT2_NON_UNIQUE_INITIALS,
-     DURATION
-   from flights_to_load
+                                          (select LAUNCHTIME,LANDINGTIME,PLANEREGISTRATION,
+                                           PILOT1INIT,PILOT2INIT,CROSSCOUNTRYKM,CLUBNAME,
+                                           PILOT1_NON_UNIQUE_INITIALS,PILOT2_NON_UNIQUE_INITIALS,
+                                           DURATION
+                                           from flights_to_load
   );
 
 
