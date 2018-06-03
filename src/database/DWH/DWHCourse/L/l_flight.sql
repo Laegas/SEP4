@@ -126,7 +126,3 @@ select * from d_date;
 select * from D_MEMBER;
 
 
--- insert into flights
-select * from all_constraints where constraint_name = 'SYS_C0012084';
-select * from f_flight;
-select * from B_FLIGHT_MEMBER;

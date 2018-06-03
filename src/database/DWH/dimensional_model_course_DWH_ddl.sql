@@ -26,6 +26,7 @@ CREATE sequence d_member_id
   noMaxValue
 ;
 
+
 create table D_MEMBER(
   Member_ID int,
   MemberNo number(6,0) not null,
@@ -44,7 +45,40 @@ create table D_MEMBER(
   valid_to date not null,
   primary key (Member_ID)
 );
+insert into D_MEMBER(
+  Member_ID,
+  MemberNo ,
+  Initials,
+  Name ,
+  Address ,
+  ZIPCode ,
+  DateBorn,
+  DateJoined ,
+  DateLeft ,
+  OwnsPlaneReg ,
+  Sex  ,
+  Club ,
+  Status ,
+  valid_from ,
+  valid_to)
+  VALUES (
+  -1,
+  0,
+  'aaaa',
+    'name',
+    'Address',
+    0000,
+    TO_DATE('0001/01/01', 'YYYY/MM/DD'),
+  TO_DATE('0001/01/01', 'YYYY/MM/DD'),
+  TO_DATE('0001/01/01', 'YYYY/MM/DD'),
+    'aaa',
+    'M',
+    'club',
+    'BLA',
+  TO_DATE('0001/01/01', 'YYYY/MM/DD'),
+  TO_DATE('0001/01/01', 'YYYY/MM/DD')
 
+  );
 -------- F_Flight and B_Flight_Member table ddl --------
 BEGIN
    EXECUTE IMMEDIATE 'DROP TABLE F_flight CASCADE CONSTRAINTS purge';
@@ -86,15 +120,14 @@ create sequence SEQ_ID_B_FLIGHT_MEMBER
 
 create table B_FLIGHT_MEMBER (
   ID_GROUP int not null ,
-  ID_MEMBER int references D_MEMBER(Member_ID),
+  ID_MEMBER int ,
   weiGHt decimal(2,1) not null,
   primary key(id_group, ID_MEMBER)
 );
 
 --nonexistent - using for insert from thermal side instead of member side.
-insert into D_MEMBER(
-  Member_ID
-) VALUES (-1);
+
+
 insert into B_FLIGHT_MEMBER(
   ID_GROUP, ID_MEMBER, weight
 ) VALUES (-1, -1, -1);
