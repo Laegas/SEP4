@@ -17,23 +17,6 @@ insert into flights_to_load_with_surr_key (LAUNCHTIME,LANDINGTIME,PLANEREGISTRAT
   );
 ALTER table FLIGHTS_TO_LOAD_WITH_SURR_KEY DROP COLUMN id_flight;
 
-
-
--- id_member = 0 is for members with non unique initials
---describe flights_to_load_with_surr_key;
-
-/*
-select * from d_member;
-update flights_to_load_with_surr_key a set
-  id_member = (select id_member from d_member where initials = a.init AND
-                  valid_to = trunc(TO_DATE('9999-12-31' ,'YYYY-MM-DD'),'DAY'))
-    where non_unique_initials <> 'T'
-;
-*/
-/*
-update flights_to_load_with_surr_key set id_flight = seq_id_flights.NEXTVAL
-;
-*/
 update FLIGHTS_TO_LOAD_WITH_SURR_KEY set SURR_KEY_FLIGHT = SEQ_ID_FLIGHTS.nextval;
 
 
@@ -64,13 +47,8 @@ update flights_to_load_with_surr_key a set a.id_LANDDATE = (
 );
 
 
---describe flights_to_load_with_surr_key;
---describe d_member;
--- now starts the fun stuff with bridge tables and members
 
---describe d_member;
---describe flights_to_load_with_surr_key;
-
+-- start load of bridge table and flights
 declare
   tmp_id_member int;
 begin
