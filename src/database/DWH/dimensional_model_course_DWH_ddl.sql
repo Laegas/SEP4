@@ -47,8 +47,16 @@ create table D_MEMBER(
 
 -------- F_Duration and B_Flight_Member table ddl --------
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE F_Duration CASCADE CONSTRAINTS purge';
-   EXECUTE IMMEDIATE 'DROP TABLE B_FLIGHT_MEMBER CASCADE CONSTRAINTS purge';
+   EXECUTE IMMEDIATE 'DROP TABLE F_flight CASCADE CONSTRAINTS purge';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE B_FLIGHT_MEMBER CASCADE CONSTRAINTS purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
@@ -92,7 +100,7 @@ insert into B_FLIGHT_MEMBER(
 ) VALUES (-1, -1, -1);
 
 -----F_Duration was previously F_Flight-----
-create table F_Duration(
+create table F_FLIGHT(
   surr_key_flight int references D_FLIGHT(surr_key_flight),
   id_group int,
   id_member int,
@@ -111,3 +119,4 @@ create sequence seq_id_flights
   cache 100
   nomaxvalue
 ;
+COMMIT ;
