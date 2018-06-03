@@ -35,3 +35,46 @@ public class METARFileLoader {
         }
     }
 }
+
+/* Threads experiment - didn't work :(
+
+package launchable.fileloaders;
+
+import config.FileConfig;
+import database.DAO.DaoManager;
+import database.DAO.METARSourceDAO;
+import model.weather.Airport;
+import util.file.FileDecoder;
+import model.weather.WeatherRecord;
+import util.file.METARTXTFilePreprocessor;
+
+import java.io.File;
+
+public class METARFileLoader {
+    private static final File dirWithMETARLogFiles = new File(FileConfig.METAR_DIRECTORY_PATH);
+    private static METARSourceDAO METARDAO = DaoManager.METAR_SOURCE_DAO;
+
+    public static void main(String[] args) {
+
+        File[] METAR_files = dirWithMETARLogFiles.listFiles();
+        int counter = 1;
+        if (METAR_files != null) {
+            for (File file : METAR_files) {
+                new Thread(() -> processFile(file)).start();
+                System.out.println("finished loading file #" + counter++);
+            }
+        }
+    }
+
+    private static void processFile(File file) {
+        METARTXTFilePreprocessor preprocessor = new METARTXTFilePreprocessor(file.getAbsolutePath());
+        preprocessor.preProcess();
+        FileDecoder fileDecoder = new FileDecoder(file.getAbsolutePath());
+        Airport airport = fileDecoder.readMETARFile();
+        System.out.println("start inserting");
+        METARDAO.insertAirport(airport);
+        System.out.println("finished inserting");
+    }
+}
+
+* */

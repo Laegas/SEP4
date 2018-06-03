@@ -7,7 +7,7 @@ public class LayerWrapper {
     // sets minimum opacity for alpha channel of rgba
     private double minimumAlpha;
     // property on which opacity is based
-    private String alphaProperty;
+    private Property alphaProperty;
     // property which divides alphaProperty, maximal possible alphaProperty
     private double alphaDividerProperty;
     // formula, containing properties, which is evaluated and used for decision whether feature will be visible
@@ -16,16 +16,16 @@ public class LayerWrapper {
     private String displayStringFormat;
     // property on which color is based
     // TODO replace by ColorProperty
-    private String colorProperty;
+    private Property colorProperty;
     // property which divides colorProperty to get weight of that color in visualization
-    private String colorDividerProperty;
+    private Property colorDividerProperty;
     // color for features in this layer
     private Color fromColor;
     private Color toColor;
 
-    public LayerWrapper(String layerName, double minimumAlpha, String alphaProperty, double alphaDividerProperty, String
-            visibilityFormula, String displayStringFormat, String colorProperty, String colorDividerProperty, Color
-            fromColor) {
+    public LayerWrapper(String layerName, double minimumAlpha, Property alphaProperty, double alphaDividerProperty,
+                        String visibilityFormula, String displayStringFormat, Property colorProperty, Property
+                        colorDividerProperty, Color fromColor) {
         this.layerName = layerName;
         this.minimumAlpha = minimumAlpha;
         this.alphaProperty = alphaProperty;
@@ -42,35 +42,35 @@ public class LayerWrapper {
         this.toColor = toColor;
     }
 
-    public String getLayerName() { return layerName; }
+    String getLayerName() { return layerName; }
 
-    public double getMinimumAlpha() {
+    double getMinimumAlpha() {
         return minimumAlpha;
     }
 
-    public String getAlphaProperty() {
-        return alphaProperty;
+    String getAlphaProperty() {
+        return alphaProperty.toString();
     }
 
-    public double getAlphaDividerProperty() {
+    double getAlphaDividerProperty() {
         return alphaDividerProperty;
     }
 
-    public String getVisibilityFormula() {
+    String getVisibilityFormula() {
         return visibilityFormula;
     }
 
-    public String getDisplayStringFormat() {
+    String getDisplayStringFormat() {
         return displayStringFormat;
     }
 
-    public String getColorProperty() { return colorProperty; }
+    String getColorProperty() { return colorProperty.toString(); }
 
-    public String getColorDividerProperty() { return colorDividerProperty; }
+    String getColorDividerProperty() { return colorDividerProperty.toString(); }
 
-    public Color getFromColor() { return fromColor; }
+    Color getFromColor() { return fromColor; }
 
-    public Color getToColor() {
+    Color getToColor() {
         return toColor;
     }
 }

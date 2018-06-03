@@ -5,18 +5,7 @@ package launchable.fileloaders;
  */
 public class MainFileLoader {
     public static void main(String[] args) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                IGCFileLoader.main(new String[1]);
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                METARFileLoader.main(new String[1]);
-            }
-        }).start();
+        new Thread(() -> IGCFileLoader.main(new String[1])).start();
+        new Thread(() -> METARFileLoader.main(new String[1])).start();
     }
 }

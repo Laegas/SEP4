@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -22,6 +23,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
+
+import java.nio.file.Paths;
 
 import static config.VisualizationConfig.LAYER_NAMES;
 
@@ -81,44 +84,45 @@ public class JavaFxMap extends Application {
         final ObservableList<String> strings = FXCollections.observableArrayList();
         strings.addAll(LAYER_NAMES);
 
-        // Create the CheckComboBox with the data
+        // Create the CheckComboBox with the layer names
         final CheckComboBox<String> checkComboBox = new CheckComboBox<>(strings);
         checkComboBox.setMaxWidth(130);
         checkComboBox.setPrefWidth(130);
         checkComboBox.setMinWidth(130);
         checkComboBox.getCheckModel().check(0);
 
-        // and listen to the relevant events (e.g. when the selected indices or selected items change).
-        checkComboBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
-            // todo
-            ObservableList<String> selectedStrings = checkComboBox.getCheckModel().getCheckedItems();
-            System.out.println(checkComboBox.getCheckModel().getCheckedItems());
-        });
-
         // create slider
         Slider slider = new Slider();
         slider.setMin(0);
         slider.setMax(100);
-        slider.setValue(100);
+        slider.setValue(90);
         slider.setShowTickLabels(true);
         slider.setShowTickMarks(true);
-        slider.setMajorTickUnit(100);
-        slider.setMinorTickCount(10);
+        slider.setMajorTickUnit(25);
+        slider.setMinorTickCount(4);
         slider.setBlockIncrement(10);
         slider.setLabelFormatter(new StringConverter<Double>() {
             @Override
-            // todo
             public String toString(Double n) {
-                if (n < 50) return "None";
+                if (n < 25) return "None";
+                if (n < 50) return "25%";
+                if (n < 75) return "50%";
+                if (n < 100) return "75%";
+                if (n == 100) return "All";
                 return "All";
             }
 
-            // todo
             @Override
             public Double fromString(String s) {
                 switch (s) {
                     case "None":
                         return 0d;
+                    case "25%":
+                        return 75d;
+                    case "50%":
+                        return 50d;
+                    case "75%":
+                        return 25d;
                     case "All":
                         return 100d;
                     default:
@@ -128,13 +132,19 @@ public class JavaFxMap extends Application {
         });
         PauseTransition pause = new PauseTransition(Duration.millis(500));
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            pause.setOnFinished((event) -> {
-                // todo check
-                System.out.println("document.restyle(-1, " + (1 - newValue.intValue() / 100.0) + ")");
-                webEngine.executeScript("document.restyle(-1, " + (1 - newValue.intValue() / 100.0) + ")");
-            });
+            pause.setOnFinished((event) ->
+                webEngine.executeScript("document.restyle(" + convertToJSFriendlyArray(checkComboBox.getCheckModel()
+                        .getCheckedItems()) + ", " + (1 - newValue.intValue() / 100.0) + ")")
+            );
             pause.playFromStart();
         });
+
+        checkComboBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
+            System.out.println("document.restyle(" + convertToJSFriendlyArray(checkComboBox.getCheckModel()
+                    .getCheckedItems()) + ", " + (1 - slider.getValue() / 100.0) + ")");
+            webEngine.executeScript("document.restyle(" + convertToJSFriendlyArray(checkComboBox.getCheckModel()
+                    .getCheckedItems()) + ", " + (1 - slider.getValue() / 100.0) + ")");}
+        );
 
         // create toolbar
         ToolBar toolBar = new ToolBar();
@@ -158,8 +168,12 @@ public class JavaFxMap extends Application {
         stage.setScene(scene);
         scene.getStylesheets().add(getClass().getResource(FileConfig.VISUALIZATION_RESOURCES_PATH+"map.css").toString());
         // show stage
-        stage.setMaximized(true);
-        //stage.setFullScreen(true);
+//        stage.setMaximized(true);
+//        stage.setFullScreen(true);
+        // set icon
+        stage.getIcons().add(new Image("file:" + String.valueOf(Paths.get(System.getProperty("user.dir"),"src\\img",
+                "icon.png"))));
+
         stage.show();
     }
 
@@ -167,6 +181,19 @@ public class JavaFxMap extends Application {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         return spacer;
+    }
+
+    private String convertToJSFriendlyArray(ObservableList<String> l) {
+        StringBuilder r = new StringBuilder("[");
+        for(int i = 0; i < l.size(); i++) {
+            r.append("\"");
+            r.append(l.get(i));
+            r.append("\"");
+            if(i < l.size() - 1)
+                r.append(", ");
+        }
+        r.append("]");
+        return r.toString();
     }
 
     static { // use system proxy settings when standalone application
