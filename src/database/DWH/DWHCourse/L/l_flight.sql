@@ -46,8 +46,6 @@ update flights_to_load_with_surr_key a set a.id_LANDDATE = (
     d_date.day = to_char(extract(day from a.LANDINGTIME))
 );
 
-
-
 -- start load of bridge table and flights
 declare
   tmp_id_member int;
@@ -85,8 +83,9 @@ begin
         SEQ_ID_B_FLIGHT_MEMBER.currval, tmp_id_member  , 0.5);
     end if;
     --inserting flight facts
-    select tmp_id_member from dual;/*
-    insert into F_FLIGHT(  id_group, ID_MEMBER, SURR_KEY_FLIGHT, id_launch_time , id_land_time , id_land_date , duration, ID_LAUNCH_DATE) VALUES (
+    select tmp_id_member from dual;
+    /*
+    insert into F_FLIGHT(id_group, ID_MEMBER, SURR_KEY_FLIGHT, id_launch_time , id_land_time , id_land_date , duration, ID_LAUNCH_DATE) VALUES (
       SEQ_ID_B_FLIGHT_MEMBER.currval,
       tmp_id_member,
       c.surr_key_flight,
