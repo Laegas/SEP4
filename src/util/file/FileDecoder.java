@@ -1,7 +1,9 @@
 package util.file;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,16 +22,17 @@ import util.weatherUtil.METARException;
 public class FileDecoder {
 	private Scanner sc;
 	private File file;
+	private BufferedReader br;
+	private FileReader fr;
 
 	public FileDecoder(String filename)
 	{
-		this.file= new File(filename);
-		try {
-			sc = new Scanner(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		setFile(filename);
 	}
+    public FileDecoder()
+    {
+        //all null;
+    }
 
 	public Airport readMETARFile() {
 
@@ -79,15 +82,11 @@ public class FileDecoder {
 	{
 		ArrayList<DataPoint> points = new ArrayList<>();
 		Flight logger = null;
-		
-		
-		try {
-			sc = new Scanner(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		while (sc.hasNextLine()) {
-			String container = sc.nextLine();
+        String container;
+        try
+        {
+		while ((container = br.readLine())!=null) {
+
 			if (container.startsWith("B"))// DataPoint instance
 			{
 				String hour = container.substring(1,3);
@@ -122,7 +121,10 @@ public class FileDecoder {
 				logger = new Flight(new Date(Integer.parseInt(container.substring(5, 7)),Integer.parseInt(container.substring(7, 9)),Integer.parseInt(container.substring(9, 11))));
 			}
 			
-		}
+		}}catch(Exception e)
+        {
+            e.printStackTrace();
+        }
 		logger.setDatalog(points);
 		return logger;
 	}
@@ -130,10 +132,13 @@ public class FileDecoder {
 	public void setFile(String filename)
 	{
 		file = new File(filename);
+
 		try {
+            fr = new FileReader(filename);
+            br = new BufferedReader(fr);
 			sc = new Scanner(file);
 		}
-		catch(FileNotFoundException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}

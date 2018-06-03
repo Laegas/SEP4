@@ -15,6 +15,7 @@ import java.util.*;
 public class RemoveDuplicate {
 
     public static List<IGCJoinWeather> getUniqueByGridIndex(List<IGCJoinWeather> list) {
+        long startTime = printStartTime();
         Map<String, IGCJoinWeather> map = new HashMap<>();
 
         String key;
@@ -33,12 +34,14 @@ public class RemoveDuplicate {
             result.add(item.getValue());
         }
 
+        printEndTime(startTime);
         return result;
 
     }
 
 
     public static List<DataPoint> getUniqueDataPoint(List<DataPoint> dataPoints) {
+        long startTime = printStartTime();
         Map<String, DataPoint> map = new HashMap<>();
 
         String key;
@@ -57,11 +60,13 @@ public class RemoveDuplicate {
             result.add(item.getValue());
         }
 
+        printEndTime(startTime);
         return result;
 
     }
     public static List<LocationPoint> getUniqueLocationPointsIndexes(List<LocationPoint> points)
     {
+        long startStime = printStartTime();
         List<LocationPoint> uniqueList = new ArrayList<>();
         for (LocationPoint point: points)
         {
@@ -69,7 +74,21 @@ public class RemoveDuplicate {
                     uniqueList.add(point);
                 }
         }
+        printEndTime(startStime);
         return uniqueList;
     }
 
+
+    private static long printStartTime() {
+        System.out.println("remove duplicate");
+        long tmp = System.currentTimeMillis();
+        System.out.println("start: " + tmp);
+        return tmp;
+
+    }
+
+    private static void printEndTime(long startTime) {
+        long tmp = System.currentTimeMillis();
+        System.out.println("duretion: " + (tmp - startTime)/1000 + " seconds");
+    }
 }

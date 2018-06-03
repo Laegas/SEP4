@@ -9,6 +9,7 @@ import model.weather.ICAOAirportCode;
 import model.weather.WeatherRecord;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kenneth on 24/05/2018.
@@ -24,5 +25,9 @@ public interface WeatherDimensionalDao {
 //    public WeatherRecord getWeatherRecord(Date date, Time time, Longitude longitude, Latitude latitude);
     Airport getAirportByDateAndICAOCode(ICAOAirportCode code, Date date);
     List<Airport> getAirportsByDate(Date date);
+
+    Map<String,Integer> airportSurrKeyByICAOCode();
+
+    Map<Integer, String> airportICAOCodeBySurrKey();
 
 }

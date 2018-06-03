@@ -2,6 +2,7 @@ package database.DAO;
 
 import model.time.Date;
 import model.time.Time;
+import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,19 +19,25 @@ public class TimeDimensionalDAOImp implements TimeDimensionalDAO {
     @Override
     public Time getTimeByID(int id) {
         Time time = null;
+        PreparedStatement stmt = null;
         try{
             String sql = "SELECT hour, minute, second from D_TIME WHERE ID_TIME = ?";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt = connection.prepareStatement(sql);
             stmt.setInt(1,id);
-            ResultSet timeSet = stmt.executeQuery();
-            timeSet.next();
-            time = new Time(Integer.parseInt(timeSet.getString(1)),Integer.parseInt(timeSet.getString(2)),Integer.parseInt(timeSet.getString(3)));
-            stmt.close();
+            ResultSet resultSet = stmt.executeQuery();
+            resultSet.next();
+            time = new Time(Integer.parseInt(resultSet.getString("hour")),Integer.parseInt(resultSet.getString("minute")),Integer.parseInt(resultSet.getString("second")));
         }
        catch(SQLException e)
        {
            e.printStackTrace();
-       }
+       }finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
        return time;
     }
 

@@ -1,16 +1,18 @@
 package model.weather;
 
+import caching.LocalCache;
 import database.DAO.DaoManager;
 import database.DAO.WeatherDimensionalDao;
 import model.geography.Latitude;
 import model.geography.Longitude;
+import model.igc.DataPoint;
 import model.time.Date;
 import model.time.Time;
+import org.bridj.ann.Runtime;
+import org.omg.PortableInterceptor.LOCATION_FORWARD;
 import util.geography.GeoCaluclator;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by kenneth on 24/05/2018.
@@ -19,13 +21,11 @@ public class WeatherFactory {
     private static final WeatherFactory INSTANCE = new WeatherFactory();
 
     private WeatherDimensionalDao weatherDimensionalDao;
-    private Map<String, List<WeatherRecord>> localWeatherRecordByDateAndICAOCache;
 
 
     private WeatherFactory() {
         // TODO MAKE STUFF WHEN THE WEATHER DAO IS IMPLEMENTED
         weatherDimensionalDao = DaoManager.WEATHER_DIMENSIONAL_DAO;
-        this.localWeatherRecordByDateAndICAOCache = new HashMap<>();
     }
 
     public static WeatherFactory getINSTANCE() {
@@ -37,20 +37,12 @@ public class WeatherFactory {
      *
      * @param date
      * @param time
-     * @param longitude
-     * @param latitude
      * @return
      */
-    public WeatherRecord getWeather(Date date, Time time, Longitude longitude, Latitude latitude) {
-        // get using latitude and longitude
-        ICAOAirportCode airport_code = getClosestAirort(latitude, longitude);
-        if (airport_code != null) {
-
-            return getWeather(date, time, airport_code);
-        }
-
-        return null;
-
+    public WeatherRecord getWeather(Date date, Time time, DataPoint dataPoint) {
+        // get weather from the closest airport, if no weather data is available find the next closest
+        List<WeatherRecord> weatherRecords = LocalCache.INSTANCE.weatherRecordsByDateAndICAOCod(date, dataPoint.getClosest_airport());
+        return findClosestWeatherRecordUsingTime(weatherRecords, time);
     }
 
     /**
@@ -89,11 +81,7 @@ public class WeatherFactory {
         ICAOAirportCode icao_in_use = airportCode;
 
         // cache system for weather data maped by a string representing the date
-        List<WeatherRecord> weatherRecords = localWeatherRecordByDateAndICAOCache.get(getLocalCacheString(date, airportCode));
-        if (weatherRecords == null) {
-            weatherRecords = this.weatherDimensionalDao.getWeatherRecord(date, icao_in_use);
-            localWeatherRecordByDateAndICAOCache.put(getLocalCacheString(date, airportCode), weatherRecords);
-        }
+        List<WeatherRecord> weatherRecords = LocalCache.INSTANCE.weatherRecordsByDateAndICAOCod(date,airportCode);
 
         WeatherRecord result = findClosestWeatherRecordUsingTime(weatherRecords, time);
 
@@ -124,4 +112,5 @@ public class WeatherFactory {
         return (date.getDay().getDayOfMonth() + ":" + date.getMonth().getMonthNumber() +
                 ":" + date.getYear().getYear()) + ":" + airportCode.getICAOCode();
     }
+
 }
