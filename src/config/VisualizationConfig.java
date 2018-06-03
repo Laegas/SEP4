@@ -6,6 +6,7 @@ import org.json.JSONException;
 import visualization.javaFxMaps.Color;
 import visualization.javaFxMaps.ColorProperty;
 import visualization.javaFxMaps.LayerWrapper;
+import visualization.javaFxMaps.Property;
 
 public class VisualizationConfig {
 
@@ -38,12 +39,23 @@ public class VisualizationConfig {
                  (double)grid.getTotal().getNumberOfRegisteredFlights()*100)>30.0;*/
     }
 
-    // naming convention for properties: f = flights; t = total; l@ = layer number
-    public static final String[] PROPERTIES = new String[]{"f", "t"};
+    // naming convention for properties: f = flights; t = total; wd = wind direction; l@ = layer number
+    public static final Property[] PROPERTIES = new Property[]{new Property("f"), new Property("t"), new Property
+            ("wd45f"), new Property("wd45t"), new Property("wd135f"), new Property("wd135t"), new Property
+            ("wd225f"), new Property("wd225t"), new Property("wd315f"), new Property("wd315t")};
+
     public static String[] PROPERTY_VALUES(FeatureProperties feature) throws JSONException {
         String[] values = new String[PROPERTIES.length];
         values[0] = feature.getTotal().getNumberOfRegisteredFlights() + "";
         values[1] = feature.getTotal().getNumberOfRegisteredThermal() + "";
+        values[2] = feature.getWindDirZeroToNinety().getNumberOfRegisteredFlights() + "";
+        values[3] = feature.getWindDirZeroToNinety().getNumberOfRegisteredThermal() + "";
+        values[4] = feature.getWindDirNinetyToHundredEighty().getNumberOfRegisteredFlights() + "";
+        values[5] = feature.getWindDirNinetyToHundredEighty().getNumberOfRegisteredThermal() + "";
+        values[6] = feature.getWindDirHundredEightyToTwoHundredSeventy().getNumberOfRegisteredFlights() + "";
+        values[7] = feature.getWindDirHundredEightyToTwoHundredSeventy().getNumberOfRegisteredThermal() + "";
+        values[8] = feature.getWindDirTwoHundredSeventyToThreeHundredSixty().getNumberOfRegisteredFlights() + "";
+        values[9] = feature.getWindDirTwoHundredSeventyToThreeHundredSixty().getNumberOfRegisteredThermal() + "";
         for(String value : values)
             if(value == null || value.equals(""))
                 throw new JSONException("Not all properties are initialized");
@@ -55,14 +67,27 @@ public class VisualizationConfig {
     public static final int ZOOM = 7;
 
     // ********************* additional layer config for Google Maps *******************
-    public static String[] LAYER_NAMES = new String[]{"All", "All2"};
+    public static String[] LAYER_NAMES = new String[]{"Flights heat map", "Thermals", "Wind direction 0-90", "Wind " +
+            "direction 90-180", "Wind direction 180-270", "Wind direction 270-360"};
     public static LayerWrapper[] LAYERS(OutputData grid) {
         return new LayerWrapper[]{
-                new LayerWrapper(LAYER_NAMES[0], 0.3, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(),
-                        PROPERTIES[1] + "/" + PROPERTIES[0], "T:@2 / F:@1",
+                new LayerWrapper(LAYER_NAMES[0], 0.1, PROPERTIES[0], grid.getMaxTotalRegisteredFlightCount(),
+                        PROPERTIES[1] + "/" + grid.getMaxTotalRegisteredFlightCount(), "F:@1",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
-                new LayerWrapper(LAYER_NAMES[1], 0.3, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(),
+                new LayerWrapper(LAYER_NAMES[1], 0.1, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(),
                         PROPERTIES[1] + "/" + PROPERTIES[0], "T:@2 / F:@1",
+                        ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(0, 255, 0)),
+                new LayerWrapper(LAYER_NAMES[2], 1, PROPERTIES[3], grid.getMaxTotalRegisteredFlightCount(),
+                        PROPERTIES[3] + "/" + PROPERTIES[2], "T:@4 / F:@3",
+                        ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
+                new LayerWrapper(LAYER_NAMES[3], 1, PROPERTIES[5], grid.getMaxTotalRegisteredFlightCount(),
+                        PROPERTIES[5] + "/" + PROPERTIES[4], "T:@6 / F:@5",
+                        ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
+                new LayerWrapper(LAYER_NAMES[4], 1, PROPERTIES[7], grid.getMaxTotalRegisteredFlightCount(),
+                        PROPERTIES[7] + "/" + PROPERTIES[6], "T:@8 / F:@7",
+                        ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
+                new LayerWrapper(LAYER_NAMES[5], 1, PROPERTIES[9], grid.getMaxTotalRegisteredFlightCount(),
+                        PROPERTIES[9] + "/" + PROPERTIES[8], "T:@10 / F:@9",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0))
         };
     }
