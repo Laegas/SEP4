@@ -37,8 +37,8 @@ public class CountThermalsAnalysis {
             e.printStackTrace();
         }
 
-        GenerateJson.getInstance().generateJson(outputData);
-        GenerateJSSettings.getInstance().generateSettings(outputData);
+        int featureCount = GenerateJson.getInstance().generateJson(outputData);
+        GenerateJSSettings.getInstance().generateSettings(outputData, featureCount);
     }
 
     public static void analyse(List<Flight> flights, OutputData outputData) throws InvalidCoordinatesException {

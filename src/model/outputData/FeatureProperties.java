@@ -43,11 +43,11 @@ public class FeatureProperties {
 //        this.betweenTwentyAndThirtyDegree = new RegisteredFlightAndThermalCount();
     }
 
-    public RegisteredFlightAndThermalCount getWindDirZeroToNinty() {
+    public RegisteredFlightAndThermalCount getWindDirZeroToNinety() {
         return windDirZeroToNinty;
     }
 
-    public RegisteredFlightAndThermalCount getWindDirNintyToHundredEighty() {
+    public RegisteredFlightAndThermalCount getWindDirNinetyToHundredEighty() {
         return windDirNintyToHundredEighty;
     }
 
@@ -55,7 +55,7 @@ public class FeatureProperties {
         return windDirHundredEightyToTwoHundredSeventy;
     }
 
-    public RegisteredFlightAndThermalCount getWindDirTwoHundredSeventyToThreeHundredSizty() {
+    public RegisteredFlightAndThermalCount getWindDirTwoHundredSeventyToThreeHundredSixty() {
         return windDirTwoHundredSeventyToThreeHundredSizty;
     }
 

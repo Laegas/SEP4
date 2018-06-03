@@ -61,7 +61,7 @@
                     });
                 }
                 if(cLayerIndexes.length === 0) {
-                    document.map.data.setStyle(function (feature) {
+                    document.map.data.setStyle(function () {
                         return {
                             visible: false
                         };
@@ -112,24 +112,30 @@
                         cAlphaProperty = alphaProperty[i];
                         cAlphaDividerProperty = alphaDividerProperty[i];
                         cMinimumAlpha = minimumAlpha[i];
-                        cFromColor = fromColor[i];
-                        cToColor = toColor[i];
+                        cColorProperty.push(colorProperty[i]);
+                        cColorDividerProperty.push(colorDividerProperty[i]);
+                        cFromColor.push(fromColor[i]);
+                        cToColor.push(toColor[i]);
                         cDisplayStringFormat = displayStringFormat[i];
                     }
 
+                    var featureCounter = 0, onlyFirst = true;
                     document.map.data.setStyle(function (feature) {
                         // local variables
                         var color = "rgba(0,0,0,0)", f = cFormula;
-
                         // parsing visibilityFormula
                         for (i = 0; i < properties.length; i++) {
+                            console.log(properties[i]);
                             var index = f.indexOf(properties[i]);
                             while (index >= 0) {
-                                f = f.substring(0, index) + feature.getProperty(properties[i]) +
+                                //console.log("f.substring(0," + (index - properties[i].length + 1) + ")");
+                                f = f.substring(0, index - properties[i].length + 1) +
+                                    feature.getProperty(properties[i]) +
                                     f.substring(index + properties[i].length, f.length);
                                 index = f.indexOf(properties[i]);
                             }
                         }
+
                         var visible = (eval(f) >= visibilityThreshold);
                         if (visible) {
                             // evaluate alphaChannel for color
@@ -149,12 +155,13 @@
                                     individualColorWeights.push(feature.getProperty(cColorProperty[i]) / feature.getProperty(cColorDividerProperty[i]))
                                 }
                             }
-
                             color = "rgba(" + mixColors(cFromColor, cToColor, individualColorWeights) + ", " + alphaChannel + ")";
-                            console.log(color);
                         }
+                        if(++featureCounter === featureCount)
+                            console.log("DONE");
                         return {
                             fillColor: color,
+                            fillOpacity: 0.7,
                             strokeWeight: 0,
                             visible: visible
                         };
@@ -163,7 +170,13 @@
             };
 
             // todo set only one layer as a default
-            document.restyle(["All2", "All"], 0);
+            document.restyle([layerName[2]], 0);
+            var time = 0;
+            /*
+            setTimeout(function(){
+                document.restyle([layerName[0]], 0);
+            }, 15000);
+            */
 
             document.map.data.addListener('mouseover', function(event) {
                 document.getElementById('info').className = "";
@@ -172,10 +185,11 @@
                 var displayString = cDisplayStringFormat;
                 for(i = 0; i < properties.length; i++) {
                     var index = displayString.indexOf("@" + (i+1));
+                    var parameterPadding = (i+1).toString().length + 1;
                     while(index >= 0) {
                         displayString = displayString.substring(0, index) +
                             event.feature.getProperty(properties[i]) +
-                            displayString.substring(index + 2, displayString.length);
+                            displayString.substring(index + parameterPadding, displayString.length);
                         index = displayString.indexOf("@" + (i+1));
 
                     }
@@ -216,6 +230,9 @@
 <div id="map_canvas"></div>
 <div id="info_wrapper">
     <p id="info" class="transparent"></p>
+</div>
+<div id="processing">
+    <p id="processing_msg"></p>
 </div>
 </body>
 </html>

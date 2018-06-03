@@ -34,13 +34,14 @@ public class GenerateJson {
         return instance;
     }
     
-    public void generateJson(OutputData data) throws JSONException {
+    public int generateJson(OutputData data) throws JSONException {
         FeatureProperties[][] grid = data.getFeatureProperties();
 
         DecimalFormat df = new DecimalFormat("#.######", new DecimalFormatSymbols(Locale.US));
         List<String> lines = new ArrayList<>();
         lines.add("var json = [");
         FeatureProperties[][] chunkGrid = new FeatureProperties[HEIGHT / CHUNKS][WIDTH / CHUNKS];
+        int featureCounter = 0;
 
         for (int chunkColumn = 0; chunkColumn < CHUNKS; chunkColumn++) {
             for (int chunkRow = 0; chunkRow < CHUNKS; chunkRow++) {
@@ -55,6 +56,7 @@ public class GenerateJson {
                 for (int i = 0; i < chunkGrid.length; i++) {
                     for (int j = 0; j < chunkGrid[0].length; j++) {
                         if (IS_MEANINGFUL(chunkGrid[i][j])) {
+                            featureCounter++;
                             String[] propertyValues = PROPERTY_VALUES(chunkGrid[i][j]);
                             JSONObject properties = new JSONObject();
                             for (int propertyIndex = 0; propertyIndex < PROPERTIES.length; propertyIndex++) {
@@ -80,5 +82,6 @@ public class GenerateJson {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
+        return featureCounter;
     }
 }
