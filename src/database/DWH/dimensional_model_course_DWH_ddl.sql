@@ -35,7 +35,7 @@ create table D_MEMBER(
   ZIPCode number(4,0) not null,
   DateBorn date not null,
   DateJoined date not null,
-  DateLeft date not null,
+  DateLeft date,
   OwnsPlaneReg char(3) not null,
   Sex char(1) not null,
   Club varchar(50) not null,
