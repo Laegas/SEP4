@@ -5,6 +5,7 @@ truncate table MEMBER_TO_LOAD;
 insert into member_to_load (select * from fixed_status_member);
 
 -- inserting new rows into dimension d_member ---
+-- If the operation code is 'INS', that means the row was inserted since last extraction, so the valid from is today and the valid to is the end of time.
 insert INTO d_member(MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJOINED, DATELEFT, OWNSPLANEREG, SEX, CLUB, STATUS,  MEMBER_ID, valid_from, valid_to)
   ( SELECT
       MEMBERNO, INITIALS, NAME,ADDRESS,
@@ -19,6 +20,8 @@ insert INTO d_member(MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJ
 --finished handling inserted rows
 
 -- handling deleted rows
+-- if the operation code is DEL that means the row was deleted since the last day of extraction, so valid from is still the same and valid to is
+-- set to yesterday
 update d_member set
   valid_to = (trunc(sysdate-1,'DAY'))
 where valid_to = to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND
@@ -28,6 +31,8 @@ where valid_to = to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND
 -- finished handling deleted rows
 
 --handling changed rows
+-- if the operation code is DEL that means the row was deleted since the last day of extraction, so valid from is still the same and valid to is
+-- set to yesterday
 update d_member set
   valid_to = (trunc(sysdate-1,'DAY'))
 where valid_to = to_date('9999-12-31 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND

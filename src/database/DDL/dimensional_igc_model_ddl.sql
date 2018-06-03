@@ -134,7 +134,7 @@ CREATE table F_IGC_LOG(
   press_altitude INT,
   gps_altitude INT,
   gps_ok char(1),
-  closest_airport INT,
+  closest_airport INT references D_AIRPORT(SURR_KEY_AIRPORT),
   PRIMARY KEY (surr_key_flight, id_time)
 );
 

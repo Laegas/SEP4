@@ -81,7 +81,7 @@ insert into F_IGC_LOG (
     GPS_ALTITUDE,
     SATELLITE_COVERAGE
   from TRANSFORM_IGC_EMPTY_GLIDER_REGNO t
-);
+); --closest airport added through java, after ETL has been completed
 select count(*) from TRANSFORM_IGC_EMPTY_GLIDER_REGNO;
 select ID_TIME from D_TIME t where t.second= to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10),'SS') AND t.minute =to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10),'MI') AND
                                    t.hour =to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10), 'HH24');

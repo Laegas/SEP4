@@ -28,24 +28,24 @@ CREATE sequence d_member_id
 
 create table D_MEMBER(
   Member_ID int,
-  MemberNo number(6,0),
-  Initials char(04),
-  Name varchar2(50),
-  Address varchar2(50),
-  ZIPCode number(4,0),
-  DateBorn date,
-  DateJoined date,
+  MemberNo number(6,0) not null,
+  Initials char(04) not null,
+  Name varchar2(50) not null,
+  Address varchar2(50) not null,
+  ZIPCode number(4,0) not null,
+  DateBorn date not null,
+  DateJoined date not null,
   DateLeft date,
-  OwnsPlaneReg char(3),
-  Sex char(1),
-  Club varchar2(50),
-  Status varchar2(255),
-  valid_from date,
-  valid_to date,
+  OwnsPlaneReg char(3) not null,
+  Sex char(1) not null,
+  Club varchar2(50) not null,
+  Status varchar2(255) not null,
+  valid_from date not null,
+  valid_to date not null,
   primary key (Member_ID)
 );
 
--------- F_Duration and B_Flight_Member table ddl --------
+-------- F_Flight and B_Flight_Member table ddl --------
 BEGIN
    EXECUTE IMMEDIATE 'DROP TABLE F_flight CASCADE CONSTRAINTS purge';
 EXCEPTION
@@ -85,9 +85,9 @@ create sequence SEQ_ID_B_FLIGHT_MEMBER
 ;
 
 create table B_FLIGHT_MEMBER (
-  ID_GROUP int,
+  ID_GROUP int not null ,
   ID_MEMBER int references D_MEMBER(Member_ID),
-  weiGHt decimal(2,1),
+  weiGHt decimal(2,1) not null,
   primary key(id_group, ID_MEMBER)
 );
 
@@ -101,13 +101,13 @@ insert into B_FLIGHT_MEMBER(
 
 -----F_Duration was previously F_Flight-----
 create table F_FLIGHT(
-  id_group int,
-  id_member int,
+  id_group int not null,
+  id_member int not NULL ,
   id_launch_time int references D_TIME(ID_TIME),
   id_launch_date int references D_DATE(ID_DATE),
   id_land_time int references D_TIME(ID_TIME),
   id_land_date int references D_DATE(ID_DATE),
-  duration int,
+  duration int not null,
   FOREIGN KEY  (id_group, id_member) REFERENCES B_FLIGHT_MEMBER (id_group, id_member),
   primary key( id_group, id_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
 );

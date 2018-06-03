@@ -4,8 +4,6 @@
 
 
 -- select * from DATA_LOGGER;
-TRUNCATE table FULLY_EXTRACTED_IGC;
-
 insert into FULLY_EXTRACTED_IGC (
   igc_ID,
   TIME_OF_LOG,
@@ -14,9 +12,10 @@ insert into FULLY_EXTRACTED_IGC (
   SATELLITE_COVERAGE,
   PRESSURE_ALTITUDE,
   GPS_ALTITUDE,
-  FLIGHt_ID,
+  FLIGHT_ID,
   FLIGHT_DATE,
-  GLIDER_REGNO
+  GLIDER_REGNO,
+  OPERATION_CODE
 ) (SELECT
        igc.ID,
        igc.TIME_OF_LOG,
@@ -33,6 +32,10 @@ insert into FULLY_EXTRACTED_IGC (
    WHERE log.ID NOT IN (SELECT SURR_KEY_FLIGHT FROM D_FLIGHT) -- this makes sure that we only extract the new ones
     AND  log.FLIGHT_DATE > (select lastdate FROM last_Date_Of_IGC_Extraction)
 );
+select * from IGC_SOURCE_DATA;
+select * from IGC_YESTERDAY;
+select * from D_FLIGHT;
+select * from FULLY_EXTRACTED_IGC;
 
 UPDATE last_Date_Of_IGC_Extraction set lastDate = CURRENT_DATE;
 

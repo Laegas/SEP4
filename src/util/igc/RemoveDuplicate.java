@@ -24,7 +24,6 @@ public class RemoveDuplicate {
                 key = item.getDataPoint().getLatitude().getGridIndex() + ":" + item.getDataPoint().getLongitude().getGridIndex();
                 map.put(key, item);
             } catch (InvalidCoordinatesException e) {
-                System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
                 e.printStackTrace();
             }
         }
@@ -50,7 +49,6 @@ public class RemoveDuplicate {
                 key = item.getLatitude().getGridIndex() + ":" + item.getLongitude().getGridIndex();
                 map.put(key, item);
             } catch (InvalidCoordinatesException e) {
-                System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
                 e.printStackTrace();
             }
         }
@@ -80,15 +78,17 @@ public class RemoveDuplicate {
 
 
     private static long printStartTime() {
-        System.out.println("remove duplicate");
+
+      /*  System.out.println("remove duplicate");
         long tmp = System.currentTimeMillis();
         System.out.println("start: " + tmp);
-        return tmp;
+        */
+        return 0;
 
     }
 
     private static void printEndTime(long startTime) {
-        long tmp = System.currentTimeMillis();
-        System.out.println("duretion: " + (tmp - startTime)/1000 + " seconds");
+       /* long tmp = System.currentTimeMillis();
+        System.out.println("duretion: " + (tmp - startTime)/1000 + " seconds");*/
     }
 }
