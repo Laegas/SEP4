@@ -51,7 +51,7 @@
             }
 
             document.restyle = function restyle(layers, visibilityThreshold) {
-                var cLayerIndexes = [], cFormula, cAlphaProperty, cAlphaDividerProperty, cMinimumAlpha,
+                var cLayerIndexes = [], cFormula, cAlphaProperty, cAlphaDividerProperty, cMinimumAlpha = 0,
                     cColorProperty = [], cColorDividerProperty = [], cFromColor = [], cToColor = [];
                 for(var i = 0; i < layerName.length; i++) {
                     layers.forEach(function(layer) {
@@ -60,118 +60,144 @@
                         }
                     });
                 }
-                if(cLayerIndexes.length > 1) {
-                    // TODO lazy approach now - taking the first option
-                    cFormula = visibilityFormula[cLayerIndexes[0]];
-                    cAlphaProperty = alphaProperty[cLayerIndexes[0]];
-                    cAlphaDividerProperty = alphaDividerProperty[cLayerIndexes[0]];
-                    cMinimumAlpha = minimumAlpha[cLayerIndexes[0]];
-
-                    // putting all colors to array
-                    for(i = 0; i < cLayerIndexes.length; i++) {
-                        cFromColor.push(fromColor[cLayerIndexes[i]]);
-                        cToColor.push(toColor[cLayerIndexes[i]]);
-                    }
-
-                    // putting all color properties to array
-                    for(i = 0; i < cLayerIndexes.length; i++) {
-                        cColorProperty.push(colorProperty[cLayerIndexes[i]]);
-                        cColorDividerProperty.push(colorDividerProperty[cLayerIndexes[i]]);
-                    }
-
-                    // merging only different display formats
-                    cDisplayStringFormat = "";
-                    var onlyDifferentFormats = [], onlyDifferentFormatsIndexes = [];
-                    for(i = 0; i < cLayerIndexes.length; i++) {
-                        if(onlyDifferentFormats.indexOf(displayStringFormat[i]) < 0) {
-                            onlyDifferentFormats.push(displayStringFormat[i]);
-                            onlyDifferentFormatsIndexes.push(i);
-                        }
-                    }
-                    var first = true;
-                    onlyDifferentFormatsIndexes.forEach(function (value) {
-                       cDisplayStringFormat += ((first)?"":" | ") + layerName[value] + ": " +
-                           displayStringFormat[value];
-                       first = false;
+                if(cLayerIndexes.length === 0) {
+                    document.map.data.setStyle(function () {
+                        return {
+                            visible: false
+                        };
                     });
                 } else {
-                    i = cLayerIndexes[0];
-                    cFormula = visibilityFormula[i];
-                    cAlphaProperty = alphaProperty[i];
-                    cAlphaDividerProperty = alphaDividerProperty[i];
-                    cMinimumAlpha = minimumAlpha[i];
-                    cFromColor = fromColor[i];
-                    cToColor = toColor[i];
-                    cDisplayStringFormat = displayStringFormat[i];
-                }
+                    if (cLayerIndexes.length > 1) {
+                        // TODO lazy approach now - taking the first option
+                        cFormula = visibilityFormula[cLayerIndexes[0]];
+                        cAlphaProperty = alphaProperty[cLayerIndexes[0]];
+                        cAlphaDividerProperty = alphaDividerProperty[cLayerIndexes[0]];
 
-                document.map.data.setStyle(function(feature) {
-                    // local variables
-                    var color;
+                        // averaging minimum alpha for all active layers
+                        for (i = 0; i < cLayerIndexes.length; i++) {
+                            cMinimumAlpha += minimumAlpha[cLayerIndexes[0]];
+                        }
+                        cMinimumAlpha /= cLayerIndexes.length;
 
-                    // todo while loop because same property is not going to be replaced more than once now
-                    // parsing visibilityFormula
-                    for(i = 0; i < properties.length; i++) {
-                        var index = cFormula.indexOf(properties[i]);
-                        if(index >=0 )
-                            cFormula = cFormula.substring(0, index) + feature.getProperty(properties[i]) +
-                                cFormula.substring(index + properties[i].length, cFormula.length);
+                        // putting all colors to array
+                        for (i = 0; i < cLayerIndexes.length; i++) {
+                            cFromColor.push(fromColor[cLayerIndexes[i]]);
+                            cToColor.push(toColor[cLayerIndexes[i]]);
+                        }
+
+                        // putting all color properties to array
+                        for (i = 0; i < cLayerIndexes.length; i++) {
+                            cColorProperty.push(colorProperty[cLayerIndexes[i]]);
+                            cColorDividerProperty.push(colorDividerProperty[cLayerIndexes[i]]);
+                        }
+
+                        // merging only different display formats
+                        cDisplayStringFormat = "";
+                        var onlyDifferentFormats = [], onlyDifferentFormatsIndexes = [];
+                        for (i = 0; i < cLayerIndexes.length; i++) {
+                            if (onlyDifferentFormats.indexOf(displayStringFormat[i]) < 0) {
+                                onlyDifferentFormats.push(displayStringFormat[i]);
+                                onlyDifferentFormatsIndexes.push(i);
+                            }
+                        }
+                        var first = true;
+                        onlyDifferentFormatsIndexes.forEach(function (value) {
+                            cDisplayStringFormat += ((first) ? "" : " | ") + layerName[value] + ": " +
+                                displayStringFormat[value];
+                            first = false;
+                        });
+                    } else {
+                        i = cLayerIndexes[0];
+                        cFormula = visibilityFormula[i];
+                        cAlphaProperty = alphaProperty[i];
+                        cAlphaDividerProperty = alphaDividerProperty[i];
+                        cMinimumAlpha = minimumAlpha[i];
+                        cColorProperty.push(colorProperty[i]);
+                        cColorDividerProperty.push(colorDividerProperty[i]);
+                        cFromColor.push(fromColor[i]);
+                        cToColor.push(toColor[i]);
+                        cDisplayStringFormat = displayStringFormat[i];
                     }
 
-                    i = 0;
-                    while
-
-                    var visible = (eval(cFormula) >= visibilityThreshold);
-                    if(visible) {
-                        // evaluate alphaChannel for color
-                        var alpha = feature.getProperty(cAlphaProperty);
-                        if(cAlphaDividerProperty < 1)
-                            cAlphaDividerProperty = 1;
-                        var alphaChannel = (cMinimumAlpha + (alpha * (1 - cMinimumAlpha)) / cAlphaDividerProperty);
-                        if (alphaChannel > 1)
-                            alphaChannel = 1;
-
-                        // calculating individual color weights based on properties
-                        var individualColorWeights = [];
-                        for(i = 0; i < cColorProperty.length; i++) {
-                            if(cColorProperty[i] === MAXCOLORPROPERTY || cColorDividerProperty[i] === MAXCOLORPROPERTY) {
-                                individualColorWeights.push(1);
-                            } else {
-                                individualColorWeights.push(feature.getProperty(cColorProperty[i]) / feature.getProperty(cColorDividerProperty[i]))
+                    var featureCounter = 0, onlyFirst = true;
+                    document.map.data.setStyle(function (feature) {
+                        // local variables
+                        var color = "rgba(0,0,0,0)", f = cFormula;
+                        // parsing visibilityFormula
+                        for (i = 0; i < properties.length; i++) {
+                            console.log(properties[i]);
+                            var index = f.indexOf(properties[i]);
+                            while (index >= 0) {
+                                //console.log("f.substring(0," + (index - properties[i].length + 1) + ")");
+                                f = f.substring(0, index - properties[i].length + 1) +
+                                    feature.getProperty(properties[i]) +
+                                    f.substring(index + properties[i].length, f.length);
+                                index = f.indexOf(properties[i]);
                             }
                         }
 
-                        color = "rgba(" + mixColors(cFromColor, cToColor, individualColorWeights) + ", " + alphaChannel + ")";
-                        console.log(color);
-                    }
-                    return {
-                        fillColor: color,
-                        strokeWeight: 0,
-                        visible: visible
-                    };
-                });
+                        var visible = (eval(f) >= visibilityThreshold);
+                        if (visible) {
+                            // evaluate alphaChannel for color
+                            var alpha = feature.getProperty(cAlphaProperty);
+                            if (cAlphaDividerProperty < 1)
+                                cAlphaDividerProperty = 1;
+                            var alphaChannel = (cMinimumAlpha + (alpha * (1 - cMinimumAlpha)) / cAlphaDividerProperty);
+                            if (alphaChannel > 1)
+                                alphaChannel = 1;
 
+                            // calculating individual color weights based on properties
+                            var individualColorWeights = [];
+                            for (i = 0; i < cColorProperty.length; i++) {
+                                if (cColorProperty[i] === MAXCOLORPROPERTY || cColorDividerProperty[i] === MAXCOLORPROPERTY) {
+                                    individualColorWeights.push(1);
+                                } else {
+                                    individualColorWeights.push(feature.getProperty(cColorProperty[i]) / feature.getProperty(cColorDividerProperty[i]))
+                                }
+                            }
+                            color = "rgba(" + mixColors(cFromColor, cToColor, individualColorWeights) + ", " + alphaChannel + ")";
+                        }
+                        if(++featureCounter === featureCount)
+                            console.log("DONE");
+                        return {
+                            fillColor: color,
+                            fillOpacity: 0.7,
+                            strokeWeight: 0,
+                            visible: visible
+                        };
+                    });
+                }
             };
 
             // todo set only one layer as a default
-            document.restyle(["All3", "All2", "All"], 0);
+            document.restyle([layerName[2]], 0);
+            var time = 0;
+            /*
+            setTimeout(function(){
+                document.restyle([layerName[0]], 0);
+            }, 15000);
+            */
 
             document.map.data.addListener('mouseover', function(event) {
                 document.getElementById('info').className = "";
-                // todo while loop because same property is not going to be replaced more than once now
+
+                // parsing display string with properties
                 var displayString = cDisplayStringFormat;
-                for(var i = 0; i < properties.length; i++)
-                {
+                for(i = 0; i < properties.length; i++) {
                     var index = displayString.indexOf("@" + (i+1));
-                    if (index >= 0)
+                    var parameterPadding = (i+1).toString().length + 1;
+                    while(index >= 0) {
                         displayString = displayString.substring(0, index) +
                             event.feature.getProperty(properties[i]) +
-                            displayString.substring(index + 2, displayString.length);
+                            displayString.substring(index + parameterPadding, displayString.length);
+                        index = displayString.indexOf("@" + (i+1));
+
+                    }
                 }
                 document.getElementById('info').textContent = displayString;
             });
 
-            document.map.data.addListener('mouseout', function(event) {
+            document.map.data.addListener('mouseout', function() {
                 document.getElementById('info').className = "transparent";
             });
 
@@ -190,7 +216,7 @@
 
             document.goToLocation = function goToLocation(searchString) {
                 document.geocoder.geocode( {'address': searchString}, function(results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
+                    if (status === google.maps.GeocoderStatus.OK) {
                         document.map.setCenter(results[0].geometry.location);
                     } else {
                         alert("Geocode was not successful for the following reason: " + status);
@@ -204,6 +230,9 @@
 <div id="map_canvas"></div>
 <div id="info_wrapper">
     <p id="info" class="transparent"></p>
+</div>
+<div id="processing">
+    <p id="processing_msg"></p>
 </div>
 </body>
 </html>

@@ -2,6 +2,6 @@ package visualization.javaFxMaps;
 
 public class ColorProperty {
 
-    public static final String MAXCOLOR = "0";
+    public static final Property MAXCOLOR = new Property("0");
 
 }

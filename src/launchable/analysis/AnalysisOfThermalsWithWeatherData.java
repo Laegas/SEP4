@@ -51,8 +51,8 @@ public class AnalysisOfThermalsWithWeatherData {
             e.printStackTrace();
         }
 
-        generateJson.generateJson(outputData);
-        GenerateJSSettings.getInstance().generateSettings(outputData);
+        int featureCount = generateJson.generateJson(outputData);
+        GenerateJSSettings.getInstance().generateSettings(outputData, featureCount);
     }
 
     /**
@@ -107,16 +107,16 @@ public class AnalysisOfThermalsWithWeatherData {
                     longIndex = item.getDataPoint().getLongitude().getGridIndex();
                     windDirectionDegree = item.getWeatherRecord().getWind().getWindDirection().getDegree().getDegree();
                     if (windDirectionDegree >= 0 && windDirectionDegree < 90) {
-                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirZeroToNinty().incrementRegisteredThermal();
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirZeroToNinety().incrementRegisteredThermal();
                     }else
                     if (windDirectionDegree >= 90 && windDirectionDegree < 180) {
-                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirNintyToHundredEighty().incrementRegisteredThermal();
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirNinetyToHundredEighty().incrementRegisteredThermal();
                     }else
                     if (windDirectionDegree >= 180 && windDirectionDegree < 270) {
                         outputData.getFeatureProperties(latIndex,longIndex).getWindDirHundredEightyToTwoHundredSeventy().incrementRegisteredThermal();
                     }else
                     if (windDirectionDegree >= 270 && windDirectionDegree < 360) {
-                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirTwoHundredSeventyToThreeHundredSizty().incrementRegisteredThermal();
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirTwoHundredSeventyToThreeHundredSixty().incrementRegisteredThermal();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -146,16 +146,16 @@ public class AnalysisOfThermalsWithWeatherData {
                     longIndex = item.getDataPoint().getLongitude().getGridIndex();
                     windDirectionDegree = item.getWeatherRecord().getWind().getWindDirection().getDegree().getDegree();
                     if (windDirectionDegree >= 0 && windDirectionDegree < 90) {
-                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirZeroToNinty().incrementRegisteredFlight();
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirZeroToNinety().incrementRegisteredFlight();
                     }else
                     if (windDirectionDegree >= 90 && windDirectionDegree < 180) {
-                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirNintyToHundredEighty().incrementRegisteredFlight();
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirNinetyToHundredEighty().incrementRegisteredFlight();
                     }else
                     if (windDirectionDegree >= 180 && windDirectionDegree < 270) {
                         outputData.getFeatureProperties(latIndex,longIndex).getWindDirHundredEightyToTwoHundredSeventy().incrementRegisteredFlight();
                     }else
                     if (windDirectionDegree >= 270 && windDirectionDegree < 360) {
-                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirTwoHundredSeventyToThreeHundredSizty().incrementRegisteredFlight();
+                        outputData.getFeatureProperties(latIndex,longIndex).getWindDirTwoHundredSeventyToThreeHundredSixty().incrementRegisteredFlight();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
