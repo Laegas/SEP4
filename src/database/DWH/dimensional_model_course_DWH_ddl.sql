@@ -30,16 +30,16 @@ create table D_MEMBER(
   Member_ID int,
   MemberNo number(6,0) not null,
   Initials char(04) not null,
-  Name varchar(50) not null,
-  Address varchar(50) not null,
+  Name varchar2(50) not null,
+  Address varchar2(50) not null,
   ZIPCode number(4,0) not null,
   DateBorn date not null,
   DateJoined date not null,
   DateLeft date,
   OwnsPlaneReg char(3) not null,
   Sex char(1) not null,
-  Club varchar(50) not null,
-  Status varchar(255) not null,
+  Club varchar2(50) not null,
+  Status varchar2(255) not null,
   valid_from date not null,
   valid_to date not null,
   primary key (Member_ID)
@@ -47,7 +47,7 @@ create table D_MEMBER(
 
 -------- F_Flight and B_Flight_Member table ddl --------
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE F_Flight CASCADE CONSTRAINTS purge';
+   EXECUTE IMMEDIATE 'DROP TABLE F_flight CASCADE CONSTRAINTS purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
@@ -83,6 +83,7 @@ BEGIN
   END IF;
 END;
 /
+--describe flights_to_load_with_surr_key;
 
 create sequence SEQ_ID_B_FLIGHT_MEMBER
   start with 1
@@ -100,16 +101,15 @@ create table B_FLIGHT_MEMBER (
 
 -----F_Flight-----
 create table F_FLIGHT(
-  surr_key_flight int references D_FLIGHT(surr_key_flight),
   id_group int not null,
-  id_member not null,
+  id_member int not NULL ,
   id_launch_time int references D_TIME(ID_TIME),
   id_launch_date int references D_DATE(ID_DATE),
   id_land_time int references D_TIME(ID_TIME),
   id_land_date int references D_DATE(ID_DATE),
   duration int not null,
   FOREIGN KEY  (id_group, id_member) REFERENCES B_FLIGHT_MEMBER (id_group, id_member),
-  primary key(surr_key_flight, id_group, id_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
+  primary key( id_group, id_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
 );
 
 create sequence seq_id_flights
@@ -118,3 +118,4 @@ create sequence seq_id_flights
   cache 100
   nomaxvalue
 ;
+COMMIT ;

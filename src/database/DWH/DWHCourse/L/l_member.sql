@@ -53,3 +53,4 @@ insert INTO d_member(MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJ
   )
 ;
 -- finish handling changed rows
+select * from d_member;
