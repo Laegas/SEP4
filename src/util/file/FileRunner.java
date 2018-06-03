@@ -21,7 +21,6 @@ public class FileRunner implements Runnable {
         while((fn=fileQueue.getNextFileName())!=null)
         {
             String[] info = fn.split("\\?");
-            System.out.println("loading file #" + info[1]);
             fd.setFile(info[0]);
             flight =fd.readIGCFile();
             igc_dao.insertDataLogger(flight);
