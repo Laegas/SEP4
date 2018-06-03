@@ -68,9 +68,9 @@ INSERT INTO D_DATE (id_date, day, month, year, day_of_week, quarter) VALUES (0, 
 --dimension time creation and insert
 create table d_time(
   id_time int primary key,
-  hour varchar(2),
-  minute varchar(2),
-  second varchar(2)
+  hour varchar2(2),
+  minute varchar2(2),
+  second varchar2(2)
 );
 
 create index time_index on d_time (hour,minute,second);
