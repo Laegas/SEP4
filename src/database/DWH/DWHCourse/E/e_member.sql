@@ -26,7 +26,7 @@ INSERT INTO deltaMember(OPERATION, MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, D
     SELECT memberno from taMember
   ));
 
--- inserting all the changed rows TODO
+-- inserting all the changed rows
 INSERT INTO deltaMember( MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJOINED,
                          DATELEFT, OWNSPLANEREG, STATUSSTUDENT, STATUSPILOT,
                          STATUSASCAT, STATUSFULLCAT, SEX, CLUB,OPERATION)

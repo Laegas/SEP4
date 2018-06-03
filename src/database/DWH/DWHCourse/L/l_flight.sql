@@ -103,7 +103,7 @@ begin
         SEQ_ID_B_FLIGHT_MEMBER.currval, tmp_id_member  , 0.5);
     end if;
     --inserting flight facts
-    insert into f_duration(  id_group, ID_MEMBER, SURR_KEY_FLIGHT, id_launch_time , id_land_time , id_land_date , duration) VALUES (
+    insert into f_flight(  id_group, ID_MEMBER, SURR_KEY_FLIGHT, id_launch_time , id_land_time , id_land_date , duration) VALUES (
       SEQ_ID_B_FLIGHT_MEMBER.currval,
       tmp_id_member,
       c.surr_key_flight,
