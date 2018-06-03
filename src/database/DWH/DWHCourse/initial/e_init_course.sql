@@ -44,8 +44,8 @@ EXCEPTION
       END IF;
 END;
 /
-Create TABLE deltaMember as (SELECT * FROM taMember where 1 = 0);
-ALTER TABLE deltaMember ADD (operation char(3));
-Create TABLE MEMBER_YESTERDAY as (SELECT * FROM taMember where 1 = 0);
+Create TABLE deltaMember as (SELECT * FROM taMember where 1 = 0); -- Creation of table with the members that have changed
+ALTER TABLE deltaMember ADD (operation char(3)); -- Adding operation code that identifies what type of change happened.
+Create TABLE MEMBER_YESTERDAY as (SELECT * FROM taMember where 1 = 0); -- Table to keep track of extraction of last day.
 
 COMMIT;

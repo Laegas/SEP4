@@ -43,6 +43,6 @@ EXCEPTION
       END IF;
 END;
 /
-CREATE TABLE fixed_status_member As (SELECT * FROM deltaMember where 1 = 0);
+CREATE TABLE fixed_status_member As (SELECT * FROM deltaMember where 1 = 0); -- Status is changed in this table. 4 columns to 1.
 ALTER TABLE fixed_status_member drop (statusstudent, statuspilot, statusFullCat, statusAsCat);
 alter table fixed_status_member add (status varchar2(255));
