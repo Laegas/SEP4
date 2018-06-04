@@ -127,10 +127,9 @@ create sequence SEQ_ID_B_FLIGHT_MEMBER
 ;
 
 create table B_FLIGHT_MEMBER (
-  ID_GROUP int not null ,
-  ID_MEMBER int ,
-  weiGHt decimal(2,1) not null,
-  primary key(id_group, ID_MEMBER)
+  ID_GROUP int,
+  ID_MEMBER int references d_member(member_id),
+  weiGHt decimal(2,1) not null
 );
 
 --nonexistent - using for insert from thermal side instead of member side.
@@ -142,15 +141,13 @@ insert into B_FLIGHT_MEMBER(
 
 -----F_Duration was previously F_Flight-----
 create table F_FLIGHT(
-  id_group int not null,
-  id_member int not NULL ,
+  id_group int,
   id_launch_time int references D_TIME(ID_TIME),
   id_launch_date int references D_DATE(ID_DATE),
   id_land_time int references D_TIME(ID_TIME),
   id_land_date int references D_DATE(ID_DATE),
   duration int not null,
-  FOREIGN KEY  (id_group, id_member) REFERENCES B_FLIGHT_MEMBER (id_group, id_member),
-  primary key( id_group, id_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
+  primary key(id_group,  id_launch_time, id_launch_date, id_land_time, id_land_date)
 );
 
 create sequence seq_id_flights
@@ -160,3 +157,6 @@ create sequence seq_id_flights
   nomaxvalue
 ;
 COMMIT ;
+
+select * from d_time;
+select * from d_date;

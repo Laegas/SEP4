@@ -59,3 +59,4 @@ INSERT into deltamember( MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, D
 -- updating the member_yesterday table to hold the new data
 truncate table member_yesterday;
 insert into member_yesterday (select * from taMember);
+COMMIT ;

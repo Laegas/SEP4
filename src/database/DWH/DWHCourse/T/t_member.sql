@@ -27,3 +27,5 @@ INSERT INTO fixed_status_member (OPERATION, MEMBERNO, INITIALS, NAME, ADDRESS, Z
 update fixed_status_member
 set dateleft = TO_DATE('9999-12-31', 'yyyy-mm-dd')
 where dateleft IS null;
+
+COMMIT ;
