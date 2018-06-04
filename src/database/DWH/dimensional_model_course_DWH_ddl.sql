@@ -99,15 +99,6 @@ END;
 /
 
 BEGIN
-   EXECUTE IMMEDIATE 'DROP SEQUENCE seq_id_flights';
-EXCEPTION
-  WHEN OTHERS THEN
-    IF SQLCODE != -2289 THEN
-      RAISE;
-    END IF;
-END;
-/
-BEGIN
   EXECUTE IMMEDIATE 'DROP SEQUENCE SEQ_ID_B_FLIGHT_MEMBER';
   EXCEPTION
   WHEN OTHERS THEN
@@ -139,7 +130,6 @@ insert into B_FLIGHT_MEMBER(
   ID_GROUP, ID_MEMBER, weight
 ) VALUES (-1, -1, -1);
 
------F_Duration was previously F_Flight-----
 -----F_Flight-----
 create table F_FLIGHT(
   id_group int not null,
@@ -150,13 +140,6 @@ create table F_FLIGHT(
   id_land_date int references D_DATE(ID_DATE),
   duration int not null,
   FOREIGN KEY  (id_group, id_member) REFERENCES B_FLIGHT_MEMBER (id_group, id_member),
-  primary key( id_group, id_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
+  primary key(id_group, id_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
 );
-
-create sequence seq_id_flights
-  start with 1
-  increment by 1
-  cache 100
-  nomaxvalue
-;
 COMMIT ;

@@ -1,8 +1,3 @@
-
--- now loading the flights
---------------------- INIT --------------
-
-
 ----------- FINISHED INIT ------------
 truncate table flights_to_load_with_surr_key;
 insert into flights_to_load_with_surr_key (LAUNCHTIME,LANDINGTIME,PLANEREGISTRATION,
@@ -15,7 +10,6 @@ insert into flights_to_load_with_surr_key (LAUNCHTIME,LANDINGTIME,PLANEREGISTRAT
                                            DURATION
                                            from flights_to_load
   );
-ALTER table FLIGHTS_TO_LOAD_WITH_SURR_KEY DROP COLUMN id_flight;
 
 
 
@@ -29,13 +23,6 @@ update flights_to_load_with_surr_key a set
                   valid_to = trunc(TO_DATE('9999-12-31' ,'YYYY-MM-DD'),'DAY'))
     where non_unique_initials <> 'T'
 ;
-*/
-/*
-update flights_to_load_with_surr_key set id_flight = seq_id_flights.NEXTVAL
-;
-*/
-/*
-update FLIGHTS_TO_LOAD_WITH_SURR_KEY set SURR_KEY_FLIGHT = SEQ_ID_FLIGHTS.nextval;
 */
 
 update flights_to_load_with_surr_key a set id_launchtime = (

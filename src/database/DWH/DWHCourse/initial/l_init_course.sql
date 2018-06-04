@@ -27,7 +27,6 @@ alter table flights_to_load_with_surr_key add (
   id_launchtime int default null,
   id_landtime int default null,
   id_landdate int default null,
-  id_flight int default null
 );
 
 alter table flights_to_load_with_surr_key drop (
