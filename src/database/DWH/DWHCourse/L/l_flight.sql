@@ -38,14 +38,7 @@ update flights_to_load_with_surr_key a set a.id_LANDDATE = (
     d_date.day = to_char(extract(day from a.LANDINGTIME))
 );
 
-
--- now starts the fun stuff with bridge tables and members
-select * from FLIGHTS_TO_LOAD_WITH_SURR_KEY where PILOT1INIT is NULL ;
-select * from d_member;
-select * from f_flight;
-SELECT member_id from d_member where INITIALS = 'ISGR' offset 0 rows fetch next 1 rows only;
-
-
+-- start load of bridge table and flights
 declare
   tmp_id_member int;
 begin

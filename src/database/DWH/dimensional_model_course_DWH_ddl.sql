@@ -26,7 +26,6 @@ CREATE sequence d_member_id
   noMaxValue
 ;
 
-
 create table D_MEMBER(
   Member_ID int,
   MemberNo number(6,0) not null,
@@ -110,11 +109,11 @@ END;
 /
 BEGIN
   EXECUTE IMMEDIATE 'DROP SEQUENCE SEQ_ID_B_FLIGHT_MEMBER';
-EXCEPTION
+  EXCEPTION
   WHEN OTHERS THEN
-    IF SQLCODE != -2289 THEN
-      RAISE;
-    END IF;
+  IF SQLCODE != -2289 THEN
+    RAISE;
+  END IF;
 END;
 /
 --describe flights_to_load_with_surr_key;
@@ -140,6 +139,7 @@ insert into B_FLIGHT_MEMBER(
 ) VALUES (-1, -1, -1);
 
 -----F_Duration was previously F_Flight-----
+-----F_Flight-----
 create table F_FLIGHT(
   id_group int,
   id_launch_time int references D_TIME(ID_TIME),
