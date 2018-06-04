@@ -1,4 +1,5 @@
 -------- INIT FLIGHTS Load ------
+--dropping tables if they exist
 BEGIN
    EXECUTE IMMEDIATE 'DROP TABLE flights_to_load_with_surr_key cascade constraints purge';
 EXCEPTION
@@ -17,6 +18,7 @@ BEGIN
   END IF;
 END;
 /
+
 create table flights_to_load as (select * from FLAGGED_FOR_DUPLICATED_INITIALS where 1 = 0);
 alter table flights_to_load add (duration int);
 create table flights_to_load_with_surr_key as (select * from flights_to_load);
@@ -26,7 +28,7 @@ alter table flights_to_load_with_surr_key add (
   id_launchdate int default null,
   id_launchtime int default null,
   id_landtime int default null,
-  id_landdate int default null,
+  id_landdate int default null
 );
 
 alter table flights_to_load_with_surr_key drop (

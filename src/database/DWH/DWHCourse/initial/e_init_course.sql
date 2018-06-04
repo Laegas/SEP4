@@ -1,5 +1,4 @@
 -------- INIT FLIGHTS Extract --------
-
 BEGIN
    EXECUTE IMMEDIATE 'DROP TABLE lastDateOfFlightExtraction cascade constraints purge';
 EXCEPTION
