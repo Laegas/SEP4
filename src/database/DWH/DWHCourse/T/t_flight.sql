@@ -21,8 +21,7 @@ insert into FIXED_LAND_LAUNCH_TIME
        LAUNCHWINCH,LAUNCHSELFLAUNCH,CABLEBREAK,CROSSCOUNTRYKM,CLUBNAME from TOHANDLELATERFLIGHTS where landingtime = to_date('31-12-9999','DD-MM-YYYY'))
   )
 ;
-
--- finished validating and fixing the duration
+-- finished validating and fixing the land and launch date
 
 -- validating pilot info, pilot1init is always used
 insert into fixed_pilot_info (SELECT LAUNCHTIME, LANDINGTIME,PLANEREGISTRATION,PILOT1INIT,PILOT2INIT,LAUNCHAEROTOW, LAUNCHWINCH,LAUNCHSELFLAUNCH,CABLEBREAK,CROSSCOUNTRYKM,CLUBNAME
@@ -32,7 +31,7 @@ insert into fixed_pilot_info (SELECT LAUNCHTIME, LANDINGTIME,PLANEREGISTRATION,P
                               from FIXED_LAND_LAUNCH_TIME where pilot1init = '    ' and pilot2init <> '    ' )
 ;
 
--- inserting data into flagged_for_dupe initials --
+-- inserting data into flagged_for_dup initials --
 insert into flagged_for_duplicated_initials (
   select f.*, d1.pilot1_non_unique_initials, d2.pilot2_non_unique_initials from fixed_pilot_info f
     join (select null as pilot1_non_unique_initials from dual) d1
@@ -41,6 +40,7 @@ insert into flagged_for_duplicated_initials (
       on 1 = 1
 );
 
+--set to true if the same initials are found more than once
 update flagged_for_duplicated_initials set
   pilot1_non_unique_initials = 'T' where pilot1init in (SELECT initials from d_member group by initials having count(*) > 1)
 ;
@@ -61,8 +61,5 @@ insert into flights_to_load (LAUNCHTIME, LANDINGTIME,PLANEREGISTRATION,PILOT1INI
       launchtime - landingtime as duration
     FROM flagged_for_duplicated_initials
   );
-
---LAUNCHTIME, LANDINGTIME,DATE,PLANEREGISTRATION,PILOT1INIT,PILOT2INIT,LAUNCHAEROTOW,LAUNCHWINCH,LAUNCHSELFLAUNCH,
---  CABLEBREAK ,CROSSCOUNTRYKM,CLUBNAME,PILOT1_NON_UNIQUE_INITIALS,PILOT2_NON_UNIQUE_INITIALS, DURATION
 
 COMMIT ;

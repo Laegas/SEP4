@@ -21,7 +21,5 @@ INSERT INTO TOHANDLELATERFLIGHTS
     WHERE launchtime > (select lastdate FROM lastDateOfFlightExtraction)
   );
 ---------- finished finding flights ----------
-
-
 UPDATE lastDateOfFlightExtraction set lastDate = CURRENT_DATE;
 COMMIT ;

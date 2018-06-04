@@ -42,7 +42,7 @@ INSERT INTO deltaMember( MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, D
       FROM member_yesterday))
   where memberno not in (SELECT memberno from deltaMember where operation = 'INS'));
 
--- extracting all the people with birthdays
+-- extracting all the people with birthdays on the current date
 INSERT into deltamember( MEMBERNO, INITIALS, NAME, ADDRESS, ZIPCODE, DATEBORN, DATEJOINED,
                          DATELEFT, OWNSPLANEREG, STATUSSTUDENT, STATUSPILOT,
                          STATUSASCAT, STATUSFULLCAT, SEX, CLUB,OPERATION)
