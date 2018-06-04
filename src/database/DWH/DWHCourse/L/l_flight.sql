@@ -50,7 +50,7 @@ begin
     then
       tmp_id_member := -1;
     else
-      select (SELECT member_id from d_member where d_member.INITIALS = c.PILOT1INIT offset 0 rows fetch next 1 rows only) into tmp_id_member from dual;
+      select (SELECT member_id from d_member where INITIALS = c.pilot1init offset 0 rows fetch next 1 rows only) into tmp_id_member from dual;
     end if;
     dbms_output.put_line(tmp_id_member);
     if(c.pilot2init = '    ')
@@ -88,4 +88,30 @@ begin
   end loop;
 end;
 /
+
+
+
+
+
+/*used for the testing of f_flight*/
+select b.ID_GROUP, b.WEIGHT, ID_MEMBER, m.INITIALS, m.NAME, d.YEAR as "launch year", d.MONTH as "launch month", d.DAY as "launch day"
+  from B_FLIGHT_MEMBER b
+    join D_MEMBER m
+      on b.ID_MEMBER = m.MEMBER_ID
+    join F_FLIGHT f
+      on f.ID_GROUP = b.ID_GROUP
+    join D_DATE d
+      on f.ID_LAUNCH_TIME = d.ID_DATE
+  where b.id_group = 1511;
+
+select b.ID_GROUP, b.WEIGHT, ID_MEMBER, m.INITIALS, m.NAME, d.YEAR as "launch year", d.MONTH as "launch month", d.DAY as "launch day"
+  from B_FLIGHT_MEMBER b
+    join D_MEMBER m
+      on b.ID_MEMBER = m.MEMBER_ID
+    join F_FLIGHT f
+      on f.ID_GROUP = b.ID_GROUP
+    join D_DATE d
+      on f.ID_LAUNCH_TIME = d.ID_DATE
+  where b.id_group = 1478;
+
 
