@@ -189,7 +189,9 @@ public class IGCDimensionalDaoImp implements IGCDimensionalDao {
                 resultPointer = null;
                 //                find the closest airport and set it
                 for (Airport airport : airports) {
-                    tempDist = GeoCaluclator.getGeoDistance(dataPoint.getLatitude(),dataPoint.getLongitude(), airport.getLatitude(), airport.getLongitude());
+                    tempDist = GeoCaluclator.getGeoDistance(
+                            dataPoint.getLatitude(),dataPoint.getLongitude(), airport.getLatitude(), airport.getLongitude()
+                    );
                     if (tempDist < shortestDistance) {
                         resultPointer = airport;
                         shortestDistance = tempDist;
