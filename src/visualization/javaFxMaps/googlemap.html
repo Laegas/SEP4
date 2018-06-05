@@ -125,10 +125,8 @@
                         var color = "rgba(0,0,0,0)", f = cFormula;
                         // parsing visibilityFormula
                         for (i = 0; i < properties.length; i++) {
-                            console.log(properties[i]);
                             var index = f.indexOf(properties[i]);
                             while (index >= 0) {
-                                //console.log("f.substring(0," + (index - properties[i].length + 1) + ")");
                                 f = f.substring(0, index - properties[i].length + 1) +
                                     feature.getProperty(properties[i]) +
                                     f.substring(index + properties[i].length, f.length);
@@ -170,7 +168,7 @@
             };
 
             // todo set only one layer as a default
-            document.restyle([layerName[2]], 0);
+            document.restyle([layerName[1]], 0);
             var time = 0;
             /*
             setTimeout(function(){
