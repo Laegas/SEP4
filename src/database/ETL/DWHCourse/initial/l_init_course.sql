@@ -1,27 +1,12 @@
 -------- INIT FLIGHTS Load ------
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE flights_to_load_with_surr_key cascade constraints purge';
-EXCEPTION
-   WHEN OTHERS THEN
-      IF SQLCODE != -942 THEN
-         RAISE;
-      END IF;
-END;
-/
-BEGIN
-  EXECUTE IMMEDIATE 'DROP TABLE flights_to_load cascade constraints purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
-/
+BEGIN drop_table('flights_to_load_with_surr_key'); END;/
+BEGIN drop_table('flights_to_load'); END;/
+
 create table flights_to_load as (select * from FLAGGED_FOR_DUPLICATED_INITIALS where 1 = 0);
-alter table flights_to_load add (duration int);
+alter table flights_to_load add (duration int); -- adding column for calculated duration of flight
 create table flights_to_load_with_surr_key as (select * from flights_to_load);
 
-alter table flights_to_load_with_surr_key add (
+alter table flights_to_load_with_surr_key add ( -- adding columns mostly for key lookup
   surr_key_flight int default null,
   id_launchdate int default null,
   id_launchtime int default null,
@@ -38,24 +23,9 @@ alter table flights_to_load_with_surr_key drop (
 );
 
 ------------INIT MEMBER Load-----------
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE MEMBER_TO_LOAD cascade constraints purge';
-EXCEPTION
-   WHEN OTHERS THEN
-      IF SQLCODE != -942 THEN
-         RAISE;
-      END IF;
-END;
-/
-BEGIN
-  EXECUTE IMMEDIATE 'DROP SEQUENCE d_member_id';
-EXCEPTION
-  WHEN OTHERS THEN
-    IF SQLCODE != -2289 THEN
-      RAISE;
-    END IF;
-END;
-/
+BEGIN drop_table('MEMBER_TO_LOAD'); END;/
+BEGIN drop_sequence('d_member_id'); END;/
+
 CREATE TABLE MEMBER_TO_LOAD as (SELECT * FROM fixed_status_member where 1 = 0);
 
 CREATE sequence d_member_id
