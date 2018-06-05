@@ -28,27 +28,60 @@ CREATE sequence d_member_id
 
 create table D_MEMBER(
   Member_ID int,
-  MemberNo number(6,0),
-  Initials char(04),
-  Name varchar2(50),
-  Address varchar2(50),
-  ZIPCode number(4,0),
-  DateBorn date,
-  DateJoined date,
+  MemberNo number(6,0) not null,
+  Initials char(04) not null,
+  Name varchar2(50) not null,
+  Address varchar2(50) not null,
+  ZIPCode number(4,0) not null,
+  DateBorn date not null,
+  DateJoined date not null,
   DateLeft date,
-  OwnsPlaneReg char(3),
-  Sex char(1),
-  Club varchar2(50),
-  Status varchar2(255),
-  valid_from date,
-  valid_to date,
+  OwnsPlaneReg char(3) not null,
+  Sex char(1) not null,
+  Club varchar2(50) not null,
+  Status varchar2(255) not null,
+  valid_from date not null,
+  valid_to date not null,
   primary key (Member_ID)
+);
+insert into D_MEMBER(
+  Member_ID,
+  MemberNo ,
+  Initials,
+  Name ,
+  Address ,
+  ZIPCode ,
+  DateBorn,
+  DateJoined ,
+  DateLeft ,
+  OwnsPlaneReg ,
+  Sex  ,
+  Club ,
+  Status ,
+  valid_from ,
+  valid_to)
+VALUES (
+  -1,
+  0,
+  'aaaa',
+  'name',
+  'Address',
+  0000,
+  TO_DATE('0001/01/01', 'YYYY/MM/DD'),
+  TO_DATE('0001/01/01', 'YYYY/MM/DD'),
+  TO_DATE('0001/01/01', 'YYYY/MM/DD'),
+  'aaa',
+  'M',
+  'club',
+  'BLA',
+  TO_DATE('0001/01/01', 'YYYY/MM/DD'),
+  TO_DATE('0001/01/01', 'YYYY/MM/DD')
+
 );
 
 -------- F_Duration and B_Flight_Member table ddl --------
 BEGIN
    EXECUTE IMMEDIATE 'DROP TABLE F_Duration CASCADE CONSTRAINTS purge';
-   EXECUTE IMMEDIATE 'DROP TABLE B_FLIGHT_MEMBER CASCADE CONSTRAINTS purge';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
@@ -57,9 +90,28 @@ EXCEPTION
 END;
 /
 
+/
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE B_FLIGHT_MEMBER CASCADE CONSTRAINTS purge';
+  EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -942 THEN
+    RAISE;
+  END IF;
+END;
+/
+
+BEGIN
+  EXECUTE IMMEDIATE 'DROP SEQUENCE SEQ_ID_B_FLIGHT_MEMBER';
+  EXCEPTION
+  WHEN OTHERS THEN
+  IF SQLCODE != -2289 THEN
+    RAISE;
+  END IF;
+END;
+/
 BEGIN
    EXECUTE IMMEDIATE 'DROP SEQUENCE seq_id_flights';
-  EXECUTE IMMEDIATE 'DROP SEQUENCE SEQ_ID_B_FLIGHT_MEMBER';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -2289 THEN
@@ -67,7 +119,6 @@ EXCEPTION
     END IF;
 END;
 /
---describe flights_to_load_with_surr_key;
 
 create sequence SEQ_ID_B_FLIGHT_MEMBER
   start with 1
@@ -78,15 +129,13 @@ create sequence SEQ_ID_B_FLIGHT_MEMBER
 
 create table B_FLIGHT_MEMBER (
   ID_GROUP int,
-  ID_MEMBER int references D_MEMBER(Member_ID),
-  weiGHt decimal(2,1),
-  primary key(id_group, ID_MEMBER)
+  ID_MEMBER int references d_member(member_id),
+  weiGHt decimal(2,1) not null,
+  primary key (ID_GROUP, ID_MEMBER)
 );
 
 --nonexistent - using for insert from thermal side instead of member side.
-insert into D_MEMBER(
-  Member_ID
-) VALUES (-1);
+
 insert into B_FLIGHT_MEMBER(
   ID_GROUP, ID_MEMBER, weight
 ) VALUES (-1, -1, -1);
@@ -95,14 +144,12 @@ insert into B_FLIGHT_MEMBER(
 create table F_Duration(
   surr_key_flight int references D_FLIGHT(surr_key_flight),
   id_group int,
-  id_member int,
   id_launch_time int references D_TIME(ID_TIME),
   id_launch_date int references D_DATE(ID_DATE),
   id_land_time int references D_TIME(ID_TIME),
   id_land_date int references D_DATE(ID_DATE),
-  duration int,
-  FOREIGN KEY  (id_group, id_member) REFERENCES B_FLIGHT_MEMBER (id_group, id_member),
-  primary key(surr_key_flight, id_group, id_member, id_launch_time, id_launch_date, id_land_time, id_land_date)
+  duration int not null,
+  primary key(surr_key_flight, id_group, id_launch_time, id_launch_date, id_land_time, id_land_date)
 );
 
 create sequence seq_id_flights

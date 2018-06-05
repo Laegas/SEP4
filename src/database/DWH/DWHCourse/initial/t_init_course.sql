@@ -16,7 +16,9 @@ alter table flagged_for_duplicated_initials add (pilot1_NON_unique_initials char
 ------------INIT MEMBER Transform-----------
 BEGIN drop_table('fixed_status_member'); END;/
 
-CREATE TABLE fixed_status_member As (SELECT * FROM deltaMember where 1 = 0); -- Status is changed in this table. 4 columns to 1.
-ALTER TABLE fixed_status_member drop (statusstudent, statuspilot, statusFullCat, statusAsCat); -- replacing 4
--- existing status columns
-alter table fixed_status_member add (status varchar2(255)); -- by one that contains full name of the status
+-- Status is changed in this table.
+-- Replacing 4 columns from the source by 1 column in D_Member
+-- that contains full name of the status
+CREATE TABLE fixed_status_member As (SELECT * FROM deltaMember where 1 = 0);
+ALTER TABLE fixed_status_member drop (statusstudent, statuspilot, statusFullCat, statusAsCat);
+alter table fixed_status_member add (status varchar2(255));
