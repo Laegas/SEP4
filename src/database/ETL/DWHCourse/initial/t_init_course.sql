@@ -1,7 +1,10 @@
 -------- INIT FLIGHTS Transform ------
-BEGIN drop_table('fixed_pilot_info'); END;/
-BEGIN drop_table('flagged_for_duplicated_initials'); END;/
-BEGIN drop_table('fixed_Land_Launch_Time'); END;/
+BEGIN drop_table('fixed_pilot_info'); END;
+/
+BEGIN drop_table('flagged_for_duplicated_initials'); END;
+/
+BEGIN drop_table('fixed_Land_Launch_Time'); END;
+/
 
 --land and launch time is fixed in this table -
 --swapped if land - launch time is <0;
@@ -15,7 +18,8 @@ alter table flagged_for_duplicated_initials add (pilot1_NON_unique_initials char
 
 ------------INIT MEMBER Transform-----------
 
-BEGIN drop_table('fixed_status_member'); END;/
+BEGIN drop_table('fixed_status_member'); END;
+/
 
 -- Status is changed in this table.
 -- Replacing 4 columns from the source by 1 column in D_Member

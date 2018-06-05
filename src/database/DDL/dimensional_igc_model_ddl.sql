@@ -1,13 +1,7 @@
 ------ Static D_Date DDL and populating ------
-BEGIN
-  EXECUTE IMMEDIATE 'DROP TABLE D_date CASCADE CONSTRAINTS purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_TABLE('D_date'); END;
 /
+
 CREATE TABLE D_date(
   id_date int primary key,
   day varchar2(2),
@@ -51,15 +45,9 @@ end;
 /
 
 ------ Static D_Time DDL and populating ------
-BEGIN
-  EXECUTE IMMEDIATE 'DROP TABLE d_time CASCADE CONSTRAINTS purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_TABLE('d_time'); END;
 /
+
 --insert values for date not found
 INSERT INTO D_DATE (id_date, day, month, year, day_of_week, quarter) VALUES (-1, 'NA', 'NA','NAN', 'N', 'N');
 --insert values for end of time date
@@ -99,16 +87,11 @@ end;
 --insert row for unknown time
 insert into D_TIME(id_time, hour, minute, second) VALUES (-1,'NA','NA','NA');
 
-BEGIN
-  EXECUTE IMMEDIATE 'drop table D_GLIDER CASCADE CONSTRAINTS purge';
-  EXECUTE IMMEDIATE 'drop table D_FLIGHT CASCADE CONSTRAINTS purge';
-  EXECUTE IMMEDIATE 'drop table F_IGC_LOG CASCADE CONSTRAINTS purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_TABLE('D_GLIDER'); END;
+/
+BEGIN DROP_TABLE('D_FLIGHT'); END;
+/
+BEGIN DROP_TABLE('F_IGC_LOG'); END;
 /
 
 -------------------------------------------------------

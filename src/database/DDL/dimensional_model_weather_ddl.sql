@@ -1,12 +1,6 @@
-BEGIN
-  EXECUTE IMMEDIATE 'drop table F_WEATHER_RECORD CASCADE CONSTRAINTS purge';
-  EXECUTE IMMEDIATE 'drop table D_AIRPORT CASCADE CONSTRAINTS purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_TABLE('F_WEATHER_RECORD'); END;
+/
+BEGIN DROP_TABLE('D_AIRPORT'); END;
 /
 
 CREATE table D_AIRPORT(
@@ -31,8 +25,10 @@ CREATE table F_WEATHER_RECORD(
   wind_direction_to int,
   wind_speed int ,
   temperature decimal (5,2),
-  dew_point decimal (5,2),
-  PRIMARY KEY (surr_key_airport, id_time, id_date)
+  dew_point decimal (5,2)
+  -- PRIMARY KEY (surr_key_airport, id_time, id_date)
 );
+--delete from WEATHER_RECORD;
+--select count(*) from WEATHER_RECORD;
 
 COMMIT;

@@ -1,3 +1,4 @@
+--select count(*) from D_AIRPORT;
 insert into D_AIRPORT(
     SURR_KEY_AIRPORT,
     ICAO_AIRPORT_CODE,
@@ -37,6 +38,7 @@ insert into D_AIRPORT(
           ICAO_AIRPORT_CODE in (select ICAO_AIRPORT_CODE from FULLY_EXTRACTED_AIRPORT
           where OPERATION_CODE = 'CHG')
     ;
+
 insert into F_WEATHER_RECORD (
     SURR_KEY_AIRPORT,
     ID_DATE,
@@ -51,9 +53,9 @@ insert into F_WEATHER_RECORD (
     ) (select
    a.SURR_KEY_AIRPORT,
    (select id_date from d_date where
-       d_date.year = TO_CHAR(t.THE_DATE, 'YYYY')  AND
-       d_date.month= extract(month from t.THE_DATE) AND
-       d_date.day = extract(day from t.THE_DATE)),
+       d_date.year = TO_CHAR(extract(year from t.THE_DATE))  AND
+       d_date.month= to_char(extract(month from t.THE_DATE)) AND
+       d_date.day = to_char(extract(day from t.THE_DATE))),
    (select id_time from d_time where
      d_time.hour = to_char(t.TIME, 'HH24') AND
      d_time.minute = to_char(t.TIME, 'MI') AND
@@ -69,4 +71,24 @@ insert into F_WEATHER_RECORD (
   join D_AIRPORT a on (a.ICAO_AIRPORT_CODE = t.ICAO_AIRPORT_CODE)
 );
 
+
+
+--select ICAO_AIRPORT_CODE, count(*) from F_WEATHER_RECORD where ID_DATE = -1 OR ID_TIME = -1 group by
+-- ICAO_AIRPORT_CODE;
+
+--select count(*) from TRANSFORM_WEATHER_HOUR_MINUTE_TO_TIME;
+
+--select count(*) from F_WEATHER_RECORD;
+/*
+select f.SURR_KEY_AIRPORT, f.ID_TIME, f.ID_DATE, oc.count
+  from F_WEATHER_RECORD f
+inner join (
+  select SURR_KEY_AIRPORT, ID_TIME, ID_DATE, COUNT(*) as count
+    from F_WEATHER_RECORD
+    group by SURR_KEY_AIRPORT, ID_TIME, ID_DATE
+    having count(*) > 1
+) oc on f.SURR_KEY_AIRPORT = oc.SURR_KEY_AIRPORT and f.ID_TIME = oc.ID_TIME and f.ID_DATE = oc.ID_DATE;
+*/
+
+--select count(*) from TRANSFORM_WEATHER_HOUR_MINUTE_TO_TIME where time is null group by ICAO_AIRPORT_CODE ;
 COMMIT ;
