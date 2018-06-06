@@ -86,9 +86,6 @@ public class METARSourceDAOImp implements METARSourceDAO {
     @Override
     public synchronized void insertAirport(Airport airport) {
 
-        // insert airports into source tables
-
-//        String sql = "";
         String sql = "insert into airport (ICAO_AIRPORT_CODE, LATITUDE, LONGITUDE, COUNTRYNAME, AIRPORTNAME, ALTITUDE, WMO_INDEX) VALUES " +
                 "(?,?,?,?,?,?,?)";
         try {
@@ -96,15 +93,23 @@ public class METARSourceDAOImp implements METARSourceDAO {
 
             stm.setString(1, airport.getAirport().getICAOCode());
             stm.setString(2, airport.getLatitude().toDBString());
-            stm.setString(3,airport.getLongitude().toDBString());
+            stm.setString(3, airport.getLongitude().toDBString());
             stm.setString(4, airport.getCountryName().getCountryName());
-            stm.setString(5,airport.getAirportName());
-            stm.setInt(6,airport.getAltitude().getAltitude());
+            stm.setString(5, airport.getAirportName());
+            stm.setInt(6, airport.getAltitude().getAltitude());
             stm.setString(7, airport.getWmoIndex().getWMOIndex());
 
             stm.execute();
 
         } catch (SQLException e) {
+            /*System.out.println(airport.getAirport().getICAOCode() + ", " +
+                    airport.getLatitude().toDBString()  + ", " +
+                    airport.getLongitude().toDBString() + ", " +
+                    airport.getCountryName().getCountryName() + ", " +
+                    airport.getAirportName() + ", " +
+                    airport.getAltitude().getAltitude() + ", " +
+                    airport.getWmoIndex().getWMOIndex());
+            */
             e.printStackTrace();
         }
 //         insert weather records with a reference to their respective airports

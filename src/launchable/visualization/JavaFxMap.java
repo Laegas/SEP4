@@ -140,8 +140,6 @@ public class JavaFxMap extends Application {
         });
 
         checkComboBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c -> {
-            System.out.println("document.restyle(" + convertToJSFriendlyArray(checkComboBox.getCheckModel()
-                    .getCheckedItems()) + ", " + (1 - slider.getValue() / 100.0) + ")");
             webEngine.executeScript("document.restyle(" + convertToJSFriendlyArray(checkComboBox.getCheckModel()
                     .getCheckedItems()) + ", " + (1 - slider.getValue() / 100.0) + ")");}
         );

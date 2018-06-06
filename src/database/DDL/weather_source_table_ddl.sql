@@ -1,23 +1,11 @@
-BEGIN
-  EXECUTE IMMEDIATE 'drop table weather_record CASCADE CONSTRAINTS purge';
-  EXECUTE IMMEDIATE 'drop table airport CASCADE CONSTRAINTS purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_TABLE('weather_record'); END;
+/
+BEGIN DROP_TABLE('airport'); END;
 /
 
-BEGIN
-  EXECUTE IMMEDIATE 'drop sequence airport_id';
-  EXECUTE IMMEDIATE 'drop sequence weather_record_id';
-EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -2289 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_SEQUENCE('airport_id'); END;
+/
+BEGIN DROP_SEQUENCE('weather_record_id'); END;
 /
 
 create sequence airport_id

@@ -13,9 +13,12 @@ where (select to_Date( (DAY || '.' || MONTH || '.' || YEAR), 'DD.MM.YYYY') from 
      intersect
 select id_launch_date from F_DURATION;
 
-select *from D_FLIGHT;
+commit;
 
+select * from airport;
 
+select * from D_FLIGHT;
+select * from FULLY_EXTRACTED_IGC;
 
 select count(*) from WEATHER_RECORD;
 select count(*) from IGC_SOURCE_DATA;

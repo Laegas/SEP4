@@ -1,11 +1,4 @@
-BEGIN
-  EXECUTE IMMEDIATE 'drop table transform_weather_hour_minute_to_time CASCADE CONSTRAINTS purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_TABLE('transform_weather_hour_minute_to_time'); END;
 /
 
 create table transform_weather_hour_minute_to_time as

@@ -85,7 +85,7 @@ begin
         tmp_id_member := -1;
       else
         select (SELECT member_id from d_member where INITIALS = c.pilot2init offset 0 rows fetch next 1 rows only) into tmp_id_member from dual;
-        if(tmp_id_member = null)
+        if(tmp_id_member IS null)
         then
           tmp_id_member := -1;
         end if;

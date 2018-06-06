@@ -39,7 +39,6 @@ insert into D_FLIGHT (
 insert into F_DURATION (
     SURR_KEY_FLIGHT,
     ID_GROUP,
-    ID_MEMBER,
     ID_LAUNCH_TIME,
     ID_LAUNCH_DATE,
     ID_LAND_TIME,
@@ -47,7 +46,6 @@ insert into F_DURATION (
     DURATION
 ) (select
     SURR_KEY_FLIGHT,
-    -1,
     -1,
     -1,
     ID_START_DATE,
@@ -61,6 +59,7 @@ insert into F_DURATION (
 -- select * from FULLY_EXTRACTED_IGC;
 -- now inserting all new f_igc_log
 
+--closest airport added through java, after ETL has been completed
 insert into F_IGC_LOG (
     SURR_KEY_LOG,
     SURR_KEY_FLIGHT,
@@ -81,8 +80,9 @@ insert into F_IGC_LOG (
     GPS_ALTITUDE,
     SATELLITE_COVERAGE
   from TRANSFORM_IGC_EMPTY_GLIDER_REGNO t
-); --closest airport added through java, after ETL has been completed
-select count(*) from TRANSFORM_IGC_EMPTY_GLIDER_REGNO;
-select ID_TIME from D_TIME t where t.second= to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10),'SS') AND t.minute =to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10),'MI') AND t.hour =to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10), 'HH24')
-;
+);
+
+select ID_TIME from D_TIME t where t.second= to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10),'SS') AND t.minute =to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10),'MI') AND
+                                   t.hour =to_char( (select TIME_OF_LOG from TRANSFORM_IGC_EMPTY_GLIDER_REGNO where IGC_ID =10), 'HH24');
+
 COMMIT;

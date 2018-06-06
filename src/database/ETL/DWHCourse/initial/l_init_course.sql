@@ -1,9 +1,12 @@
 -------- INIT FLIGHTS Load ------
-BEGIN drop_table('flights_to_load_with_surr_key'); END;/
-BEGIN drop_table('flights_to_load'); END;/
+BEGIN drop_table('flights_to_load_with_surr_key'); END;
+/
+BEGIN drop_table('flights_to_load'); END;
+/
 
 create table flights_to_load as (select * from FLAGGED_FOR_DUPLICATED_INITIALS where 1 = 0);
-alter table flights_to_load add (duration int); -- adding column for calculated duration of flight
+-- adding column for calculated duration of flight
+alter table flights_to_load add (duration int);
 create table flights_to_load_with_surr_key as (select * from flights_to_load);
 
 alter table flights_to_load_with_surr_key add ( -- adding columns mostly for key lookup
@@ -23,8 +26,10 @@ alter table flights_to_load_with_surr_key drop (
 );
 
 ------------INIT MEMBER Load-----------
-BEGIN drop_table('MEMBER_TO_LOAD'); END;/
-BEGIN drop_sequence('d_member_id'); END;/
+BEGIN drop_table('MEMBER_TO_LOAD'); END;
+/
+BEGIN drop_sequence('d_member_id'); END;
+/
 
 CREATE TABLE MEMBER_TO_LOAD as (SELECT * FROM fixed_status_member where 1 = 0);
 

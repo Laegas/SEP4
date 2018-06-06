@@ -1,23 +1,10 @@
-BEGIN
-  EXECUTE IMMEDIATE 'drop table Data_Logger_Source CASCADE CONSTRAINTS purge';
-  EXECUTE IMMEDIATE 'drop table IGC_Source_Data CASCADE CONSTRAINTS purge';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_TABLE('Data_Logger_Source'); END;
 /
-
-BEGIN
-  EXECUTE IMMEDIATE 'drop sequence data_Logger_ID';
-  EXECUTE IMMEDIATE 'drop sequence IGC_Source_Data_ID';
-EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -2289 THEN
-    RAISE;
-  END IF;
-END;
+BEGIN DROP_TABLE('IGC_Source_Data'); END;
+/
+BEGIN DROP_SEQUENCE('data_Logger_ID'); END;
+/
+BEGIN DROP_SEQUENCE('IGC_Source_Data_ID'); END;
 /
 
 create sequence data_Logger_ID
