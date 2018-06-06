@@ -68,6 +68,7 @@
                     });
                 }
                 if(cLayerIndexes.length === 0) {
+                    document.getElementById("processing").className = "transparent";
                     document.map.data.setStyle(function () {
                         return {
                             visible: false
@@ -179,13 +180,7 @@
             };
 
             // todo set only one layer as a default
-            document.restyle([layerName[5]], 0);
-            var time = 0;
-            /*
-            setTimeout(function(){
-                document.restyle([layerName[0]], 0);
-            }, 15000);
-            */
+            document.restyle([layerName[0]], 0.1);
 
             document.map.data.addListener('mouseover', function(event) {
                 document.getElementById('info').className = "";

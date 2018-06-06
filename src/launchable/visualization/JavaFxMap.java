@@ -66,7 +66,7 @@ public class JavaFxMap extends Application {
         });
 
         // add search
-        TextField searchBox = new TextField("95054");
+        TextField searchBox = new TextField("Denmark");
         searchBox.setPromptText("Search");
         searchBox.textProperty().addListener((observableValue, s, s1) -> {
             // delay location updates to we don't go too fast file typing
@@ -79,7 +79,6 @@ public class JavaFxMap extends Application {
             locationUpdateTimeline.play();
         });
 
-        // check combo box experiment
         // create the data to show in the CheckComboBox
         final ObservableList<String> strings = FXCollections.observableArrayList();
         strings.addAll(LAYER_NAMES);
