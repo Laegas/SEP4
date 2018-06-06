@@ -8,11 +8,11 @@ var featureCount = 23877;
 
 // layer settings
 var layerName = ["Flights heat map", "Thermals", "Wind direction 0-90", "Wind direction 90-180", "Wind direction 180-270", "Wind direction 270-360"];
-var minimumAlpha = [0.1, 0.1, 1.0, 1.0, 1.0, 1.0];
+var minimumAlpha = [0.1, 0.1, 0.3, 0.3, 0.3, 0.3];
 var alphaProperty = ["f", "t", "wd45t", "wd135t", "wd225t", "wd315t"];
-var alphaDividerProperty = [70.0, 70.0, 70.0, 70.0, 70.0, 70.0];
-var visibilityFormula = ["t/70", "t/f", "wd45t/wd45f", "wd135t/wd135f", "wd225t/wd225f", "wd315t/wd315f"];
-var displayStringFormat = ["F:@1", "T:@2 / F:@1", "T:@4 / F:@3", "T:@6 / F:@5", "T:@8 / F:@7", "T:@10 / F:@9"];
+var alphaDividerProperty = [70.0, 70.0, 5.0, 5.0, 5.0, 5.0];
+var visibilityFormula = ["@1/70", "@1/@0", "@3/@2", "@5/@4", "@7/@6", "@9/@8"];
+var displayStringFormat = ["F:@1", "T:@0 / F:@1", "T:@2 / F:@3", "T:@4 / F:@5", "T:@6 / F:@7", "T:@9 / F:@8"];
 var colorProperty = ["0", "0", "0", "0", "0", "0"];
 var colorDividerProperty = ["0", "0", "0", "0", "0", "0"];
 var fromColor = [[255, 0, 0], [0, 255, 0], [255, 0, 0], [255, 0, 0], [255, 0, 0], [255, 0, 0]];

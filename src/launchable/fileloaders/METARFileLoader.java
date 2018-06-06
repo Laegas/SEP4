@@ -13,7 +13,9 @@ import java.io.File;
 public class METARFileLoader {
     private static final File dirWithMETARLogFiles = new File(FileConfig.METAR_DIRECTORY_PATH);
 
-    public static void main(String[] args) {
+    public METARFileLoader() {}
+
+    public void loadMETARFiles() {
 
         File[] METAR_files = dirWithMETARLogFiles.listFiles();
 

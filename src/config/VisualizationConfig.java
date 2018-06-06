@@ -16,13 +16,13 @@ public class VisualizationConfig {
     public static final double LONGITUDE_END = 11;          // 11°
     public static final double LATITUDE_END = 57.5;         // 57°30'
 
-    // ********************* config for size of individual field ***********************
+    // ********************* config for size of individual feature *********************
     public static final double SOUTH_TO_NORTH_ARC = 0.25;    // 0°0'15''
     public static final double WEST_TO_EAST_ARC = 0.5;     // 0°0'30''
 
     // ********************* config for grid size **************************************
-    public static final int WIDTH = (int)((LONGITUDE_END - LONGITUDE_START) * 60 / WEST_TO_EAST_ARC);   // 720
-    public static final int HEIGHT = (int)((LATITUDE_END - LATITUDE_START) * 60 / SOUTH_TO_NORTH_ARC);  // 360
+    public static final int WIDTH = (int)((LONGITUDE_END - LONGITUDE_START) * 60 / WEST_TO_EAST_ARC);   // 360
+    public static final int HEIGHT = (int)((LATITUDE_END - LATITUDE_START) * 60 / SOUTH_TO_NORTH_ARC);  // 720
 
     // ********************* config for resource (JSON) generation *********************
     public static final int CHUNKS = 1;
@@ -72,22 +72,22 @@ public class VisualizationConfig {
     public static LayerWrapper[] LAYERS(OutputData grid) {
         return new LayerWrapper[]{
                 new LayerWrapper(LAYER_NAMES[0], 0.1, PROPERTIES[0], grid.getMaxTotalRegisteredFlightCount(),
-                        PROPERTIES[1] + "/" + grid.getMaxTotalRegisteredFlightCount(), "F:@1",
+                        "@1/" + grid.getMaxTotalRegisteredFlightCount(), "F:@1",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
                 new LayerWrapper(LAYER_NAMES[1], 0.1, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(),
-                        PROPERTIES[1] + "/" + PROPERTIES[0], "T:@2 / F:@1",
+                        "@1/@0", "T:@1 / F:@0",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(0, 255, 0)),
-                new LayerWrapper(LAYER_NAMES[2], 1, PROPERTIES[3], grid.getMaxTotalRegisteredFlightCount(),
-                        PROPERTIES[3] + "/" + PROPERTIES[2], "T:@4 / F:@3",
+                new LayerWrapper(LAYER_NAMES[2], 0.3, PROPERTIES[3], 5,
+                        "@3/@2", "T:@3 / F:@2",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
-                new LayerWrapper(LAYER_NAMES[3], 1, PROPERTIES[5], grid.getMaxTotalRegisteredFlightCount(),
-                        PROPERTIES[5] + "/" + PROPERTIES[4], "T:@6 / F:@5",
+                new LayerWrapper(LAYER_NAMES[3], 0.3, PROPERTIES[5], 5,
+                        "@5/@4", "T:@5 / F:@4",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
-                new LayerWrapper(LAYER_NAMES[4], 1, PROPERTIES[7], grid.getMaxTotalRegisteredFlightCount(),
-                        PROPERTIES[7] + "/" + PROPERTIES[6], "T:@8 / F:@7",
+                new LayerWrapper(LAYER_NAMES[4], 0.3, PROPERTIES[7], 5,
+                        "@7/@6", "T:@7 / F:@6",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
-                new LayerWrapper(LAYER_NAMES[5], 1, PROPERTIES[9], grid.getMaxTotalRegisteredFlightCount(),
-                        PROPERTIES[9] + "/" + PROPERTIES[8], "T:@10 / F:@9",
+                new LayerWrapper(LAYER_NAMES[5], 0.3, PROPERTIES[9], 5,
+                        "@9/@8", "T:@9 / F:@8",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0))
         };
     }

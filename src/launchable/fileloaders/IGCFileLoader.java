@@ -1,10 +1,6 @@
 package launchable.fileloaders;
 
 import config.FileConfig;
-import database.DAO.DaoManager;
-import database.DAO.IGCDataDAO;
-import util.file.FileDecoder;
-import model.igc.Flight;
 import util.file.FileQueue;
 import util.file.FileRunner;
 
@@ -12,15 +8,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kenneth on 17/05/2018.
- */
 public class IGCFileLoader {
 
     private static final File dirWithIGCLogFiles = new File(FileConfig.IGC_DIRECTORY_PATH);
 
+    public IGCFileLoader() {}
 
-    public static void main(String[] args) {
+    public void loadIGCFiles() {
         System.out.println("Setup of file queue.");
         File[] IGC_files = dirWithIGCLogFiles.listFiles();
         List<String> fileNames = new ArrayList<>();
@@ -36,9 +30,13 @@ public class IGCFileLoader {
             Thread a = new Thread(new FileRunner(queue));
             a.start();
             System.out.print(".");
+            try {
+                a.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         System.out.println("Threads started, loading "+ numberOfFilesToLoad+" files.");
-
     }
 }

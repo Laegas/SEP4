@@ -135,12 +135,13 @@
                         var color = "rgba(0,0,0,0)", f = cFormula;
                         // parsing visibilityFormula
                         for (i = 0; i < properties.length; i++) {
-                            var index = f.indexOf(properties[i]);
+                            var index = f.indexOf("@" + i);
+                            var parameterPadding = i.toString().length + 1;
                             while (index >= 0) {
-                                f = f.substring(0, index - properties[i].length + 1) +
+                                f = f.substring(0, index) +
                                     feature.getProperty(properties[i]) +
-                                    f.substring(index + properties[i].length, f.length);
-                                index = f.indexOf(properties[i]);
+                                    f.substring(index + parameterPadding, f.length);
+                                index = f.indexOf("@" + i);
                             }
                         }
 
@@ -178,7 +179,7 @@
             };
 
             // todo set only one layer as a default
-            document.restyle([layerName[1]], 0);
+            document.restyle([layerName[5]], 0);
             var time = 0;
             /*
             setTimeout(function(){
@@ -192,13 +193,15 @@
                 // parsing display string with properties
                 var displayString = cDisplayStringFormat;
                 for(i = 0; i < properties.length; i++) {
-                    var index = displayString.indexOf("@" + (i+1));
-                    var parameterPadding = (i+1).toString().length + 1;
+                    var index = displayString.indexOf("@" + i);
+                    var parameterPadding = i.toString().length + 1;
                     while(index >= 0) {
+                        console.log(displayString);
                         displayString = displayString.substring(0, index) +
                             event.feature.getProperty(properties[i]) +
                             displayString.substring(index + parameterPadding, displayString.length);
-                        index = displayString.indexOf("@" + (i+1));
+                        console.log(displayString);
+                        index = displayString.indexOf("@" + i);
 
                     }
                 }

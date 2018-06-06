@@ -9,17 +9,14 @@ import launchable.sqlRunner.SQLRunner;
  */
 public class AllTheStuff {
     public static void main(String[] args) {
-
         SQLRunner sqlRunner = new SQLRunner();
+        MainFileLoader mainFileLoader = new MainFileLoader();
+        ClosestAirport closestAirport = new ClosestAirport();
 
         sqlRunner.runAllDDL();
-
-        MainFileLoader.main(new String[1]);
-
+        mainFileLoader.loadAllFiles();
         sqlRunner.runETL();
         sqlRunner.runAfterETL();
-
-        ClosestAirport.main(new String [1]);
-
+        closestAirport.setClosestAirports();
     }
 }
