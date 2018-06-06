@@ -40,14 +40,12 @@ public class AnalysisOfThermalsWithWeatherData {
         try {
             analyse(flights, outputData);
         } catch (InvalidCoordinatesException e) {
-            System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
             e.printStackTrace();
         }
         System.out.println("Count thermal no weather analysis start:");
         try {
             CountThermalsAnalysis.analyse(flights, outputData);
         } catch (InvalidCoordinatesException e) {
-            System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
             e.printStackTrace();
         }
 

@@ -45,13 +45,10 @@ public class METARSourceDAOImp implements METARSourceDAO {
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO weather_record (id, ICAO_airport_code, " +
                      "wind_direction, wind_speed, wind_direction_from, wind_direction_to" +
                      ", temperature, dew_point, the_date, minute, hour) VALUES (weather_record_id.nextval, ?, ?, ?, ?, ?, ?, ?, to_Date(?, \' yy/mm/dd\'), ?, ? )");
-            /*System.out.println(ICAO_airport_code + " " + windSpeed + " " + windDirection + " " + windDirectionFrom +
-                    " " + windDirectionTo + " " + temperature + " " + dewPoint + " " + date.toString() + " " + hour +
-                    " " + minute);*/
-             stmt.setString(1, ICAO_airport_code);
-             stmt.setInt(2,windDirection);
-             stmt.setInt(3,windSpeed);
-             stmt.setInt(4,windDirectionFrom);
+            stmt.setString(1, ICAO_airport_code);
+            stmt.setInt(2,windDirection);
+            stmt.setInt(3,windSpeed);
+            stmt.setInt(4,windDirectionFrom);
             stmt.setInt(5, windDirectionTo);
                 stmt.setDouble(6, temperature);
                 stmt.setDouble(7, dewPoint);
@@ -102,14 +99,6 @@ public class METARSourceDAOImp implements METARSourceDAO {
             stm.execute();
 
         } catch (SQLException e) {
-            /*System.out.println(airport.getAirport().getICAOCode() + ", " +
-                    airport.getLatitude().toDBString()  + ", " +
-                    airport.getLongitude().toDBString() + ", " +
-                    airport.getCountryName().getCountryName() + ", " +
-                    airport.getAirportName() + ", " +
-                    airport.getAltitude().getAltitude() + ", " +
-                    airport.getWmoIndex().getWMOIndex());
-            */
             e.printStackTrace();
         }
 //         insert weather records with a reference to their respective airports

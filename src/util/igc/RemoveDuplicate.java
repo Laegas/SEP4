@@ -78,13 +78,7 @@ public class RemoveDuplicate {
 
 
     private static long printStartTime() {
-
-      /*  System.out.println("remove duplicate");
-        long tmp = System.currentTimeMillis();
-        System.out.println("start: " + tmp);
-        */
         return 0;
-
     }
 
     private static void printEndTime(long startTime) {

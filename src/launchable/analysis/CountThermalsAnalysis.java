@@ -33,7 +33,6 @@ public class CountThermalsAnalysis {
         try {
             analyse(flights, outputData);
         } catch (InvalidCoordinatesException e) {
-            System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
             e.printStackTrace();
         }
 
@@ -61,7 +60,6 @@ public class CountThermalsAnalysis {
                     outputData.getFeatureProperties(locationPoint.getLatitude().getGridIndex(), locationPoint.getLongitude().getGridIndex()).getTotal().incrementRegisteredThermal();
                     // all thermals have been put into output data object
                 } catch (InvalidCoordinatesException e) {
-                    System.out.println("REMOVE ME WHEN ETL IS FINISHED. NIKI, GET YOUR SHIT TOGETHER");
                     e.printStackTrace();
                 }
             }

@@ -30,7 +30,6 @@ public class FlightSplitter {
 
         for (int i = 0; i < dataPointArray.length; i++) {
             DataPoint dataPoint = dataPointArray[i];
-//            System.out.println("long: " + dataPoint.getLongitude().getGridIndex() + ", lat: " + dataPoint.getLatitude().getGridIndex());
 
             if (latGridIndex == -1 && longGridIndex == -1) {
                 tmpgrp = new ArrayList<>();
