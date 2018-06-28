@@ -76,7 +76,7 @@ public class VisualizationConfig {
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
                 new LayerWrapper(LAYER_NAMES[1], 0.1, PROPERTIES[1], grid.getMaxTotalRegisteredFlightCount(),
                         "@1/@0", "T:@1 / F:@0",
-                        ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(0, 255, 0)),
+                        ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
                 new LayerWrapper(LAYER_NAMES[2], 0.3, PROPERTIES[3], 5,
                         "@3/@2", "T:@3 / F:@2",
                         ColorProperty.MAXCOLOR, ColorProperty.MAXCOLOR, new Color(255, 0, 0)),
